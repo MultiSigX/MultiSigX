@@ -119,6 +119,38 @@ background-color:#DDFFFF;
 .name{
 background-color:#E5E5E5;
 }
+.contact {
+background-color:#DFDED0
+}
+.aboutus {
+background-color:#DFDED0
+}
+.risk {
+background-color:#DFDED0
+}
+.verification {
+background-color:#DFDED0
+}
+.privacy{
+background-color:#C9F0C8
+}
+.termsofservice{
+background-color:#C9F0C8
+}
+.legal{
+background-color:#C9F0C8
+}
+.FAQ{
+background-color:#C9F0C8
+}
+.index{
+border-left:1px solid gray;
+border-right:1px solid gray;
+}
+.how{
+border-left:1px solid gray;
+border-right:1px solid gray;
+}
 
 .wrapword{
 white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */

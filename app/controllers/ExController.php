@@ -189,7 +189,7 @@ for($i=0;$i<=2;$i++){
 		)
 		);	
 
-rename(QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print".".pdf",QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print-".$i.".pdf");
+rename(QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print".".pdf",QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print-".$i.".pdf");
 
 
 // sending email to the users 
@@ -199,7 +199,7 @@ rename(QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print".".pdf",QR_OUTPUT_D
 					// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
 					$from = array(NOREPLY => "noreply@".COMPANY_URL);
 					$email = $addresses['addresses'][$i]['email'];
-					$attach = QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print-".$i.".pdf";
+					$attach = QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print-".$i.".pdf";
 					
 					$mail1 = MAIL_1;
 					$mail2 = MAIL_2;
@@ -207,6 +207,19 @@ rename(QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print".".pdf",QR_OUTPUT_D
 /////////////////////////////////Email//////////////////////////////////////////////////				
 
 } // create PDF files 
+
+// Delete all old files from the system
+if ($handle = opendir(QR_OUTPUT_DIR)) {
+    while (false !== ($entry = readdir($handle))) {
+		 if ($entry != "." && $entry != "..") {
+			 	if(strpos($entry,$addresses['username'])){
+					unlink(QR_OUTPUT_DIR.$entry);
+				}
+			}
+    }
+    closedir($handle);
+}
+//Create all QRCodes
 
 			$this->redirect('Ex::dashboard');	
 
@@ -224,7 +237,7 @@ rename(QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print".".pdf",QR_OUTPUT_D
 		$passphrase[0] = $ga->createSecret(64);
 		$passphrase[1] = $ga->createSecret(64);		
 		$passphrase[2] = $ga->createSecret(64);		
-		$currencies = Currencies::find('all');
+		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));
 		return compact('user','details','passphrase','currencies','relations');
 	}
 
@@ -237,7 +250,20 @@ rename(QR_OUTPUT_DIR.'x-'.$printdata['username']."-MSX-Print".".pdf",QR_OUTPUT_D
 			'conditions'=>array('msxRedeemScript.address'=>$address)
 		));
 
-		return compact('user','addresses');
+		$data = array();
+		foreach($addresses['addresses'] as $address){
+			$userFind = Users::find('first',array(
+				'conditions'=>array('email'=>$address['email'])
+			));
+			array_push($data, array(
+				'email'=>$address['email'],
+				'relation'=>$address['relation'],
+				'address'=>$address['address'],				
+				'username'=>$userFind['username']
+				));
+		}
+		
+		return compact('user','addresses','data');
 	}
 
 	public function name($name = null){

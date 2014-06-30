@@ -74,7 +74,7 @@
 				<h4>Save MultiSigX for:</h4>
 				<select name="currency" class="form-control">
 				<?php foreach($currencies as $currency){ ?>
-					<option value="<?=$currency['currency']['unit']?>"><?=$currency['currency']['name']?></option>
+					<option value="<?=$currency['currency']['unit']?>"><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
 				<?php }?>
 				</select>
 				<h4>Create MultiSigX with:</h4>
@@ -82,11 +82,12 @@
 					<option value="2">2 of 3</option>
 					<option value="3">3 of 3</option>					
 				</select>	<br>
-				<a href="#" class="btn btn-primary" onClick="PasstoPhrase();">Create Bitcoin Address</a>
-				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Email " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();'>
+				<a href="#" class="btn btn-primary" onClick="PasstoPhrase();">Create coin address</a>
+				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address >> Email all users " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();'>
 				<?=$this->form->end(); ?>
+				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. All the keys are created in your browser memory and creates the files for sending to all 3 email addresses.</p>
 			</div>
-			<div class="panel-footer">Panel footer</div>
+			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://greencoin.io" target="_blank">http://greencoin.io</a>, try MultiSigX security.  </div>
 		</div>
 	</div>
 </div>

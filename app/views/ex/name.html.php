@@ -9,7 +9,7 @@
 					<table class="table table-striped table-condensed table-bordered">
 						<tr>
 							<th>Email</th>
-							<th>Address</th>							
+							<th><span class=" tooltip-x" rel="tooltip-x" data-placement="top" title="This address should be used for reciving withdrawal of funds from MultiSigX address"><?=$addresses['currencyName']?> Address: <?=$addresses['currency']?></span></th>							
 							<th>Verified</th>
 							<th>Relation</th>							
 						</tr>
@@ -26,7 +26,7 @@
 					<table class="table table-striped table-condensed table-bordered">
 						<tr>
 							<th>MultiSigX</th>
-							<td><?=$addresses['msxRedeemScript']['address']?></td>
+							<td><strong class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Use this address for deposit and control of your coins"><a href="/ex/address/<?=$addresses['msxRedeemScript']['address']?>"><?=$addresses['msxRedeemScript']['address']?></a></strong></td>
 						</tr>
 						<tr>
 							<th>Security</th>
