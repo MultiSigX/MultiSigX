@@ -51,7 +51,7 @@ $html = $html . '<p><strong>'.$printdata['currency'].'</strong> address: <strong
 $html = $html . '
 <table cellpadding="5" cellspacing="5" width="100%" style="border:1px solid gray">
 	<tr>
-		<td colspan="2"><img src="'.LITHIUM_APP_PATH.'\\webroot\\qrcode\\out\\x-'.$printdata['username'].'-'.$printdata['address'].'-address.png'.'"  alt="'.$printdata['currency'].' address" title="'.$printdata['currency'].' address" border="1" width="300"><br>
+		<td colspan="2"><img src="'.LITHIUM_APP_PATH.'/webroot/qrcode/out/x-'.$printdata['username'].'-'.$printdata['address'].'-address.png'.'"  alt="'.$printdata['currency'].' address" title="'.$printdata['currency'].' address" border="1" width="300"><br>
 '.$printdata['currencyName'].' '.$printdata['currency'].':<br>'.$printdata["address"].'</td>	
 	</tr>
 	<tr>
@@ -75,13 +75,13 @@ $html = '
 	The private key is used when you make a withdrawal / payment. The passphrase and poetry can be used in case if you loose your private key.
 	</td></tr>
 	<tr>
-		<td><img src="'.LITHIUM_APP_PATH.'\\webroot\\qrcode\\out\\'.$printdata['i'].'-'.$printdata['username'].'-private.png'.'"  alt="Privatekey" title="Privatekey" border="1" width="300"><br>
+		<td><img src="'.LITHIUM_APP_PATH.'/webroot/qrcode/out/'.$printdata['i'].'-'.$printdata['username'].'-private.png'.'"  alt="Privatekey" title="Privatekey" border="1" width="300"><br>
 Privkey: <br><small>'.$printdata["private"].'</small> </td>
-		<td><img src="'.LITHIUM_APP_PATH.'\\webroot\\qrcode\\out\\'.$printdata['i'].'-'.$printdata['username'].'-passphrase.png'.'"  alt="Passphrase" title="Passphrase" border="1" width="300"><br>
+		<td><img src="'.LITHIUM_APP_PATH.'/webroot/qrcode/out/'.$printdata['i'].'-'.$printdata['username'].'-passphrase.png'.'"  alt="Passphrase" title="Passphrase" border="1" width="300"><br>
 Passphrase:<br><small>'.$printdata["passphrase"].'</small> </td>
 	</tr>
 	<tr>
-		<td colspan="2"><img src="'.LITHIUM_APP_PATH.'\\webroot\\qrcode\\out\\'.$printdata['i'].'-'.$printdata['username'].'-dest.png'.'"  alt="Poetry" title="Poetry" border="1" width="300"><br>
+		<td colspan="2"><img src="'.LITHIUM_APP_PATH.'/webroot/qrcode/out/'.$printdata['i'].'-'.$printdata['username'].'-dest.png'.'"  alt="Poetry" title="Poetry" border="1" width="300"><br>
 Poetry to recover privkey:<br><small>'.$printdata["dest"].'</small> </td>	
 	</tr>
 </table>
