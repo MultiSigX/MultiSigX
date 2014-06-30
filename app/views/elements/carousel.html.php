@@ -22,12 +22,12 @@
           </div>
         </div>
         <div class="item">
-          <img src="/img/carousel2.png" alt="First slide">
+          <img src="/img/carousel2.png" alt="What is MultiSigX">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+              <h1>MultiSigX, the security of present & future</h1>
+              <p>Since the start of Digital Currencies, security of coins is the main concern of eveyone. See How it works section, you will surely feel that your coins are very secure now!</p>
+              <p><a class="btn btn-lg btn-primary" href="/company/how" role="button">Learn more</a></p>
             </div>
           </div>
         </div>
@@ -35,8 +35,8 @@
           <img src="/img/carousel3.png" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
-              <h1>One more for good measure.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <h1>One of ours users said:</h1>
+              <p>With MultiSigX 2 of 3 and 3 of 3 security, I have all my coins store in MultiSig address starting with 3XN3eI... and I am able to sleep with my computer, USB, phone connected to internet.</p>
               <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
             </div>
           </div>
