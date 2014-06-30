@@ -9,7 +9,7 @@
       </ol>
       <div class="carousel-inner">
         <div class="item active">
-          <img src="/img/carousel1.png" alt="First slide">
+          <img src="/img/carousel1.jpg" alt="MultiSigX Intor">
           <div class="container">
             <div class="carousel-caption">
               <h1>MultiSigX Security</h1>
