@@ -1,7 +1,7 @@
 <div class="white">
 	<div class="col-md-12  container-fluid" >
 		<div class="panel panel-success">
-			<div class="panel-heading"><a href="/ex/dashboard"><i class="fa fa-chevron-left fa-lg"></i></a>&nbsp;&nbsp;
+			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="fa fa-chevron-left fa-lg"></i></a>&nbsp;&nbsp;
 			Create new MultiSigX&#8482;</div>
 			<div class="panel-body">
 				<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXForm')); ?>
