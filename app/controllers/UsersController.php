@@ -16,6 +16,7 @@ use app\extensions\action\Greencoin;
 use lithium\security\Auth;
 use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
+use li3_qrcode\extensions\action\QRcode;
 use lithium\util\String;
 use MongoID;
 
@@ -299,6 +300,104 @@ class UsersController extends \lithium\action\Controller {
 			}
 		}
 	}
+	public function CreateQRCode($address=null){
+		$qrcode = new QRcode();			
+		$qrcode->png($address, QR_OUTPUT_DIR.$address.".png", 'H', 7, 2);		
+		return $this->render(array('json' => array("QRCode"=>$address)));
+	}
+	
+	public function CheckBalance($address=null,$name=null){
+//	$address = '1Czx5pXiQ2Qk4hFqvXvnWgnuRUKza8pdNN';
+			switch ($name){
+				case "Bitcoin":
+				$url = "https://blockchain.info/address/".$address."?format=json";
+				$currency = "BTC";
+				break;
 
+				case "GreenCoin":
+				$url = "https://greencoin.io/blockchain/address/".$address."?format=json";
+				$currency = "GreenCoin";
+				
+				break;
+			}
+			$opts = array(
+			  'http'=> array(
+					'method'=> "GET",
+					'user_agent'=> "MozillaXYZ/1.0"));
+			$context = stream_context_create($opts);
+			$json = file_get_contents($url, false, $context);
+			$jdec = json_decode($json);
+			$total_rec = ($jdec->total_received/100000000);
+			$total_sent = ($jdec->total_sent/100000000);
+			$n_tx = $jdec->n_tx;
+			$data = array();$i=0;
+			foreach($jdec->txs as $tx){
+				$j=0;
+				foreach($tx->inputs as $input){
+					$data[$i]['out'][$j]['addr']=$input->prev_out->addr;
+					$data[$i]['out'][$j]['value']=$input->prev_out->value;
+					$data[$i]['out'][$j]['spent']=(int)$input->prev_out->spent;
+					$data[$i]['out'][$j]['script']=$input->prev_out->script;
+					$j++;
+				}
+				$j=0;
+					foreach($tx->out as $out){
+						$data[$i]['in'][$j]['addr']=$out->addr;
+						$data[$i]['in'][$j]['value']=$out->value;					
+						$data[$i]['in'][$j]['spent']=(int)$out->spent;					
+						$data[$i]['in'][$j]['script']=$out->script;
+						$j++;
+					}				
+				$i++;
+			}
+//print_r($data)			;
+			
+			$html = '<table class="table table-striped table-condensed table-bordered">
+<tr>
+	<td>No. Transactions</td>
+	<td>'.$n_tx.'</td>
+</tr>
+<tr>
+	<td>Total Received</td>
+	<td>'.$total_rec.' '.$name.'</td>
+</tr>
+<tr>
+	<td>Final Balance</td>
+	<td>'.($total_rec-$total_sent).' '.$name.'</td>
+</tr>
+</table>
+<table class="table table-striped table-condensed table-bordered" style="font-size:13px">';
+foreach($data as $tx){
+	$html = $html . "<tr>";
+	$html = $html . "<td>";
+	foreach($tx['out'] as $t){	
+		if($t['addr']==$address){
+			$html = $html . '<strong>'.$t['addr'].'</strong>';
+		}else{
+			$html = $html . $t['addr'];	
+		}
+		$html = $html . "</br>";		
+		$html = $html . $t['value']/100000000;
+		$html = $html . "</br>";		
+	}
+	$html = $html . "</td>";
+	$html = $html . "<td><code>";
+	foreach($tx['in'] as $t){	
+		if($t['addr']==$address){
+			$html = $html . '<strong>'.$t['addr'].'</strong>';
+		}else{
+			$html = $html . $t['addr'];	
+		}
+		$html = $html . "</br>";		
+		$html = $html . $t['value']/100000000;
+		$html = $html . "</br>";				
+	}
+	$html = $html . "</code></td>";
+
+	$html = $html . "</tr>";	
+}
+	$html = $html .'</table>';
+			return $this->render(array('json' => array("html"=>$html,"name"=>$name)));
+	}
 }
 ?>

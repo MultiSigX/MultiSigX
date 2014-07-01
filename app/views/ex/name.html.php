@@ -17,7 +17,7 @@
 						foreach($data as $d){?>
 							<tr>
 								<td><?=$d['email']?></td>
-								<td><?=$d['address']?></td>
+								<td><code><?=$d['address']?></code></td>
 								<td><?=$d['username']?></td>
 								<td><?=$d['relation']?></td>
 							</tr>
@@ -26,7 +26,8 @@
 					<table class="table table-striped table-condensed table-bordered">
 						<tr>
 							<th>MultiSigX</th>
-							<td><strong class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Use this address for deposit and control of your coins"><a href="/ex/address/<?=$addresses['msxRedeemScript']['address']?>"><?=$addresses['msxRedeemScript']['address']?></a></strong></td>
+							<td><strong class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Use this address for deposit and control of your coins"><a href="/ex/address/<?=$addresses['msxRedeemScript']['address']?>">
+							<code><?=$addresses['msxRedeemScript']['address']?></code></a></strong></td>
 						</tr>
 						<tr>
 							<th>Security</th>

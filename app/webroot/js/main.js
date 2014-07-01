@@ -136,6 +136,26 @@ function GenerateKeys(j,value,email){
 	return keys;
 	}
 
+function DepositCoins(name,address){
+$("#DepositAddress").html(address);
+$("#DepositModalLabel").html(name + ' Address');
+	$.getJSON('/Users/CreateQRCode/'+address,
+		function(ReturnValues){
+			$("#DepositAddressImg").attr("src","/qrcode/out/"+address+".png");
+		}
+	);
+
+}
+function CheckBalance(name,currency,address){
+	$("#CheckBalanceAddress").html(address);
+	$("#CheckModalLabel").html(name+" transactions and balance");
+	$.getJSON('/Users/CheckBalance/'+address+'/'+name,
+		function(ReturnValues){
+			$("#CheckBalanceHTML").html(ReturnValues['html']);
+		}
+	);	
+}
+
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);

@@ -14,7 +14,7 @@ use app\extensions\action\Functions;
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">MultiSigX&#8482; <sup><small><strong style="color:red">beta</strong></small></sup></a>
+					<a class="navbar-brand" href="/"><img src="/img/MultiSigX.png" alt="MultiSigX"><sup><small><strong style="color:red">beta</strong></small></sup></a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
