@@ -27,7 +27,7 @@
 		<meta name="keywords" content="<?php if(isset($keywords)){echo $keywords;} ?>">	
 		<meta name="description" content="<?php if(isset($description)){echo $description;} ?>">		
     <meta name="author" content="">
-    <link rel="shortcut icon" href="favicon.ico">
+		<link rel="shortcut icon" href="/img/MultiSigX.gif" />
 		<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
