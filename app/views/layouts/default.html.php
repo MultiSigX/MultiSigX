@@ -64,7 +64,7 @@ body {
 					<?php echo $this->_render('element', 'carousel');?>	
 					<?php echo $this->_render('element', 'feature');?>						
 				<?php }?>	
-				<div class="<?=$this->_request->action?> mainpage">
+				<div class="<?=$this->_request->action?> 				<?php if($this->_request->controller!="Pages"){?> mainpage<?php }?>">
 					<?php echo $this->content(); ?>
 				</div>
 				<?php echo $this->_render('element', 'footer');?>	
