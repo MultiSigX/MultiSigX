@@ -315,7 +315,7 @@ class UsersController extends \lithium\action\Controller {
 				break;
 
 				case "GreenCoin":
-				$url = "https://greencoin.io/blockchain/address/".$address."?format=json";
+				$url = "http://greencoin.io/blockchain/address/".$address."/json";
 				$currency = "GreenCoin";
 				
 				break;
@@ -333,14 +333,17 @@ class UsersController extends \lithium\action\Controller {
 			$data = array();$i=0;
 			foreach($jdec->txs as $tx){
 				$j=0;
-				foreach($tx->inputs as $input){
-					$data[$i]['out'][$j]['addr']=$input->prev_out->addr;
-					$data[$i]['out'][$j]['value']=$input->prev_out->value;
-					$data[$i]['out'][$j]['spent']=(int)$input->prev_out->spent;
-					$data[$i]['out'][$j]['script']=$input->prev_out->script;
-					$j++;
+				if(count($tx->inputs)>0){
+					foreach($tx->inputs as $input){
+						$data[$i]['out'][$j]['addr']=$input->prev_out->addr;
+						$data[$i]['out'][$j]['value']=$input->prev_out->value;
+						$data[$i]['out'][$j]['spent']=(int)$input->prev_out->spent;
+						$data[$i]['out'][$j]['script']=$input->prev_out->script;
+						$j++;
+					}
 				}
 				$j=0;
+				if(count($tx->out)>0){				
 					foreach($tx->out as $out){
 						$data[$i]['in'][$j]['addr']=$out->addr;
 						$data[$i]['in'][$j]['value']=$out->value;					
@@ -348,6 +351,7 @@ class UsersController extends \lithium\action\Controller {
 						$data[$i]['in'][$j]['script']=$out->script;
 						$j++;
 					}				
+				}
 				$i++;
 			}
 //print_r($data)			;
