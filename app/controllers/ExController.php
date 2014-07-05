@@ -11,6 +11,7 @@ use lithium\data\Connections;
 use app\extensions\action\Functions;
 use app\extensions\action\Bitcoin;
 use app\extensions\action\Greencoin;
+use app\controllers\UsersController;
 use lithium\security\Auth;
 use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
@@ -32,15 +33,14 @@ class ExController extends \lithium\action\Controller {
 		$user = Session::read('member');
 		$id = $user['_id'];
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
-		
 		$addresses = Addresses::find('all',array(
 			'conditions'=>array('username'=>$user['username'])
 		));
 		$refered = Addresses::find('all',array(
 			'conditions'=>array('addresses.email'=>$user['email'])
 		));
-		
-		return compact('user','addresses','refered');
+		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));		
+		return compact('user','addresses','refered','currencies');
 	}
 	public function create(){
 		$user = Session::read('member');
@@ -65,13 +65,20 @@ class ExController extends \lithium\action\Controller {
 				break;
 			}
 			$security = (int)$this->request->data['security'];
-				
+			/*
+print_r(GREENCOIN_WALLET_PASSWORD)				;
+print_r(GREENCOIN_WALLET_USERNAME)				;
+print_r(GREENCOIN_WALLET_PORT)				;
+print_r(GREENCOIN_WALLET_SERVER)				;
+print_r($coin);
+*/				
 			$publickeys = array(
 				$this->request->data['pubkeycompress'][1],
 				$this->request->data['pubkeycompress'][2],
 				$this->request->data['pubkeycompress'][3],
 				);
 			$createMultiSig	= $coin->createmultisig($security,$publickeys);
+
 
 			$data = array(
 
@@ -238,7 +245,11 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$passphrase[1] = $ga->createSecret(64);		
 		$passphrase[2] = $ga->createSecret(64);		
 		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));
-		return compact('user','details','passphrase','currencies','relations');
+		$addresses = Addresses::find('all',array(
+			'conditions'=>array('username'=>$user['username']),
+			'fields'=>array('currencyName','currency')
+		));
+		return compact('user','details','passphrase','currencies','relations','addresses');
 	}
 
 	public function address($address = null){
@@ -291,5 +302,33 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		return compact('user','addresses','data');
 	}
 	public function settings(){}
+	public function withdraw($address=null,$step=0){
+		$user = Session::read('member');
+		$id = $user['_id'];
+		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+	
+		$addresses = Addresses::find('first',array(
+			'conditions'=>array('msxRedeemScript.address'=>$address)
+		));
+		$UC = new UsersController();
+
+		$final = $UC->CheckBalance($address,$addresses['currencyName'],true);
+		$final_balance = $final['final'];
+
+		$data = array();
+		foreach($addresses['addresses'] as $address){
+			$userFind = Users::find('first',array(
+				'conditions'=>array('email'=>$address['email'])
+			));
+			array_push($data, array(
+				'email'=>$address['email'],
+				'relation'=>$address['relation'],
+				'address'=>$address['address'],				
+				'username'=>$userFind['username']
+				));
+		}
+		$next = $step;
+		return compact('user','addresses','data','final_balance','next');
+	}
 }
 ?>

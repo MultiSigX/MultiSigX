@@ -121,6 +121,7 @@ function PasstoPhrase(){
 		$(private).val(this_priv);
 		$(pubkeycompress).val(this_pubkeycompress);		
 	}
+	checkform();
 }
 
 function GenerateKeys(j,value,email){
@@ -155,6 +156,22 @@ function CheckBalance(name,currency,address){
 		}
 	);	
 }
+
+function checkform() {
+	var count = 0;
+	var op = document.getElementById("Currency").getElementsByTagName("option");
+	for (var i = 0; i < op.length; i++) {	
+		if(op[i].disabled == true){
+			count++;
+		}
+	}
+	if(count==2){
+		document.getElementById('SubmitButton').disabled = true;
+	}else{
+		document.getElementById('SubmitButton').disabled = false;		
+	}
+}
+
 
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

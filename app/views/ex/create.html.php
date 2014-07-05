@@ -1,7 +1,7 @@
 <div class="white">
 	<div class="col-md-12  container-fluid" >
 		<div class="panel panel-success">
-			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="fa fa-chevron-left fa-lg"></i></a>&nbsp;&nbsp;
+			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="icon-chevron-left icon-large"></i></a>&nbsp;&nbsp;
 			Create new MultiSigX&#8482;</div>
 			<div class="panel-body">
 				<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXForm')); ?>
@@ -72,18 +72,30 @@
 					</tr>					
 				</table>
 				<h4>Save MultiSigX for:</h4>
-				<select name="currency" class="form-control">
-				<?php foreach($currencies as $currency){ ?>
-					<option value="<?=$currency['currency']['unit']?>"><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
+				<?php 
+				$curr = array();
+				foreach($addresses as $address){
+					array_push($curr, $address['currency']);
+				}
+				?>
+				<select name="currency" class="form-control" onChange="checkform();" id="Currency">
+				<?php foreach($currencies as $currency){ 
+					if(in_array($currency['currency']['unit'],$curr)){
+						$disable = "disabled";
+					}else{
+						$disable = "";
+					}
+				?>
+					<option value="<?=$currency['currency']['unit']?>" <?=$disable?>><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
 				<?php }?>
 				</select>
 				<h4>Create MultiSigX with:</h4>
-				<select name="security" class="form-control">
+				<select name="security" class="form-control" onChange="checkform();">
 					<option value="2">2 of 3</option>
 					<option value="3">3 of 3</option>					
 				</select>	<br>
 				<a href="#" class="btn btn-primary" onClick="PasstoPhrase();">Create coin address</a>
-				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address >> Email all users " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();'>
+				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address >> Email all users " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();' disabled="true">
 				<?=$this->form->end(); ?>
 				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. All the keys are created in your browser memory and creates the files for sending to all 3 email addresses.</p>
 			</div>

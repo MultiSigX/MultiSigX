@@ -23,22 +23,22 @@ use app\extensions\action\Functions;
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 					<?php if($user!=""){ ?>
-								<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="fa fa-dashboard"></i></a></li>
-								<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="fa fa-gears"></i></a></li>								
+								<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="icon-dashboard icon-large"></i></a></li>
+								<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="icon-gears icon-large"></i></a></li>								
 								<li>
 <!--								<a href='#' class='dropdown-toggle' data-toggle='dropdown' >  -->
 									<a href="#"><?=$user['username']?> </a>
 <!-- 									<i class='glyphicon glyphicon-chevron-down'></i>&nbsp;&nbsp;&nbsp;
 								</a>
 							<ul class="dropdown-menu">
-								<li><a href="/users/settings"><i class="fa fa-gears"></i> Settings</a></li>			
-								<li><a href="/ex/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+								<li><a href="/users/settings"><i class="icon-gears"></i> Settings</a></li>			
+								<li><a href="/ex/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
 								<li class="divider"></li>				
-								<li><a href="/logout"><i class="fa fa-power-off"></i> Logout</a></li>
+								<li><a href="/logout"><i class="icon-power-off"></i> Logout</a></li>
 							</ul>
 -->							
  						</li>
-						<li><a href="/logout" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Logout "><i class="fa fa-power-off"></i></a></li>
+						<li><a href="/logout" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Logout "><i class="icon-power-off icon-large"></i></a></li>
 					<?php }else{?>					
 						<li><a href="/login">Signin</a></li>
 						<li><a href="/signup">Signup</a></li>

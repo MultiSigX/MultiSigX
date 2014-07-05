@@ -306,7 +306,7 @@ class UsersController extends \lithium\action\Controller {
 		return $this->render(array('json' => array("QRCode"=>$address)));
 	}
 	
-	public function CheckBalance($address=null,$name=null){
+	public function CheckBalance($address=null,$name=null,$local=null){
 //	$address = '1Czx5pXiQ2Qk4hFqvXvnWgnuRUKza8pdNN';
 			switch ($name){
 				case "Bitcoin":
@@ -329,6 +329,10 @@ class UsersController extends \lithium\action\Controller {
 			$jdec = json_decode($json);
 			$total_rec = ($jdec->total_received/100000000);
 			$total_sent = ($jdec->total_sent/100000000);
+			if($local===true){
+				$final = ($total_rec-$total_sent);
+				return compact('final');
+			}
 			$n_tx = $jdec->n_tx;
 			$data = array();$i=0;
 			foreach($jdec->txs as $tx){

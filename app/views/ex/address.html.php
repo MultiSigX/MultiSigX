@@ -1,7 +1,7 @@
 <div class="white">
 	<div class="col-md-12  container-fluid" >
 		<div class="panel panel-success">
-			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="fa fa-chevron-left fa-lg"></i></a>&nbsp;&nbsp;
+			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="icon-chevron-left icon-large"></i></a>&nbsp;&nbsp;
 			Address: <?=$addresses['msxRedeemScript']['address']?> <?=$addresses['currencyName']?> <?=$addresses['currency']?></div>
 			<div class="panel-body">
 				<div class="row" style="margin:10px">
@@ -13,7 +13,7 @@
 						</tr>
 						<tr>
 							<th>MultiSigX</th>
-							<td><strong class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Use this address for deposit and control of your coins"><?=$addresses['msxRedeemScript']['address']?></strong></td>
+							<td class="wrapword"><strong class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Use this address for deposit and control of your coins"><?=$addresses['msxRedeemScript']['address']?></strong></td>
 						</tr>
 						<tr>
 							<th>Security</th>
@@ -24,6 +24,7 @@
 							<td class="wrapword">{"<?=$addresses['msxRedeemScript']['redeemScript']?>"}</td>
 						</tr>
 					</table>
+					<div class="table-responsive">
 					<table class="table table-striped table-condensed table-bordered">
 						<tr>
 							<th>Email</th>
@@ -41,6 +42,7 @@
 							</tr>
 						<?php }?>
 					</table>
+					</div>
 					</div>
 				</div>
 			</div>

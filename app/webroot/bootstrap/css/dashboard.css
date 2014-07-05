@@ -93,10 +93,12 @@ body {
 
 /*----------Background colors */
 .mainpage{
-min-height:650px !important;
-padding:4px;
-padding-top:90px;
-
+  min-height: 600px;
+  height: auto !important;
+  height: 600px;
+  overflow:hidden;
+  padding:4px;
+  padding-top:90px;
 }
 .dashboard{
 background-color:#C1F7C2;
@@ -152,7 +154,9 @@ background-color:#F8DADA;
 border-left:1px solid gray;
 border-right:1px solid gray;
 }
-
+.withdraw{
+background-color:#F5DCF4;
+}
 .email{
 background-color:#F8DADA;
 border-left:1px solid gray;
