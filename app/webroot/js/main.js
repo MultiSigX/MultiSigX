@@ -165,13 +165,25 @@ function checkform() {
 			count++;
 		}
 	}
+	document.getElementById('SubmitButton').disabled = true;
 	if(count==2){
 		document.getElementById('SubmitButton').disabled = true;
 	}else{
-		document.getElementById('SubmitButton').disabled = false;		
+		if($("#Email2").val()!="" && $("#Email3").val()!="" && validateEmail($("#Email2").val()) && validateEmail($("#Email3").val())){
+			document.getElementById('SubmitButton').disabled = false;		
+		}else{
+			document.getElementById('SubmitButton').disabled = true;			
+		}
 	}
 }
-
+function ChangeRelationEmail(name,value,default_escrow){
+	if(value=="MultiSigX - Escrow")	{
+		$("#"+name).val(default_escrow);
+		$("#"+name).prop('readonly', 'readonly');
+	}else{
+		$("#"+name).prop('readonly', false);		
+	}
+}
 
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

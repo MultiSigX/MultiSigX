@@ -40,17 +40,19 @@
 						<td><?=$this->form->field('email[1]', array('label'=>'','value'=>$user['email'],'readonly'=>'readonly','class'=>'form-control')); ?></td>
 						<td>
 						<select name="relation[1]" id="Relation1" class="form-control">
-						<?php foreach ($relations as $relation){?>
+						<?php foreach ($relations as $relation){
+							if($relation['type']!="MultiSigX - Escrow"){
+						?>
 							<option value="<?=$relation['type']?>"><?=$relation['type']?></option>
-						<?php }?>
+						<?php }}?>
 						</select>
 						</td>
 						<td><?=$this->form->field('address[1]', array('label'=>'','class'=>'form-control','readonly'=>'readonly')); ?></td>
 					</tr>
 					<tr class="warning">
-						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control')); ?></td>
+						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
 						<td>
-						<select name="relation[2]" id="Relation2" class="form-control">
+						<select name="relation[2]" id="Relation2" class="form-control" onChange="ChangeRelationEmail('Email2',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
 							<option value="<?=$relation['type']?>"><?=$relation['type']?></option>
 						<?php }?>
@@ -59,9 +61,9 @@
 						<td><?=$this->form->field('address[2]', array('label'=>'','class'=>'form-control','readonly'=>'readonly')); ?></td>
 					</tr>					
 					<tr class="danger">
-						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control')); ?></td>
+						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
 						<td>
-						<select name="relation[3]" id="Relation3" class="form-control">
+						<select name="relation[3]" id="Relation3" class="form-control"  onChange="ChangeRelationEmail('Email3',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
 							<option value="<?=$relation['type']?>"><?=$relation['type']?></option>
 						<?php }?>
@@ -78,7 +80,7 @@
 					array_push($curr, $address['currency']);
 				}
 				?>
-				<select name="currency" class="form-control" onChange="checkform();" id="Currency">
+				<select name="currency" class="form-control" onBlur="checkform();" id="Currency">
 				<?php foreach($currencies as $currency){ 
 					if(in_array($currency['currency']['unit'],$curr)){
 						$disable = "disabled";
@@ -90,7 +92,7 @@
 				<?php }?>
 				</select>
 				<h4>Create MultiSigX with:</h4>
-				<select name="security" class="form-control" onChange="checkform();">
+				<select name="security" class="form-control" onBlur="checkform();">
 					<option value="2">2 of 3</option>
 					<option value="3">3 of 3</option>					
 				</select>	<br>

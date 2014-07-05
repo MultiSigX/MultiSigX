@@ -84,7 +84,7 @@ print_r($coin);
 
 					'addresses.0.passphrase'=>$this->request->data['passphrase'][1],
 					'addresses.0.dest'=>$this->request->data['dest'][1],
-					'addresses.0.private'=>$this->request->data['private'][1],
+//					'addresses.0.private'=>$this->request->data['private'][1],
 					'addresses.0.pubkeycompress'=>$this->request->data['pubkeycompress'][1],
 					'addresses.0.email'=>$this->request->data['email'][1],
 					'addresses.0.address'=>$this->request->data['address'][1],
@@ -92,7 +92,7 @@ print_r($coin);
 
 					'addresses.1.passphrase'=>$this->request->data['passphrase'][2],
 					'addresses.1.dest'=>$this->request->data['dest'][2],
-					'addresses.1.private'=>$this->request->data['private'][2],
+//					'addresses.1.private'=>$this->request->data['private'][2],
 					'addresses.1.pubkeycompress'=>$this->request->data['pubkeycompress'][2],
 					'addresses.1.email'=>$this->request->data['email'][2],
 					'addresses.1.address'=>$this->request->data['address'][2],
@@ -100,7 +100,7 @@ print_r($coin);
 					
 					'addresses.2.passphrase'=>$this->request->data['passphrase'][3],
 					'addresses.2.dest'=>$this->request->data['dest'][3],
-					'addresses.2.private'=>$this->request->data['private'][3],
+//					'addresses.2.private'=>$this->request->data['private'][3],
 					'addresses.2.pubkeycompress'=>$this->request->data['pubkeycompress'][3],
 					'addresses.2.email'=>$this->request->data['email'][3],
 					'addresses.2.address'=>$this->request->data['address'][3],
@@ -116,7 +116,25 @@ print_r($coin);
 				'name'=>$user['username']."-".$this->request->data['currency']."-".$oneCode,
 				'msxRedeemScript' => $createMultiSig,
 			);
-				
+			
+if($this->request->data['email'][2]	== DEFAULT_ESCROW){
+	$data1 = array(
+	'addresses.1.private'=>$this->request->data['private'][2]
+	);
+
+	$data = array_merge($data,$data1);
+//	print_r($data);	
+}
+if($this->request->data['email'][3]	== DEFAULT_ESCROW){
+	$data2 = array(
+	'addresses.2.private'=>$this->request->data['private'][3]
+	);
+	$data = array_merge($data,$data2);	
+}
+
+//print_r($data);exit;
+
+
       $Addresses = Addresses::create($data);
       $saved = $Addresses->save();
 			
@@ -143,7 +161,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			foreach($addresses['addresses'] as $address){
 				$qrcode->png($address['passphrase'], QR_OUTPUT_DIR.$i.'-'.$addresses['username']."-passphrase.png", 'H', 7, 2);
 				$qrcode->png($address['dest'], QR_OUTPUT_DIR.$i.'-'.$addresses['username']."-dest.png", 'H', 7, 2);				
-				$qrcode->png($address['private'], QR_OUTPUT_DIR.$i.'-'.$addresses['username']."-private.png", 'H', 7, 2);
+				$qrcode->png($this->request->data['private'][$i+1], QR_OUTPUT_DIR.$i.'-'.$addresses['username']."-private.png", 'H', 7, 2);				
 				$qrcode->png($address['pubkeycompress'], QR_OUTPUT_DIR.$i.'-'.$addresses['username']."-pc.png", 'H', 7, 2);				
 				$i++;
 			}
@@ -172,7 +190,7 @@ for($i=0;$i<=2;$i++){
 			'email'=>$addresses['addresses'][$i]['email'],			
 			'passphrase'=>$addresses['addresses'][$i]['passphrase'],						
 			'dest'=>$addresses['addresses'][$i]['dest'],						
-			'private'=>$addresses['addresses'][$i]['private'],						
+			'private'=>$this->request->data['private'][$i+1],						
 			'pubkeycompress'=>$addresses['addresses'][$i]['pubkeycompress'],						
 			'currency'=>$addresses['currency'],						
 			'currencyName'=>$currency,
@@ -201,16 +219,16 @@ rename(QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print".".pdf",QR_
 
 // sending email to the users 
 /////////////////////////////////Email//////////////////////////////////////////////////
-					$function = new Functions();
-					$compact = array('data'=>$printdata);
-					// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
-					$from = array(NOREPLY => "noreply@".COMPANY_URL);
-					$email = $addresses['addresses'][$i]['email'];
-					$attach = QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print-".$i.".pdf";
-					
-					$mail1 = MAIL_1;
-					$mail2 = MAIL_2;
-					$function->sendEmailTo($email,$compact,'users','create',"MultiSigX,com important document",$from,$mail1,$mail2,'',$attach);
+	$function = new Functions();
+	$compact = array('data'=>$printdata);
+	// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+	$from = array(NOREPLY => "noreply@".COMPANY_URL);
+	$email = $addresses['addresses'][$i]['email'];
+	$attach = QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print-".$i.".pdf";
+	
+	$mail1 = $ga->createSecret(64).'@multisigx.com'; //only send email to mutisigx users a random email address
+	$mail2 = $ga->createSecret(64).'@multisigx.com'; //only send email to mutisigx users and no default
+	$function->sendEmailTo($email,$compact,'users','create',"MultiSigX,com important document",$from,$mail1,$mail2,'',$attach);
 /////////////////////////////////Email//////////////////////////////////////////////////				
 
 } // create PDF files 
