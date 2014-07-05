@@ -39,6 +39,7 @@ class ExController extends \lithium\action\Controller {
 		$refered = Addresses::find('all',array(
 			'conditions'=>array('addresses.email'=>$user['email'])
 		));
+
 		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));		
 		return compact('user','addresses','refered','currencies');
 	}

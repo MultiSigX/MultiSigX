@@ -378,15 +378,17 @@ class UsersController extends \lithium\action\Controller {
 foreach($data as $tx){
 	$html = $html . "<tr>";
 	$html = $html . "<td>";
-	foreach($tx['out'] as $t){	
-		if($t['addr']==$address){
-			$html = $html . '<strong>'.$t['addr'].'</strong>';
-		}else{
-			$html = $html . $t['addr'];	
+	if(count($tx['out'])>0){
+		foreach($tx['out'] as $t){
+			if($t['addr']==$address){
+				$html = $html . '<strong>'.$t['addr'].'</strong>';
+			}else{
+				$html = $html . $t['addr'];	
+			}
+			$html = $html . "</br>";		
+			$html = $html . $t['value'];
+			$html = $html . "</br>";		
 		}
-		$html = $html . "</br>";		
-		$html = $html . $t['value']/100000000;
-		$html = $html . "</br>";		
 	}
 	$html = $html . "</td>";
 	$html = $html . "<td><code>";
@@ -397,7 +399,7 @@ foreach($data as $tx){
 			$html = $html . $t['addr'];	
 		}
 		$html = $html . "</br>";		
-		$html = $html . $t['value']/100000000;
+		$html = $html . $t['value'];
 		$html = $html . "</br>";				
 	}
 	$html = $html . "</code></td>";
