@@ -33,14 +33,19 @@
 					<hr>
 					<div class="row">					
 						<div class="col-md-1 col-xs-6"><?=$address['currencyName']?></div>
-						<div class="col-md-3 col-xs-6"><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></div>						
-						<div class="col-md-2 col-xs-6">
+						<div class="col-md-2 col-xs-6"><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></div>						
+						<div class="col-md-3 col-xs-6">
 							<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-chevron-left icon-large"></i></a>
 							&nbsp;&nbsp;
 							<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon-large"></i></a>
 							&nbsp;&nbsp;
 							<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-chevron-right icon-large"></i></a>
-
+						<?php 
+						foreach($balances as $balance){?>
+							<?php if($balance['address']==$address['msxRedeemScript']['address']){
+								print_r($balance['balance']." ". $address['currency']);
+							 }?>
+						<?php }?>
 						</div>
 						<div class="col-md-2 col-xs-6"><strong><?=$address['security']?></strong> of 3 
 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small></div>						

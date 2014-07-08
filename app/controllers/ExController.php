@@ -29,6 +29,7 @@ class ExController extends \lithium\action\Controller {
 
 	public function index(){}
 	public function dashboard(){
+		$UC = new UsersController();
 	
 		$user = Session::read('member');
 		$id = $user['_id'];
@@ -36,12 +37,19 @@ class ExController extends \lithium\action\Controller {
 		$addresses = Addresses::find('all',array(
 			'conditions'=>array('username'=>$user['username'])
 		));
+		$balances = array();
+		foreach($addresses as $address){
+			$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
+			array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
+		}
 		$refered = Addresses::find('all',array(
 			'conditions'=>array('addresses.email'=>$user['email'])
 		));
 
 		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));		
-		return compact('user','addresses','refered','currencies');
+		
+		
+		return compact('user','addresses','refered','currencies','balances');
 	}
 	public function create(){
 		$user = Session::read('member');
@@ -78,8 +86,9 @@ print_r($coin);
 				$this->request->data['pubkeycompress'][2],
 				$this->request->data['pubkeycompress'][3],
 				);
+			$name = $user['username']."-".$this->request->data['currency']."-".$oneCode;
+//			$AddMultiSig	= $coin->addmultisigaddress($security,$publickeys,'MSX-'.$name);			
 			$createMultiSig	= $coin->createmultisig($security,$publickeys);
-
 
 			$data = array(
 
@@ -114,7 +123,7 @@ print_r($coin);
 				'currencyName'=>$currency,				
 				'security'=>$this->request->data['security'],
 				'DateTime' => new \MongoDate(),
-				'name'=>$user['username']."-".$this->request->data['currency']."-".$oneCode,
+				'name'=>$name,
 				'msxRedeemScript' => $createMultiSig,
 			);
 			

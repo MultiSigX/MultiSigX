@@ -46,20 +46,28 @@
 				</div>
 				<div class="progress">
 				<?php if($next >= 1){?>
-				  <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 33%">
-					<span class="sr-only">33% Complete (success)</span>
+				  <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 33.3%">
 				  </div>
 				<?php }?>
 				<?php if($next >= 2){?>				  
-				  <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 33%">
-					<span class="sr-only">20% Complete (warning)</span>
+				  <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 33.3%">
 				  </div>
 				<?php }?>				  
 				<?php if($next >= 3){?>				  
-				  <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 34%">
-					<span class="sr-only">10% Complete (danger)</span>
+				  <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 33.3%">
 				  </div>
 				<?php }?>				  
+				</div>
+				<div class="btn-group btn-group-justified">
+				  <div class="btn-group">
+					<button type="button" class="btn btn-success <?php if($next >= 1){?>disabled<?php }?>">Create Transaction</button>
+				  </div>
+				  <div class="btn-group">
+					<button type="button" class="btn btn-warning <?php if($next >= 2){?>disabled<?php }?>">Sign Transaction</button>
+				  </div>
+				  <div class="btn-group">
+					<button type="button" class="btn btn-danger" <?php if($next >= 3){?>disabled<?php }?>>Confirm Transaction</button>
+				  </div>
 				</div>
 			</div>
 			<div class="panel-footer"></div>
