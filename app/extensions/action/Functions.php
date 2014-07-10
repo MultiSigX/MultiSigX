@@ -252,10 +252,12 @@ class Functions extends \lithium\action\Controller {
 			$message->setSubject($subject);
 			$message->setFrom($from);
 			$message->setTo($email);
-			$message->addBcc($mail1);
 			if($attach!=null){
 				$swiftAttachment = Swift_Attachment::fromPath($attach);
 				$message->attach($swiftAttachment);
+			}
+			if($mail1!=null){			
+				$message->addBcc($mail1);			
 			}
 			if($mail2!=null){			
 				$message->addBcc($mail2);			

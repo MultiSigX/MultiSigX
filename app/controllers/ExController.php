@@ -236,9 +236,7 @@ rename(QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print".".pdf",QR_
 	$email = $addresses['addresses'][$i]['email'];
 	$attach = QR_OUTPUT_DIR.'MultiSigX.com-'.$printdata['name']."-MSX-Print-".$i.".pdf";
 	
-	$mail1 = $ga->createSecret(64).'@multisigx.com'; //only send email to mutisigx users a random email address
-	$mail2 = $ga->createSecret(64).'@multisigx.com'; //only send email to mutisigx users and no default
-	$function->sendEmailTo($email,$compact,'users','create',"MultiSigX,com important document",$from,$mail1,$mail2,'',$attach);
+	$function->sendEmailTo($email,$compact,'users','create',"MultiSigX,com important document",$from,'','','',$attach);
 /////////////////////////////////Email//////////////////////////////////////////////////				
 
 } // create PDF files 
