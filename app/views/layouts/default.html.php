@@ -31,7 +31,7 @@
 		<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/dashboard.css?v=<?=rand(1,100000000)?>" rel="stylesheet"> 

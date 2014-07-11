@@ -25,6 +25,21 @@ use app\extensions\action\Functions;
 					<?php if($user!=""){ ?>
 								<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="icon-dashboard icon-large"></i></a></li>
 								<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="icon-gears icon-large"></i></a></li>								
+					<li><a href="#" class='dropdown-toggle tooltip-x' data-toggle='dropdown'  rel="tooltip-x" data-placement="bottom" title="Themes "><i class="icon-th icon-large"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="#" onClick="ChangeTheme('chrome','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Chrome</a></li>			
+							<li><a href="#" onClick="ChangeTheme('flaty','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Flaty</a></li>			
+							<li><a href="#" onClick="ChangeTheme('lumen','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Lumen</a></li>			
+							<li><a href="#" onClick="ChangeTheme('readable','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Readable</a></li>			
+							<li><a href="#" onClick="ChangeTheme('dynamic','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Dynamic</a></li>			
+							<li><a href="#" onClick="ChangeTheme('united','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> United</a></li>			
+							<li><a href="#" onClick="ChangeTheme('yeti','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Yeti</a></li>			
+							<li><a href="#" onClick="ChangeTheme('amelia','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Amelia</a></li>			
+							<li class="divider"></li>
+							<li><a href="#" onClick="ChangeTheme('default','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart"></i> Default</a></li>										
+						</ul>					
+					</li>								
+
 								<li>
 <!--								<a href='#' class='dropdown-toggle' data-toggle='dropdown' >  -->
 									<a href="#"><?=$user['username']?> </a>
@@ -43,6 +58,7 @@ use app\extensions\action\Functions;
 						<li><a href="/login">Signin</a></li>
 						<li><a href="/signup">Signup</a></li>
 					<?php }?>				
+					
 					</ul>
 				</div>
 			</div>

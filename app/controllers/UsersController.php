@@ -407,7 +407,15 @@ foreach($data as $tx){
 	$html = $html . "</tr>";	
 }
 	$html = $html .'</table>';
-			return $this->render(array('json' => array("html"=>$html,"name"=>$name)));
+		return $this->render(array('json' => array("html"=>$html,"name"=>$name)));
+	}
+	
+	public function ChangeTheme($name=null,$uri=null){
+		$fromfilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/".$name."-bootstrap.css";
+		$tofilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/bootstrap.css";
+		copy($fromfilename, $tofilename);
+		$uri = str_replace("_","/",$uri);
+		return $this->render(array('json' => array("uri"=>$uri)));	
 	}
 }
 ?>
