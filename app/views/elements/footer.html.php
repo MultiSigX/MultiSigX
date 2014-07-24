@@ -9,7 +9,7 @@
 		<li><a href="/company/verification">Verification</a></li>						
 		<li><a href="/company/privacy">Privacy</a></li>		
 		<li><a href="/company/termsofservice">Terms</a></li>				
-		<li><a href="/company/legal">Legal</a></li>		
+		<li><a href="/company/how">How it works?</a></li>		
 		<li><a href="/company/FAQ">FAQ</a></li>				
 		<li><a href="/API">API</a></li>								
 	</ul>
