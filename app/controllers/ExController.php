@@ -6,6 +6,7 @@ use app\models\Details;
 use app\models\Currencies;
 use app\models\Addresses;
 use app\models\Relations;
+use app\models\Pages;
 
 use lithium\data\Connections;
 use app\extensions\action\Functions;
@@ -27,13 +28,15 @@ use li3_qrcode\extensions\action\QRcode;
 
 class ExController extends \lithium\action\Controller {
 
-	public function index(){}
+	public function index(){
+	return $this->render(array('json' => array("EX"=>false)));
+	}
 	public function dashboard(){
 		$UC = new UsersController();
 	
 		$user = Session::read('member');
 		$id = $user['_id'];
-		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+		if($id==null){$this->redirect(array('controller'=>'Users','action'=>'signup'));}		
 		$addresses = Addresses::find('all',array(
 			'conditions'=>array('username'=>$user['username'])
 		));
@@ -48,9 +51,18 @@ class ExController extends \lithium\action\Controller {
 
 		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));		
 		
-		
-		return compact('user','addresses','refered','currencies','balances');
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+	
+
+		return compact('user','addresses','refered','currencies','balances','title','keywords','description');
 	}
+	
 	public function create(){
 		$user = Session::read('member');
 		$id = $user['_id'];
@@ -275,7 +287,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			'conditions'=>array('username'=>$user['username']),
 			'fields'=>array('currencyName','currency')
 		));
-		return compact('user','details','passphrase','currencies','relations','addresses');
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+		
+		return compact('user','details','passphrase','currencies','relations','addresses','title','keywords','description');
 	}
 
 	public function address($address = null){
@@ -299,8 +319,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				'username'=>$userFind['username']
 				));
 		}
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
 		
-		return compact('user','addresses','data');
+		return compact('user','addresses','data','title','keywords','description');
 	}
 
 	public function name($name = null){
@@ -324,8 +351,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				'username'=>$userFind['username']
 				));
 		}
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
 		
-		return compact('user','addresses','data');
+		return compact('user','addresses','data','title','keywords','description');
 	}
 	public function settings(){}
 	public function withdraw($address=null,$step=0){
@@ -354,7 +388,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				));
 		}
 		$next = $step;
-		return compact('user','addresses','data','final_balance','next');
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+		
+		return compact('user','addresses','data','final_balance','next','title','keywords','description');
 	}
 }
 ?>

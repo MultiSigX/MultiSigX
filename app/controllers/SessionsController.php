@@ -146,9 +146,11 @@ class SessionsController extends \lithium\action\Controller {
 				$noauth = true;
 			}
 			//Return noauth status
+
 		$page = Pages::find('first',array(
-			'conditions'=>array('pagename'=>'login')
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
+
 
 		$title = $page['title'];
 		$keywords = $page['keywords'];

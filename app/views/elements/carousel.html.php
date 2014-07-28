@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="item">
-          <img src="/img/carousel2.png" alt="What is MultiSigX">
+          <img src="/img/carousel2.jpg" alt="What is MultiSigX">
           <div class="container">
             <div class="carousel-caption">
               <h1>MultiSigX, the security of present & future</h1>
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="item">
-          <img src="/img/carousel3.png" alt="First slide">
+          <img src="/img/carousel3.jpg" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>One of ours users said:</h1>

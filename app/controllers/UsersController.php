@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\extensions\action\OAuth2;
+use app\models\Pages;
 use app\models\Users;
 use app\models\Details;
 use app\models\Transactions;
@@ -102,7 +103,16 @@ class UsersController extends \lithium\action\Controller {
 			
 			}
 		}	
-		return compact('saved','Users');		
+		
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+		return compact('title','keywords','description','saved','Users');	
+
 	}
 	
 		public function email(){
@@ -118,8 +128,15 @@ class UsersController extends \lithium\action\Controller {
 			$msg = "Your email is <strong>not</strong> verified. Please check your email to verify.";
 			
 		}
-		$title = "Email verification";
-		return compact('msg','title');
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+		
+		return compact('title','keywords','description','msg');	
 	}
 
 	public function confirm($email=null,$verify=null){
@@ -299,6 +316,15 @@ class UsersController extends \lithium\action\Controller {
 			$mailer->send($message);
 			}
 		}
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+		return compact('title','keywords','description');	
+
 	}
 	public function CreateQRCode($address=null){
 		$qrcode = new QRcode();			
@@ -307,6 +333,7 @@ class UsersController extends \lithium\action\Controller {
 	}
 	
 	public function CheckBalance($address=null,$name=null,$local=null){
+	if ($name==""){return $this->render(array('json' => array("CheckBalance"=>false)));}
 //	$address = '1Czx5pXiQ2Qk4hFqvXvnWgnuRUKza8pdNN';
 			switch ($name){
 				case "Bitcoin":
@@ -411,6 +438,7 @@ foreach($data as $tx){
 	}
 	
 	public function ChangeTheme($name=null,$uri=null){
+		if ($name==""){return $this->render(array('json' => array("ChangeTheme"=>false)));}	
 		$fromfilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/".$name."-bootstrap.css";
 		$tofilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/bootstrap.css";
 		copy($fromfilename, $tofilename);
