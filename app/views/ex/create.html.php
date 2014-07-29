@@ -36,7 +36,7 @@
 						<th>Relation</th>
 						<th>Bitcoin Address</th>						
 					</tr>
-					<tr class="success">
+					<tr>
 						<td><?=$this->form->field('email[1]', array('label'=>'','value'=>$user['email'],'readonly'=>'readonly','class'=>'form-control')); ?></td>
 						<td>
 						<select name="relation[1]" id="Relation1" class="form-control">
@@ -47,9 +47,9 @@
 						<?php }}?>
 						</select>
 						</td>
-						<td><?=$this->form->field('address[1]', array('label'=>'','class'=>'form-control','readonly'=>'readonly')); ?></td>
+						<td><?=$this->form->field('address[1]', array('label'=>'','class'=>'code form-control','readonly'=>'readonly')); ?></td>
 					</tr>
-					<tr class="warning">
+					<tr>
 						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
 						<td>
 						<select name="relation[2]" id="Relation2" class="form-control" onChange="ChangeRelationEmail('Email2',this.value,'<?=DEFAULT_ESCROW?>')">
@@ -58,9 +58,9 @@
 						<?php }?>
 						</select>
 						</td>
-						<td><?=$this->form->field('address[2]', array('label'=>'','class'=>'form-control','readonly'=>'readonly')); ?></td>
+						<td><?=$this->form->field('address[2]', array('label'=>'','class'=>'code form-control','readonly'=>'readonly')); ?></td>
 					</tr>					
-					<tr class="danger">
+					<tr>
 						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
 						<td>
 						<select name="relation[3]" id="Relation3" class="form-control"  onChange="ChangeRelationEmail('Email3',this.value,'<?=DEFAULT_ESCROW?>')">
@@ -70,7 +70,7 @@
 						</select>
 						</td>
 						
-						<td><?=$this->form->field('address[3]', array('label'=>'','class'=>'form-control','readonly'=>'readonly')); ?></td>
+						<td><?=$this->form->field('address[3]', array('label'=>'','class'=>'code form-control','readonly'=>'readonly')); ?></td>
 					</tr>					
 				</table>
 				<h4>Save MultiSigX for:</h4>
@@ -81,12 +81,14 @@
 				}
 				?>
 				<select name="currency" class="form-control" onBlur="checkform();" id="Currency">
-				<?php foreach($currencies as $currency){ 
-					if(in_array($currency['currency']['unit'],$curr)){
+				<?php 
+				foreach($currencies as $currency){ 
+/*					if(in_array($currency['currency']['unit'],$curr)){
 						$disable = "disabled";
 					}else{
 						$disable = "";
 					}
+*/					
 				?>
 					<option value="<?=$currency['currency']['unit']?>" <?=$disable?>><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
 				<?php }?>

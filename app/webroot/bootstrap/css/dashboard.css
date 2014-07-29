@@ -160,6 +160,16 @@ background-color:#F8DADA;
 border-left:1px solid gray;
 border-right:1px solid gray;
 }
+.reviews{
+background-color:#E1FCFD;
+}
+.review{
+background-color:#E1FCFD;
+}
+.code {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
 .withdraw{
 background-color:#F5DCF4;
 }

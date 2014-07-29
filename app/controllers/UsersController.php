@@ -445,5 +445,86 @@ foreach($data as $tx){
 		$uri = str_replace("_","/",$uri);
 		return $this->render(array('json' => array("uri"=>$uri)));	
 	}
+	public function Reviews(){
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+
+		$reviews = Details::find('all',array(
+			'fields'=>array('review','username','user_id'),
+			'conditions'=>array('review.title'=>array('$gt'=>'')),
+			'order'=>array('review.datetime.date'=>'DESC','review.datetime.time'=>'DESC'),
+			'limit'=>$limit
+		));
+		$mongodb = Connections::get('default')->connection;
+		$point = Details::connection()->connection->command(array(
+			'aggregate' => 'details',
+			'pipeline' => array( 
+				array( '$project' => array(
+					'_id'=>0,
+					'point' => '$review.points.point',
+					'user_id'=>'$user_id',
+					'username'=>'$username'							
+				)),
+				array('$group' => array( '_id' => array(
+						'user_id'=>'$user_id',
+						'username'=>'$username',
+						),
+					'point' => array('$sum' => '$point'),  
+				)),
+			)
+		));
+		$average = Details::connection()->connection->command(array(
+			'aggregate' => 'details',
+			'pipeline' => array( 
+				array( '$project' => array(
+					'_id'=>0,
+					'point' => '$review.points.point',
+					'user_id'=>'$user_id',
+					'username'=>'$username'							
+				)),
+				array('$group' => array( '_id' => array(
+						'user_id'=>'$user_id',
+						'username'=>'$username',
+						),
+					'point' => array('$avg' => '$point'),  
+				)),
+			)
+		));				
+		return compact('title','keywords','description','reviews','point','average');	
+
+	}
+	public function review(){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::index');}
+
+		if($this->request->data){
+			Details::find('all',array(
+				'conditions'=>array('user_id'=>$user['_id'])
+			))->save($this->request->data);
+			return $this->redirect('Users::reviews');
+		}
+
+		$reviews = Details::find('all',array(
+			'fields'=>array('review','username'),
+			'conditions'=>array('review.title'=>array('$gt'=>'')),
+			'order'=>array('review.datetime.date'=>'DESC'),
+			'limit'=>2
+		));
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
+		));
+
+		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+
+		return compact('title','keywords','description','reviews');	
+	}
+
 }
 ?>

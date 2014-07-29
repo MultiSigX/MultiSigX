@@ -13,10 +13,10 @@
           <div class="container">
             <div class="carousel-caption">
               <h1>MultiSigX Security</h1>
-              <p>Bitcoin / GreenCoin MultiSig feature for everyone. 
-								<br><code>PrivateKeys</code> or <code>Coins</code> are not on stored the server. 
-								<br>Uses MindWallet feature.
-								<br>Uses SSL/TOTP security.</p>
+              <p>Bitcoin / GreenCoin Multi Signatures for everyone
+								<br><code>PrivateKeys</code> or <code>Coins</code> are not on stored the server
+								<br>Uses MindWallet feature
+								<br>Uses SSL/TOTP security</p>
               <p><a class="btn btn-lg btn-primary" href="/signup" role="button">Sign up today</a></p>
             </div>
           </div>
@@ -25,8 +25,8 @@
           <img src="/img/carousel2.jpg" alt="What is MultiSigX">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Security of present &amp; future</h1>
-              <p><code>Since the start of Digital Currencies, security is the main concern of everyone. MultiSigX makes your coins more secure!</code></p>
+              <h1>Security of Present &amp; Future</h1>
+              <p><code>Security has been the main concern for everyone since the start of Cryptocurrencies. MultiSigX makes your coins extremely secure!</code></p>
               <p><a class="btn btn-lg btn-primary" href="/company/how" role="button">Learn more</a></p>
             </div>
           </div>
@@ -36,7 +36,7 @@
           <div class="container">
             <div class="carousel-caption">
               <h1>One of ours users said:</h1>
-              <p>With MultiSigX <code>2 of 3</code> and <code>3 of 3</code> security, I have all my coins store in MultiSig address starting with 3XN3eI... and I am able to sleep with my computer, USB, phone connected to internet.</p>
+              <p>With MultiSigX, I have used <code>2 of 3</code> and <code>3 of 3</code> security, I am able to sleep soundly with my computer, USB, phone connected to internet.</p>
               <p><a class="btn btn-lg btn-primary" href="/users/reviews" role="button">Rave Reviews</a></p>
             </div>
           </div>
