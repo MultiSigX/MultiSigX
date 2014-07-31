@@ -1,12 +1,3 @@
-<?php
-
-?>
-
-<script src='/js/jquery.MetaData.js' type="text/javascript" language="javascript"></script>
-<script src='/js/jquery.rating.js' type="text/javascript" language="javascript"></script>
-<script src='/js/jquery.rating.pack.js' type="text/javascript" language="javascript"></script>
-<link href='/js/jquery.rating.css' type="text/css" rel="stylesheet"/>
-
 <h4>Recent reviews:</h4>
 <p>Write / read a review to help us server you better. </p>
 <div class="btn-group">		
@@ -21,7 +12,7 @@ foreach($reviews as $review){?>
 	<h4><?=$review['review.title'];?></h4>	
 	<p><?=$review['review.text'];?></p>	
     <small><cite title="<?=$review['username'];?>"><?=$review['username'];?></cite> <?=$review['review.datetime.date'];?></small>
-
+<!--
 	<?=$this->form->create('',array('url'=>'/users/addvote/')); ?>
 	<?php for($j=1;$j<=5;$j++){ ?>
 		<?php foreach($average['result'] as $av){
@@ -39,7 +30,7 @@ foreach($reviews as $review){?>
 	<?php }?>
 		<input type="hidden" name="user_id" value="<?=$review['user_id']?>">
 	<?=$this->form->end(); ?>
-
+-->
     </blockquote>
 	<br>
 <?php	
@@ -47,11 +38,3 @@ $i++;
 }
 
 ?>
-<script>
-$('.star').rating({
-  callback: function(value, user_id){
-	var user_id = $(this.form.user_id).val();
-	$.getJSON('/users/addvote/'+user_id+'/'+value);
- }});
-
-</script>

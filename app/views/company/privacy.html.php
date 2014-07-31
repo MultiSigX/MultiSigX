@@ -65,7 +65,7 @@ Sensitive and private data exchange between the Site and its Users happens over 
 Piedmont, CA<br>
 USA<br>
 <abbr title="Phone">P:</abbr> +<br>
-<abbr title="Email">E:</abbr> <a href="mailto:nilam@multisigx.com?subject=MultiSigX.com query">nilam@multisigx.com</a><br>
+<abbr title="Email">E:</abbr> <a href="mailto:admin@multisigx.com?subject=MultiSigX.com query">admin@multisigx.com</a><br>
 </address>
 </blockquote>
 </p>

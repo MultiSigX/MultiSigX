@@ -8,6 +8,8 @@
  */
  use lithium\storage\Session;
  use app\models\Pages;
+ use app\models\Details; 
+ 
  if(!isset($title)){
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>'home')
@@ -16,7 +18,16 @@
 		$keywords = $page['keywords'];
 		$description = $page['description'];
  }
+$user = Session::read('default');
+$detail = Details::find("first",array(
+			"conditions"=>array("user_id"=>$user["_id"])
+			));
 
+if(count($detail)==0){
+	$theme = "default";
+}else{
+	if($detail["theme"]==""){$theme = "default";}else{$theme = $detail["theme"];}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +42,7 @@
 		<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
+    <link href="/bootstrap/css/<?=$theme?>-bootstrap.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/dashboard.css?v=<?=rand(1,100000000)?>" rel="stylesheet"> 

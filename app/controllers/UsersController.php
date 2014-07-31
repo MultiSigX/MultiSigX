@@ -439,9 +439,13 @@ foreach($data as $tx){
 	
 	public function ChangeTheme($name=null,$uri=null){
 		if ($name==""){return $this->render(array('json' => array("ChangeTheme"=>false)));}	
-		$fromfilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/".$name."-bootstrap.css";
-		$tofilename = LITHIUM_APP_PATH."/webroot/bootstrap/css/bootstrap.css";
-		copy($fromfilename, $tofilename);
+		$user = Session::read('default');
+		$data = array("theme"=>$name);
+		
+		$conditions = array("user_id"=>$user["_id"]);
+		
+		$details = Details::update($data,$conditions);
+		
 		$uri = str_replace("_","/",$uri);
 		return $this->render(array('json' => array("uri"=>$uri)));	
 	}
@@ -500,7 +504,7 @@ foreach($data as $tx){
 	}
 	public function review(){
 		$user = Session::read('default');
-		if ($user==""){	return $this->redirect('Users::index');}
+		if ($user==""){	return $this->redirect('Users::signup');}
 
 		if($this->request->data){
 			Details::find('all',array(
