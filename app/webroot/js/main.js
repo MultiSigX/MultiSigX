@@ -197,3 +197,10 @@ function validateEmail(email) {
     return re.test(email);
 } 
 
+function DeleteCoin(address){
+	$.getJSON('/Users/DeleteCoin/'+address,
+	function(ReturnValues){
+		window.location.assign (ReturnValues['uri']);
+	});	
+
+}

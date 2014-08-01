@@ -6,6 +6,7 @@ use app\models\Pages;
 use app\models\Users;
 use app\models\Details;
 use app\models\Transactions;
+use app\models\Addresses;
 use app\models\Parameters;
 use app\models\Settings;
 use app\models\File;
@@ -529,6 +530,15 @@ foreach($data as $tx){
 
 		return compact('title','keywords','description','reviews');	
 	}
-
+	public function DeleteCoin($address=null){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::signup');}
+		if($address!=""){
+			$conditions = array('msxRedeemScript.address'=>$address);
+			$address= Addresses::remove($conditions);
+		}
+		$uri = "/ex/dashboard";
+		return $this->render(array('json' => array("Deleted"=>"Yes","uri"=>$uri)));	
+	}
 }
 ?>
