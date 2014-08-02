@@ -5,16 +5,27 @@
 			Create new MultiSigX&#8482;</div>
 			<div class="panel-body">
 				<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXForm')); ?>
-				<p>Please provide three (3) email addresses. These email addresses will be used for new bitcoin addresses and their privatekeys will be emailed to them.</p>
-				<ul>
-					<li><strong>Email 1</strong>: Self or Business</li>
-					<li><strong>Email 2 & Email 3</strong>:
+				<div class="row">
+					<div class="col-md-12">
+					<p>Please provide three (3) email addresses. These email addresses will be used for new bitcoin addresses and their privatekeys will be emailed to them.</p>
+					</div>
+					<div class="col-md-6">
+						
 						<ul>
-						<li>Self: Print security</li>
-						<li>Other: Friend, Family or Business</li>						
+							<li><strong>Email 1</strong>: Self or Business</li>
+							<li><strong>Email 2 & Email 3</strong>:
+								<ul>
+								<li>Self: Print security</li>
+								<li>Other: Friend, Family or Business</li>						
+								</ul>
+							</li>					
 						</ul>
-					</li>					
-				</ul>
+					</div>
+					<div class="col-md-6">
+					<strong>Name your MultiSigX coin:</strong>
+					<?=$this->form->field('CoinName', array('label'=>'','class'=>'code form-control','onkeyup'=>'checkform()')); ?>
+					</div>
+				</div>
 				<?=$this->form->hidden('key', array('value'=>$details['key'])); ?>
 				<?=$this->form->hidden('secret', array('value'=>$details['secret'])); ?>							
 				<?=$this->form->hidden('username', array('value'=>$user['username'])); ?>

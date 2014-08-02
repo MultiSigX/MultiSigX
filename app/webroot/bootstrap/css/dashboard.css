@@ -89,7 +89,9 @@ blockquote {
 .featurette-divider {
   margin: 20px 0; /* Space out the Bootstrap <hr> more */
 }
-
+.fearurette-dashboard{
+	margin: 10px 0;
+}
 /* Thin out the marketing headings */
 .featurette-heading {
   font-weight: 300;

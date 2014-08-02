@@ -5,12 +5,13 @@ $function = new Functions();
 ini_set('memory_limit', '-1');
 
 $pdf =& $this->Pdf;
+
 $this->Pdf->setCustomLayout(array(
     'header'=>function() use($pdf){
         list($r, $g, $b) = array(200,200,200);
         $pdf->SetFillColor($r, $g, $b); 
         $pdf->SetTextColor(0 , 0, 0);
-        $pdf->Cell(0,15, 'MultiSigX.com ', 0,1,'C', 1);
+        $pdf->Cell(0,15, "MultiSigX.com", 0,1,'C', 1);
         $pdf->Ln();
     },
     'footer'=>function() use($pdf){
@@ -38,21 +39,21 @@ $pdf->AddPage();
 $pdf->SetTextColor(0, 0, 0);
 $pdf->SetXY(10,20,false);
 $html = '
-<h3>DocumentID: '.$printdata['name'].' <small>Date: '.gmdate('Y-M-d H:i:s',$printdata['DateTime']->sec).'</small></h3>
+<h3>Name: '.$printdata['CoinName'].', ID: '.$printdata['name'].' <small>Date: '.gmdate('Y-M-d H:i:s',$printdata['DateTime']->sec).'</small></h3>
 <p>This document is created online on <a href="https://MultiSigx.com" target="_blank">https://MultiSigx.com</a>. It contains private and confidential information for multi signature for <strong>'.$printdata['currencyName'].'</strong> <strong>'.$printdata['currency'].'</strong> created by <strong>'.$printdata['username'].', '.$printdata['createEmail'].'</strong></p>';
 $html = $html . '<p><strong>Users:</strong>
 <ul>
 	<li>'.$printdata['createEmail'].': '.$printdata['relation0'].'</li>
 	<li>'.$printdata['user1'].': '.$printdata['relation1'].'</li>
 	<li>'.$printdata['user2'].': '.$printdata['relation2'].'</li>	
-</ul>
+</ul></p>
 ';
 $html = $html . '<p><strong>'.$printdata['currency'].'</strong> address: <strong>'.$printdata['address'].'</strong> security for signin  <strong>'.$printdata['security'].'</strong> of 3 users.</p>';
 $html = $html . '
 <table cellpadding="5" cellspacing="5" width="100%" style="border:1px solid gray">
 	<tr>
 		<td colspan="2"><img src="'.LITHIUM_APP_PATH.'/webroot/qrcode/out/x-'.$printdata['username'].'-'.$printdata['address'].'-address.png'.'"  alt="'.$printdata['currency'].' address" title="'.$printdata['currency'].' address" border="1" width="300"><br>
-'.$printdata['currencyName'].' '.$printdata['currency'].':<br>'.$printdata["address"].'</td>	
+'.$printdata['currencyName'].' '.$printdata['currency'].': '.$printdata["address"].'</td>	
 	</tr>
 	<tr>
 		<td colspan="2">You can deposit and withdraw coins to the above address with your favorite client. You and also check the balance on <a href="https://MultiSigx.com" target="_blank">https://MultiSigx.com</a> by signin in with your username.</td>

@@ -3,6 +3,7 @@
 </div>
 <h4>Hi,</h4>
 <p>User <strong><?=$compact['data']['username']?>, <?=$compact['data']['createEmail']?></strong> has added you as one of the security for the coins.</p>
+<p>Coin Name: <?=$compact['data']['CoinName']?></p>
 <p>Users responsible:
 	<ul>
 		<li><?=$compact['data']['createEmail']?>: <?=$compact['data']['relation0']?></li>

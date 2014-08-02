@@ -165,6 +165,7 @@ function checkform() {
 			count++;
 		}
 	}
+	if($("#CoinName").val()==""){document.getElementById('SubmitButton').disabled = true;return false}
 	document.getElementById('SubmitButton').disabled = true;
 	if(count==2){
 		document.getElementById('SubmitButton').disabled = true;
