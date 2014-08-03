@@ -16,6 +16,7 @@
 							<th>Relation</th>							
 						</tr>
 						<?php 
+						$commarray = array();
 						foreach($data as $d){?>
 							<tr <?php if($d['username']==$user['username']){?> style="color:#AA0000;font-weight:bold"<?php }?>>
 								<td><?=$d['email']?></td>
@@ -34,7 +35,18 @@
 								</td>
 								<td><?=$d['relation']?></td>
 							</tr>
-						<?php }?>
+						<?php 
+						
+							foreach($relations as $relation){
+								if($d['relation']==$relation['type']){
+									array_push($commarray, $relation['commission']);
+								}
+							}
+						}
+//						print_r($commarray);
+//						print_r(max($commarray));
+						$commission = max($commarray);
+						?>
 					</table>
 					</div>
 					</div>
@@ -60,17 +72,42 @@
 				</div>
 				<div class="btn-group btn-group-justified">
 				  <div class="btn-group">
-					<button type="button" class="btn btn-success <?php if($next >= 1){?>disabled<?php }?>">Create Transaction</button>
+					<button type="button" class="btn btn-success <?php if($next != '' ){?>disabled<?php }?>" 
+					data-toggle="modal" data-target="#ModalCreate"
+					>Create </button>
 				  </div>
 				  <div class="btn-group">
-					<button type="button" class="btn btn-warning <?php if($next >= 2){?>disabled<?php }?>">Sign Transaction</button>
+					<button type="button" class="btn btn-warning <?php if($next != 1){?>disabled<?php }?>">Sign </button>
 				  </div>
 				  <div class="btn-group">
-					<button type="button" class="btn btn-danger" <?php if($next >= 3){?>disabled<?php }?>>Confirm Transaction</button>
+					<button type="button" class="btn btn-danger" <?php if($next != 2){?>disabled<?php }?>>Confirm </button>
 				  </div>
 				</div>
 			</div>
 			<div class="panel-footer"></div>
 		</div>
 	</div>
+</div>
+
+<div class="modal fade" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalCreate" aria-hidden="true">
+	<?=$this->form->create("",array('url'=>'/users/createTrans','class'=>'form-group has-error')); ?>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      	<h4 class="modal-title" id="CreateModalLabel">Create Transaction</h4>
+      </div>
+      <div class="modal-body" style="text-align:center ">
+				<?=$this->form->field('sendToAddress', array('type' => 'text', 'label'=>'To Address','placeholder'=>'1J2sVS4Yt5QRrvBK22ZySqgsMNe9ypysqo','class'=>'form-control' )); ?>
+				<?=$this->form->field('sendAmount', array('type' => 'text', 'label'=>'Amount','placeholder'=>'0.0000','class'=>'form-control','value'=>$final_balance )); ?>				
+				<?=$this->form->field('sendTxFee', array('type' => 'text', 'label'=>'Tx Fee to Miners','placeholder'=>'0.0001','class'=>'form-control','value'=>$currencies['txFee'] )); ?>
+				<?=$this->form->field('commission', array('type' => 'text', 'label'=>'Commission %','placeholder'=>'1','class'=>'form-control','value'=>$commission,'readonly'=>'readonly' )); ?>				
+      </div>
+      <div class="modal-footer">
+				<?=$this->form->submit('Create' ,array('class'=>'btn btn-primary')); ?>								
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+	<?=$this->form->end(); ?>	
 </div>

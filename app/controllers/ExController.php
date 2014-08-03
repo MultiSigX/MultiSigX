@@ -377,6 +377,10 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$final = $UC->CheckBalance($address,$addresses['currencyName'],true);
 		$final_balance = $final['final'];
 
+		$currencies = Currencies::find("first",array(
+			"conditions"=>array("currency.name"=>$addresses['currencyName'])
+		));
+		
 		$data = array();
 		foreach($addresses['addresses'] as $address){
 			$userFind = Users::find('first',array(
@@ -393,12 +397,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
-
+		$relations = Relations::find('all',array(
+			'order'=>array('type'=>-1)
+		));
+	
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','addresses','data','final_balance','next','title','keywords','description');
+		return compact('user','addresses','data','final_balance','next','title','keywords','description','currencies','relations');
 	}
 }
 ?>
