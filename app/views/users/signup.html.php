@@ -70,21 +70,21 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">MultiSigX&#8482; Features</div>
 			<div class="panel-body">
-			<h3>Individuals<sup>*</sup></h3>
+			<h3>Individuals<sup>*</sup> - FREE 0% commission</h3>
 			<ul>
 				<li>Self, Self, Print</li>
 				<li>Self, 2<sup>nd</sup> email, Print</li>				
 				<li>Self, Web Wallet, Print</li>				
 				<li>Self, 2<sup>nd</sup> email, Web Wallet</li>								
 			</ul>
-			<h3>Groups<sup>*</sup></h3>
+			<h3>Groups<sup>*</sup> - 1% commission on withdrawal</h3>
 			<ul>
 				<li>Self, Friend/Colleague, Print</li>
 				<li>Self, Friend/Colleague, Friend/Colleague</li>				
 				<li>Self, Friend/Colleague, Web Wallet</li>								
 				<li>Self, Family, Friend/Colleague</li>								
 			</ul>
-			<h3>Business<sup>*</sup></h3>
+			<h3>Business<sup>*</sup> -  2% commission on withdrawal</h3>
 			<ul>
 				<li>Self Business, Business, Web Wallet</li>
 				<li>Self Business, Partner, Web Wallet</li>				

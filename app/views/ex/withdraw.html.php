@@ -43,8 +43,6 @@
 								}
 							}
 						}
-//						print_r($commarray);
-//						print_r(max($commarray));
 						$commission = max($commarray);
 						?>
 					</table>
@@ -73,11 +71,11 @@
 				<div class="btn-group btn-group-justified">
 				  <div class="btn-group">
 					<button type="button" class="btn btn-success <?php if($next != '' ){?>disabled<?php }?>" 
-					data-toggle="modal" data-target="#ModalCreate"
-					>Create </button>
+					data-toggle="modal" data-target="#ModalCreate">Create </button>
 				  </div>
 				  <div class="btn-group">
-					<button type="button" class="btn btn-warning <?php if($next != 1){?>disabled<?php }?>">Sign </button>
+					<button type="button" class="btn btn-warning <?php if($next != 1){?>disabled<?php }?>" 
+					data-toggle="modal" data-target="#ModalSign">Sign </button>
 				  </div>
 				  <div class="btn-group">
 					<button type="button" class="btn btn-danger" <?php if($next != 2){?>disabled<?php }?>>Confirm </button>
@@ -88,9 +86,14 @@
 		</div>
 	</div>
 </div>
+<?php
+$Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100);
+?>
 
 <div class="modal fade" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalCreate" aria-hidden="true">
 	<?=$this->form->create("",array('url'=>'/users/createTrans','class'=>'form-group has-error')); ?>
+	<?=$this->form->hidden('address', array('value'=>$addresses['msxRedeemScript']['address'])); ?>
+	<?=$this->form->hidden('currency', array('value'=>$addresses['currency'])); ?>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -98,13 +101,38 @@
       	<h4 class="modal-title" id="CreateModalLabel">Create Transaction</h4>
       </div>
       <div class="modal-body" style="text-align:center ">
-				<?=$this->form->field('sendToAddress', array('type' => 'text', 'label'=>'To Address','placeholder'=>'1J2sVS4Yt5QRrvBK22ZySqgsMNe9ypysqo','class'=>'form-control' )); ?>
-				<?=$this->form->field('sendAmount', array('type' => 'text', 'label'=>'Amount','placeholder'=>'0.0000','class'=>'form-control','value'=>$final_balance )); ?>				
-				<?=$this->form->field('sendTxFee', array('type' => 'text', 'label'=>'Tx Fee to Miners','placeholder'=>'0.0001','class'=>'form-control','value'=>$currencies['txFee'] )); ?>
-				<?=$this->form->field('commission', array('type' => 'text', 'label'=>'Commission %','placeholder'=>'1','class'=>'form-control','value'=>$commission,'readonly'=>'readonly' )); ?>				
+				<?=$this->form->field('sendToAddress', array('type' => 'text', 'label'=>'To Address','placeholder'=>'1J2sVS4Yt5QRrvBK22ZySqgsMNe9ypysqo','class'=>'form-control','onBlur'=>'CreateTrans('.$final_balance.','.$commission.','.$currencies['txFee'].');' )); ?>
+				<?=$this->form->field('sendAmount', array('type' => 'text', 'label'=>'Amount','placeholder'=>'0.0000','class'=>'form-control','value'=>$Amount,'readonly'=>'readonly')); ?>				
+				<?=$this->form->field('sendTxFee', array('type' => 'text', 'label'=>'Tx Fee to Miners','placeholder'=>'0.0001','class'=>'form-control','value'=>$currencies['txFee'],'onBlur'=>'CreateTrans('.$final_balance.','.$commission.',this.value);' )); ?>
+				<?=$this->form->field('commission', array('type' => 'text', 'label'=>'Commission %','placeholder'=>'1','class'=>'form-control','value'=>$commission,'readonly'=>'readonly' )); ?>
+				<?=$this->form->field('commissionValue', array('type' => 'text', 'label'=>'Commission','placeholder'=>'1','class'=>'form-control','value'=>$final_balance*$commission/100,'readonly'=>'readonly' )); ?>				
       </div>
       <div class="modal-footer">
-				<?=$this->form->submit('Create' ,array('class'=>'btn btn-primary')); ?>								
+				<?=$this->form->submit('Create' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'CreateSubmit')); ?>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+	<?=$this->form->end(); ?>	
+</div>
+
+
+<div class="modal fade" id="ModalSign" tabindex="-1" role="dialog" aria-labelledby="myModalSign" aria-hidden="true">
+	<?=$this->form->create("",array('url'=>'/users/signTrans','class'=>'form-group has-error')); ?>
+	<?=$this->form->hidden('address', array('value'=>$addresses['msxRedeemScript']['address'])); ?>
+	<?=$this->form->hidden('currency', array('value'=>$addresses['currency'])); ?>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      	<h4 class="modal-title" id="SignModalLabel">Sign Transaction</h4>
+      </div>
+      <div class="modal-body" style="text-align:center ">
+				<?=$this->form->field('privKey', array('type' => 'text', 'label'=>'Private Key','placeholder'=>'5KWUbdCd6hScBzzToger9xUZmELnw16uK5d3j9TH85VJZddFmhw','class'=>'form-control','onBlur'=>'SignTrans();' )); ?>
+								
+      </div>
+      <div class="modal-footer">
+				<?=$this->form->submit('Sign' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'SignSubmit')); ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

@@ -9,6 +9,8 @@ use app\models\Transactions;
 use app\models\Addresses;
 use app\models\Parameters;
 use app\models\Settings;
+use app\models\Greenblocks;
+use app\models\Bitblocks;
 use app\models\File;
 use lithium\data\Connections;
 use app\extensions\action\Functions;
@@ -345,7 +347,6 @@ class UsersController extends \lithium\action\Controller {
 				case "GreenCoin":
 				$url = "http://greencoin.io/blockchain/address/".$address."/json";
 				$currency = "GreenCoin";
-				
 				break;
 			}
 			$opts = array(
@@ -540,5 +541,164 @@ foreach($data as $tx){
 		$uri = "/ex/dashboard";
 		return $this->render(array('json' => array("Deleted"=>"Yes","uri"=>$uri)));	
 	}
+	public function createTrans(){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::signup');}
+		
+		if($this->request->data){
+			$multiAddress = $this->request->data['address'];
+			
+			$addresses = Addresses::find('first',array(
+				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+			));
+		
+			
+			
+			$Amount = $this->request->data['sendAmount'];
+			$Address = $this->request->data['sendToAddress'];
+			$TxFee = $this->request->data['sendTxFee'];
+			$Commission = $this->request->data['commission'];
+			$CommissionValue = $this->request->data['commissionValue'];			
+			$currency = $this->request->data['currency'];
+			
+			switch ($currency){
+				case "BTC":
+				$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
+				$currency = "Bitcoin";
+				$transaction = Bitblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = BITCOIN_WALLET_ADDRESS;
+				break;
+
+				case "XGC":
+				$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+				$currency = "GreenCoin";
+				$transaction = Greenblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = GREENCOIN_WALLET_ADDRESS;
+				break;
+			}		
+// 				bitcoin.createrawtransaction ([{"txid":unspent[WhichTrans]["txid"], 
+//          "vout":unspent[WhichTrans]["vout"],
+//          "scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
+//          "redeemScript":unspent[WhichTrans]["redeemScript"]}],
+//					{SendAddress:HowMuch/100000000.00,ChangeAddress:Leftover/100000000.00})
+
+			foreach($transaction['txid'] as $txid){
+				foreach($txid['vout'] as $vout){
+					foreach($vout['scriptPubKey']['addresses'] as $address){
+						if($address == $multiAddress){
+							$x_txid = $txid['txid'];
+							$x_vout = $vout['n'];
+							$x_value = $vout['value'];
+							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
+//							print_r($x_txid);
+//							print_r($x_vout);
+//							print_r($x_value);
+//							print_r($x_scriptPubKey);
+						}
+					}
+				}
+			}
+			$createTrans = array(
+				'txid'=>$x_txid,
+				'vout'=>$x_vout,
+				'scriptPubKey'=>$x_scriptPubKey,
+				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
+			);
+			$createData = array(
+				$Address=>round($Amount,8),
+//				$multiAddress=>0.0000000,
+				$wallet_address=>round($CommissionValue,8)
+				);
+//			print_r(json_encode($createTrans));
+//			print_r(json_encode($createData));
+	
+				$createrawtransaction = $coin->createrawtransaction(array($createTrans),$createData);
+				if($createrawtransaction['error']){
+					
+				}else{
+					$data = array('createTrans'=>$createrawtransaction);
+					$conditions = array('msxRedeemScript.address'=>$multiAddress);
+					Addresses::update($data,$conditions);
+				}
+			
+		}	
+		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/1'));
+	}
+	
+	public function signTrans(){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::signup');}
+		
+		
+		if($this->request->data){
+			$multiAddress = $this->request->data['address'];
+			$currency = $this->request->data['currency'];
+			$privKey = $this->request->data['privKey'];
+	
+			$addresses = Addresses::find('first',array(
+				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+			));
+			
+			switch ($currency){
+				case "BTC":
+				$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
+				$currency = "Bitcoin";
+				$transaction = Bitblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = BITCOIN_WALLET_ADDRESS;
+				break;
+
+				case "XGC":
+				$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+				$currency = "GreenCoin";
+				$transaction = Greenblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = GREENCOIN_WALLET_ADDRESS;
+				break;
+			}		
+// bitcoin.signrawtransaction (rawtransact,
+//  [{"txid":unspent[WhichTrans]["txid"],
+//  "vout":unspent[WhichTrans]["vout"],"scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
+//  "redeemScript":unspent[WhichTrans]["redeemScript"]}],
+//  [multisigprivkeyone])			
+			foreach($transaction['txid'] as $txid){
+				foreach($txid['vout'] as $vout){
+					foreach($vout['scriptPubKey']['addresses'] as $address){
+						if($address == $multiAddress){
+							$x_txid = $txid['txid'];
+							$x_vout = $vout['n'];
+							$x_value = $vout['value'];
+							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
+//							print_r($x_txid);
+//							print_r($x_vout);
+//							print_r($x_value);
+//							print_r($x_scriptPubKey);
+						}
+					}
+				}
+			}
+			$signTrans = array(
+				'txid'=>$x_txid,
+				'vout'=>$x_vout,
+				'scriptPubKey'=>$x_scriptPubKey,
+				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
+			);
+			$rawtransact = $addresses['createTrans'];
+
+			$signrawtransaction = $coin->signrawtransaction($rawtransact,array($signTrans),array($privKey));
+			$data = array('signTrans.0'=>$signrawtransaction);
+			$conditions = array('msxRedeemScript.address'=>$multiAddress);
+			Addresses::update($data,$conditions);
+		}
+	
+		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/2'));
+	}
+	
 }
 ?>

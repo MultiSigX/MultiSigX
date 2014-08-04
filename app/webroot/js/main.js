@@ -193,6 +193,28 @@ function ChangeTheme(name,uri){
 	});	
 }
 
+function CreateTrans(amount, commission, txfee){
+//alert(amount);
+//alert(commission);
+//alert(txfee);
+// $Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100);
+$("#SendAmount").val((parseFloat(amount) - parseFloat(txfee) - (parseFloat(amount)*parseFloat(commission)/100)));
+	if($("#SendToAddress").val()!="" && $("#SendToAddress").val().length >= 34){
+		$("#CreateSubmit").removeAttr('disabled');			
+	}else{
+		document.getElementById('CreateSubmit').disabled = true;				
+	}
+}
+
+function SignTrans(){
+	if($("#PrivKey").val()!="" && $("#PrivKey").val().length >= 34){
+		$("#SignSubmit").removeAttr('disabled');			
+	}else{
+		document.getElementById('SignSubmit').disabled = true;				
+	}
+
+}
+
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);

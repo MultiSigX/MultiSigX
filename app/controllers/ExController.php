@@ -364,6 +364,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		return compact('user','addresses','data','title','keywords','description');
 	}
 	public function settings(){}
+
 	public function withdraw($address=null,$step=0){
 		$user = Session::read('member');
 		$id = $user['_id'];
@@ -372,6 +373,20 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$addresses = Addresses::find('first',array(
 			'conditions'=>array('msxRedeemScript.address'=>$address)
 		));
+
+		if($step<2){
+			if(($address['signTrans']!="")){
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/2'));
+				exit;
+			}
+		}
+		if($step<1){
+			if(($address['createTrans']!="")){
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
+				exit;
+			}
+		}
+
 		$UC = new UsersController();
 
 		$final = $UC->CheckBalance($address,$addresses['currencyName'],true);
@@ -407,5 +422,6 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		
 		return compact('user','addresses','data','final_balance','next','title','keywords','description','currencies','relations');
 	}
+	
 }
 ?>

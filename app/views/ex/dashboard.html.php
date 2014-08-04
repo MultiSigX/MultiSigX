@@ -50,7 +50,17 @@
 										&nbsp;&nbsp;
 										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon"></i></a>
 										&nbsp;&nbsp;
-										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-mail-forward icon"></i></a>
+										<?php 
+										$movenext = "";
+										if(($address['createTrans']!="")){
+											$movenext = 1;
+										}
+										if(($address['signTrans']!="")){
+											$movenext = 2;
+										}
+										?>
+										
+										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>/<?=$movenext?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-mail-forward icon"></i></a>
 										<strong>
 										<?php 
 											foreach($balances as $balance){?>
