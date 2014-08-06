@@ -551,8 +551,6 @@ foreach($data as $tx){
 			$addresses = Addresses::find('first',array(
 				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
 			));
-		
-			
 			
 			$Amount = $this->request->data['sendAmount'];
 			$Address = $this->request->data['sendToAddress'];
@@ -564,7 +562,7 @@ foreach($data as $tx){
 			switch ($currency){
 				case "BTC":
 				$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
-				$currency = "Bitcoin";
+				$currencyName = "Bitcoin";
 				$transaction = Bitblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
@@ -573,7 +571,7 @@ foreach($data as $tx){
 
 				case "XGC":
 				$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
-				$currency = "GreenCoin";
+				$currencyName = "GreenCoin";
 				$transaction = Greenblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
@@ -594,10 +592,6 @@ foreach($data as $tx){
 							$x_vout = $vout['n'];
 							$x_value = $vout['value'];
 							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
-//							print_r($x_txid);
-//							print_r($x_vout);
-//							print_r($x_value);
-//							print_r($x_scriptPubKey);
 						}
 					}
 				}
@@ -610,30 +604,78 @@ foreach($data as $tx){
 			);
 			$createData = array(
 				$Address=>round($Amount,8),
-//				$multiAddress=>0.0000000,
 				$wallet_address=>round($CommissionValue,8)
-				);
-//			print_r(json_encode($createTrans));
-//			print_r(json_encode($createData));
+			);
 	
 				$createrawtransaction = $coin->createrawtransaction(array($createTrans),$createData);
-				if($createrawtransaction['error']){
-					
+				if(is_array($createrawtransaction)){
+					return compact('createrawtransaction');	
 				}else{
-					$data = array('createTrans'=>$createrawtransaction);
+					$data = array(
+						'createTrans'=>$createrawtransaction,
+						'createTran.DateTime'=>new \MongoDate(),
+						'createTran.IP'=>$_SERVER['REMOTE_ADDR'],
+						'createTran.username'=>$user['username'],
+						'createTran.user_id'=>$user['_id'],
+						'createTran.withdraw_address' => $Address,
+						'createTran.withdraw_amount' => round($Amount,8),
+						'createTran.commission_amount' => round($CommissionValue,8),
+						'createTran.tx_fee' => $this->request->data['sendTxFee'],
+					);
 					$conditions = array('msxRedeemScript.address'=>$multiAddress);
 					Addresses::update($data,$conditions);
-				}
-			
-		}	
+					
+					$addresses = Addresses::find('first',array(
+						'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+					));
+					$email = array();
+					$relation = array();
+					foreach($addresses['addresses'] as $address){
+						array_push($email,$address['email']);
+						array_push($relation,$address['relation']);
+					}
+					$data = array(
+						'who'=>$user,
+						'currency'=>$currency,
+						'currencyName'=>$currencyName,
+						'multiAddress'=>$multiAddress,
+						'security'=>$addresses['security'],
+						'name'=>$addresses['name'],
+						'CoinName'=>$addresses['CoinName'],
+						'DateTime'=>$addresses['DateTime'],
+						'emails'=>$email,
+						'txid'=>$x_txid,
+						'relation'=>$relation,
+						'withdraw_address' => $Address,
+						'withdraw_amount' => round($Amount,8),
+						'commission_amount' => round($CommissionValue,8),
+						'tx_fee' => round($this->request->data['sendTxFee'],8),
+						'createTrans' => $createTrans,
+						'createrawtransaction' => $createrawtransaction,
+					);
+					
+					foreach($data['emails'] as $email){
+					// sending email to the users 
+					/////////////////////////////////Email//////////////////////////////////////////////////
+						$function = new Functions();
+						$compact = array('data'=>$data);
+						// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+						$from = array(NOREPLY => "noreply@".COMPANY_URL);
+						$email = $email;
+						$attach = null;
+						$function->sendEmailTo($email,$compact,'users','createTrans',"MultiSigX,com create transaction",$from,'','','',$attach);
+					/////////////////////////////////Email//////////////////////////////////////////////////				
+					}
+				
+				} // if $createrawtransaction
+			}	
+//			print_r($data);
 		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/1'));
 	}
 	
 	public function signTrans(){
 		$user = Session::read('default');
 		if ($user==""){	return $this->redirect('Users::signup');}
-		
-		
 		if($this->request->data){
 			$multiAddress = $this->request->data['address'];
 			$currency = $this->request->data['currency'];
@@ -646,7 +688,7 @@ foreach($data as $tx){
 			switch ($currency){
 				case "BTC":
 				$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
-				$currency = "Bitcoin";
+				$currencyName = "Bitcoin";
 				$transaction = Bitblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
@@ -655,7 +697,7 @@ foreach($data as $tx){
 
 				case "XGC":
 				$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
-				$currency = "GreenCoin";
+				$currencyName = "GreenCoin";
 				$transaction = Greenblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
@@ -675,10 +717,6 @@ foreach($data as $tx){
 							$x_vout = $vout['n'];
 							$x_value = $vout['value'];
 							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
-//							print_r($x_txid);
-//							print_r($x_vout);
-//							print_r($x_value);
-//							print_r($x_scriptPubKey);
 						}
 					}
 				}
@@ -692,12 +730,232 @@ foreach($data as $tx){
 			$rawtransact = $addresses['createTrans'];
 
 			$signrawtransaction = $coin->signrawtransaction($rawtransact,array($signTrans),array($privKey));
-			$data = array('signTrans.0'=>$signrawtransaction);
-			$conditions = array('msxRedeemScript.address'=>$multiAddress);
-			Addresses::update($data,$conditions);
+			if(is_array($signrawtransaction['error'])){
+				return compact('signrawtransaction');	
+			}else{
+				$data = array(
+					'signTrans.0'=>$signrawtransaction,
+					'signTran.0.DateTime'=>new \MongoDate(),
+					'signTran.0.IP'=>$_SERVER['REMOTE_ADDR'],
+					'signTran.0.username'=>$user['username'],
+					'signTran.0.user_id'=>$user['_id'],					
+					'signTran.0.withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'signTran.0.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'signTran.0.commission_amount' => $addresses['createTran']['commission_amount'],
+					'signTran.0.tx_fee' => $addresses['createTran']['tx_fee'],
+				);
+				$conditions = array('msxRedeemScript.address'=>$multiAddress);
+				Addresses::update($data,$conditions);
+
+				$addresses = Addresses::find('first',array(
+					'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+				));
+				$email = array();
+				$relation = array();
+				foreach($addresses['addresses'] as $address){
+					array_push($email,$address['email']);
+					array_push($relation,$address['relation']);
+				}
+				$data = array(
+					'who'=>$user,
+					'currency'=>$currency,
+					'currencyName'=>$currencyName,
+					'multiAddress'=>$multiAddress,
+					'security'=>$addresses['security'],
+					'name'=>$addresses['name'],
+					'CoinName'=>$addresses['CoinName'],
+					'DateTime'=>$addresses['DateTime'],
+					'emails'=>$email,
+					'txid'=>$x_txid,
+					'relation'=>$relation,
+					'withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'commission_amount' => $addresses['createTran']['commission_amount'],
+					'tx_fee' => $addresses['createTran']['tx_fee'],
+					'createTrans' => $createTrans,
+					'signrawtransaction' => $signrawtransaction,
+				);				
+				foreach($data['emails'] as $email){
+				// sending email to the users 
+				/////////////////////////////////Email//////////////////////////////////////////////////
+					$function = new Functions();
+					$compact = array('data'=>$data);
+					// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+					$from = array(NOREPLY => "noreply@".COMPANY_URL);
+					$email = $email;
+					$attach = null;
+					$function->sendEmailTo($email,$compact,'users','signTrans',"MultiSigX,com sign transaction",$from,'','','',$attach);
+				/////////////////////////////////Email//////////////////////////////////////////////////				
+				}
+			}
 		}
-	
 		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/2'));
+	}
+
+	public function confirmTrans(){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::signup');}
+		if($this->request->data){
+			$multiAddress = $this->request->data['address'];
+			$currency = $this->request->data['currency'];
+			$privKey = $this->request->data['confirmPrivKey'];
+	
+			$addresses = Addresses::find('first',array(
+				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+			));
+			
+			$noOfTrans = count($addresses['signTran']);
+			
+			
+			
+			switch ($currency){
+				case "BTC":
+				$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
+				$currencyName = "Bitcoin";
+				$transaction = Bitblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = BITCOIN_WALLET_ADDRESS;
+				break;
+
+				case "XGC":
+				$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+				$currencyName = "GreenCoin";
+				$transaction = Greenblocks::find("first",array(
+					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
+				));
+				$wallet_address = GREENCOIN_WALLET_ADDRESS;
+				break;
+			}		
+// bitcoin.signrawtransaction (signedone["hex"],
+//  [{"txid":unspent[WhichTrans]["txid"],
+//  "vout":unspent[WhichTrans]["vout"],"scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
+//  "redeemScript":unspent[WhichTrans]["redeemScript"]}],
+//  [multisigprivkeytwo])		
+			foreach($transaction['txid'] as $txid){
+				foreach($txid['vout'] as $vout){
+					foreach($vout['scriptPubKey']['addresses'] as $address){
+						if($address == $multiAddress){
+							$x_txid = $txid['txid'];
+							$x_vout = $vout['n'];
+							$x_value = $vout['value'];
+							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
+						}
+					}
+				}
+			}
+			$signTrans = array(
+				'txid'=>$x_txid,
+				'vout'=>$x_vout,
+				'scriptPubKey'=>$x_scriptPubKey,
+				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
+			);
+			$rawtransact = $addresses['signTrans'][$noOfTrans-1]['hex'];
+			$signrawtransaction = $coin->signrawtransaction($rawtransact,array($signTrans),array($privKey));
+			if(array_key_exists('error' ,$signrawtransaction)){
+				return compact('signrawtransaction');	
+			}else{
+				$data = array(
+					'signTrans.'.($noOfTrans)=>$signrawtransaction,
+					'signTran.'.($noOfTrans).'.DateTime'=>new \MongoDate(),
+					'signTran.'.($noOfTrans).'.IP'=>$_SERVER['REMOTE_ADDR'],
+					'signTran.'.($noOfTrans).'.username'=>$user['username'],
+					'signTran.'.($noOfTrans).'.user_id'=>$user['_id'],					
+					'signTran.'.($noOfTrans).'.withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'signTran.'.($noOfTrans).'.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'signTran.'.($noOfTrans).'.commission_amount' => $addresses['createTran']['commission_amount'],
+					'signTran.'.($noOfTrans).'.tx_fee' => $addresses['createTran']['tx_fee'],
+				);
+				$conditions = array('msxRedeemScript.address'=>$multiAddress);
+				Addresses::update($data,$conditions);
+
+				$addresses = Addresses::find('first',array(
+					'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
+				));
+				$email = array();
+				$relation = array();
+				foreach($addresses['addresses'] as $address){
+					array_push($email,$address['email']);
+					array_push($relation,$address['relation']);
+				}
+				$data = array(
+					'who'=>$user,
+					'currency'=>$currency,
+					'currencyName'=>$currencyName,
+					'multiAddress'=>$multiAddress,
+					'security'=>$addresses['security'],
+					'name'=>$addresses['name'],
+					'CoinName'=>$addresses['CoinName'],
+					'DateTime'=>$addresses['DateTime'],
+					'emails'=>$email,
+					'txid'=>$x_txid,
+					'relation'=>$relation,
+					'withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'commission_amount' => $addresses['createTran']['commission_amount'],
+					'tx_fee' => $addresses['createTran']['tx_fee'],
+					'createTrans' => $createTrans,
+					'signrawtransaction' => $signrawtransaction,
+				);				
+				foreach($data['emails'] as $email){
+				// sending email to the users 
+				/////////////////////////////////Email//////////////////////////////////////////////////
+					$function = new Functions();
+					$compact = array('data'=>$data);
+					// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+					$from = array(NOREPLY => "noreply@".COMPANY_URL);
+					$email = $email;
+					$attach = null;
+					$function->sendEmailTo($email,$compact,'users','signTrans',"MultiSigX,com sign transaction",$from,'','','',$attach);
+				/////////////////////////////////Email//////////////////////////////////////////////////				
+				}
+			}
+			if($addresses['security']==2){
+				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
+				if(array_key_exists('error' ,$sendrawtransaction)){
+					print_r("2");exit;				
+					return compact('sendrawtransaction');	
+				}else{
+				$data = array(
+					'sendTrans'=>$sendrawtransaction,
+					'sendTran.DateTime'=>new \MongoDate(),
+					'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
+					'sendTran.username'=>$user['username'],
+					'sendTran.user_id'=>$user['_id'],					
+					'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
+					'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
+				);
+				$conditions = array('msxRedeemScript.address'=>$multiAddress);
+				Addresses::update($data,$conditions);
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+				}
+			}
+			if($addresses['security']==3 && noOfTrans == 3){
+				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
+				if(array_key_exists('error' ,$sendrawtransaction)){
+					print_r("3");exit;
+					return compact('sendrawtransaction');	
+				}else{
+				$data = array(
+					'sendTrans'=>$sendrawtransaction,
+					'sendTran.DateTime'=>new \MongoDate(),
+					'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
+					'sendTran.username'=>$user['username'],
+					'sendTran.user_id'=>$user['_id'],					
+					'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
+					'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
+					'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
+				);
+				$conditions = array('msxRedeemScript.address'=>$multiAddress);
+				Addresses::update($data,$conditions);
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+				}
+			}
+		}
+		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/2'));		
 	}
 	
 }

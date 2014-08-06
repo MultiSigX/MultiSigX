@@ -205,6 +205,9 @@ for($i=0;$i<=2;$i++){
 			'relation0'=>$addresses['addresses'][0]['relation'],						
 			'relation1'=>$addresses['addresses'][1]['relation'],						
 			'relation2'=>$addresses['addresses'][2]['relation'],			
+			'address0'=>$addresses['addresses'][0]['address'],						
+			'address1'=>$addresses['addresses'][1]['address'],						
+			'address2'=>$addresses['addresses'][2]['address'],			
 			
 			'name'=>$addresses['name'],			
 			'DateTime'=>$addresses['DateTime'],			
@@ -366,22 +369,36 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 	public function settings(){}
 
 	public function withdraw($address=null,$step=0){
+
 		$user = Session::read('member');
 		$id = $user['_id'];
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
-	
+		if($address==null){$this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));}				
 		$addresses = Addresses::find('first',array(
 			'conditions'=>array('msxRedeemScript.address'=>$address)
 		));
 
+
+		if($step==1){
+			if(($addresses['createTrans']=="")){
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/'));
+				exit;
+			}
+		}
+		if($step==2){
+			if(($addresses['signTrans']=="")){
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
+				exit;
+			}
+		}
 		if($step<2){
-			if(($address['signTrans']!="")){
+			if(($addresses['signTrans']!="")){
 				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/2'));
 				exit;
 			}
 		}
 		if($step<1){
-			if(($address['createTrans']!="")){
+			if(($addresses['createTrans']!="")){
 				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
 				exit;
 			}

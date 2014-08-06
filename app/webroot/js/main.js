@@ -214,6 +214,14 @@ function SignTrans(){
 	}
 
 }
+function ConfirmTrans(){
+	if($("#ConfirmPrivKey").val()!="" && $("#ConfirmPrivKey").val().length >= 34){
+		$("#ConfirmSubmit").removeAttr('disabled');			
+	}else{
+		document.getElementById('ConfirmSubmit').disabled = true;				
+	}
+
+}
 
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
