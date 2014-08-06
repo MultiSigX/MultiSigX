@@ -913,7 +913,7 @@ foreach($data as $tx){
 			if($addresses['security']==2){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
 				if(array_key_exists('error' ,$sendrawtransaction)){
-					print_r("2");exit;				
+					
 					return compact('sendrawtransaction');	
 				}else{
 				$data = array(
@@ -932,10 +932,9 @@ foreach($data as $tx){
 				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
 				}
 			}
-			if($addresses['security']==3 && noOfTrans == 3){
+			if($addresses['security']==3 && $noOfTrans == 3){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
 				if(array_key_exists('error' ,$sendrawtransaction)){
-					print_r("3");exit;
 					return compact('sendrawtransaction');	
 				}else{
 				$data = array(
