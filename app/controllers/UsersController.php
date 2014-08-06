@@ -910,7 +910,7 @@ foreach($data as $tx){
 				/////////////////////////////////Email//////////////////////////////////////////////////				
 				}
 			}
-			if($addresses['security']==2){
+			if($addresses['security']==2 && $noOfTrans == 2){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
 				if(array_key_exists('error' ,$sendrawtransaction)){
 					
