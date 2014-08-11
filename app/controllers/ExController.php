@@ -373,7 +373,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$user = Session::read('member');
 		$id = $user['_id'];
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
-		if($address==null){$this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));}				
+		if($address==''){$this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));}				
 		$addresses = Addresses::find('first',array(
 			'conditions'=>array('msxRedeemScript.address'=>$address)
 		));
@@ -390,6 +390,11 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
 				exit;
 			}
+			if(($addresses['sendTrans']!="")){
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/3'));
+				exit;
+			}
+			
 		}
 		if($step<2){
 			if(($addresses['signTrans']!="")){

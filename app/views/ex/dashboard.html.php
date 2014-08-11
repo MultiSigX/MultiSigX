@@ -58,6 +58,9 @@
 										if(($address['signTrans']!="")){
 											$movenext = 2;
 										}
+										if(($address['sendTrans']!="")){
+											$movenext = 3;
+										}
 										?>
 										
 										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>/<?=$movenext?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-mail-forward icon"></i></a>

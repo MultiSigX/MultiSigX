@@ -62,8 +62,10 @@ Sensitive and private data exchange between the Site and its Users happens over 
 <blockquote>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us at:
 <address><strong>MultiSigX Inc</strong><br>
 <a href="https://multisigx.com">https://MultiSigX.com/</a><br>
-Piedmont, CA<br>
-USA<br>
+Le Sanalele Complex, Ground Floor,<br>
+Vaea Street, Saleufi,<br>
+P O Box 1868, Apia,<br>
+Samoa<br>
 <abbr title="Phone">P:</abbr> +<br>
 <abbr title="Email">E:</abbr> <a href="mailto:admin@multisigx.com?subject=MultiSigX.com query">admin@multisigx.com</a><br>
 </address>

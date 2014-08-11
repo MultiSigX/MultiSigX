@@ -4,7 +4,7 @@
 			<div class="panel-heading">Terms of Service</div>
 			<div class="panel-body">
 <strong>Please read these Terms carefully and do not use the Site or the Platform unless you accept them.</strong>
-<p><a href="https://MultiSigX.com/">https://MultiSigX.com/</a> is a site operated by of MultiSigX Inc. ("<strong>MultiSigX</strong>"), a company incorporated under the laws of CA, United States of America. Registered address: Piedmont CA, USA. company number: ______________.</p>
+<p><a href="https://MultiSigX.com/">https://MultiSigX.com/</a> is a site operated by of MultiSigX Inc. ("<strong>MultiSigX</strong>"), a company incorporated under the laws of Samoa.</p>
 <p>These Terms of Service ("<strong>Terms</strong>") set the conditions by which a customer, as a registered user ("<strong>Customer(s)</strong>") can use our services for the purposes of becoming users ("<strong>Users</strong>"), transferring the digital value asset known as  &#039;Crypto-currency(s)&#039;, including, but not limited to &#039;Bitcoin(s)&#039; and &#039;GreenCoin(s)&#039;.</p>
 <p>The services allow Customers to transfer funds into (&#039;Secure&#039;) or from (&#039;Withdrawal&#039;) their MultiSigX account and to interact with other businesses or individuals who accept Crypto-currency.</p>
 
@@ -139,13 +139,16 @@ Furthermore, you understand and agree that:<li>any content downloaded or otherwi
 <li><strong>CONTACT US</strong>
 
 <blockquote>If a customer  has any questions relating to these Terms of Service contact us at:
-<address><strong>MultiSigX Inc</strong><br>
+<address>
 <a href="https://multisigx.com">https://MultiSigX.com/</a><br>
-Piedmont, CA<br>
-USA<br>
+Le Sanalele Complex, Ground Floor,<br>
+Vaea Street, Saleufi,<br>
+P O Box 1868, Apia,<br>
+Samoa<br>
 <abbr title="Phone">P:</abbr> +<br>
-<abbr title="Email">E:</abbr> <a href="mailto:nilam@multisigx.com?subject=MultiSigX.com query">nilam@multisigx.com</a><br>
+<abbr title="Email">E:</abbr> <a href="mailto:admin@multisigx.com?subject=MultiSigX.com query">admin@multisigx.com</a><br>
 </address>
+
 </blockquote>
 </ol>
 			</div>
