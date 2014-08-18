@@ -9,7 +9,7 @@
 					<table class="table table-striped table-condensed table-bordered">
 						<tr>
 							<th>Name</th>
-							<td><a href="/ex/name/<?=$addresses['name']?>"><?=$addresses['name']?></a></td>
+							<td><a href="/ex/name/<?=$addresses['name']?>"><?=$addresses['name']?></a>: <?=$addresses['CoinName']?></td>
 						</tr>
 						<tr>
 							<th>MultiSigX</th>

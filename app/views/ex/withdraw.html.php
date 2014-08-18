@@ -70,7 +70,10 @@
 				</div>
 				<div class="btn-group btn-group-justified">
 				  <div class="btn-group">
-					<button type="button" class="btn btn-success <?php if($next != '' ){?>disabled<?php }?>" 
+					<button type="button" class="btn btn-success 
+					<?php if($next != '' ){ ?>
+						disabled
+					<?php }?>" 
 					data-toggle="modal" data-target="#ModalCreate">Create </button>
 				  </div>
 				  <div class="btn-group">

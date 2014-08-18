@@ -39,7 +39,7 @@
 							<hr class="fearurette-dashboard">
 								<div class="row">
 									<div class="col-md-4 col-xs-6"><?=$address['currencyName']?> <?=$address['currency']?></div>
-									<div class="col-md-4 col-xs-6"><?=$address['CoinName']?></div>									
+									<div class="col-md-4 col-xs-6"><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></div>									
 									<div class="col-md-4 col-xs-6">
 										<small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small>
 									</div>														

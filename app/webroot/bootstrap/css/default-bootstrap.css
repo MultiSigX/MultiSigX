@@ -895,11 +895,14 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.42857143;
-  color: #333;
-  background-color: #fff;
+  font-family:"Open Sans",
+	Arial,
+	Helvetica,
+	Sans-Serif;
+	font-size:13px;
+	line-height:1.42857143;
+	color:#333;
+	background-color:#fff
 }
 input,
 button,
@@ -963,7 +966,7 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #ccc;
 }
 .sr-only {
   position: absolute;

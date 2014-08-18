@@ -39,24 +39,13 @@ use app\extensions\action\Functions;
 							<li><a href="#" onClick="ChangeTheme('default','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart"></i> Default</a></li>										
 						</ul>					
 					</li>								
-
-								<li>
-<!--								<a href='#' class='dropdown-toggle' data-toggle='dropdown' >  -->
-									<a href="#"><?=$user['username']?> </a>
-<!-- 									<i class='glyphicon glyphicon-chevron-down'></i>&nbsp;&nbsp;&nbsp;
-								</a>
-							<ul class="dropdown-menu">
-								<li><a href="/users/settings"><i class="icon-gears"></i> Settings</a></li>			
-								<li><a href="/ex/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
-								<li class="divider"></li>				
-								<li><a href="/logout"><i class="icon-power-off"></i> Logout</a></li>
-							</ul>
--->							
+						<li>
+							<a href="#"><?=$user['username']?> </a>
  						</li>
 						<li><a href="/logout" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Logout "><i class="icon-power-off icon-large"></i></a></li>
 					<?php }else{?>					
-						<li><a href="/login">Signin</a></li>
-						<li><a href="/signup">Signup</a></li>
+						<li><a href="/signin">Sign In</a></li>
+						<li><a href="/signup">Sign Up</a></li>
 					<?php }?>				
 					
 					</ul>

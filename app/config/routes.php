@@ -45,7 +45,7 @@ if ($locales = Environment::get('locales')) {
 $user = Auth::check('member'); 
 // these routes are not behind a login
 $user = Auth::check('member'); 
-Router::connect('/login', 'Sessions::add');
+Router::connect('/signin', 'Sessions::add');
 Router::connect('/logout', 'Sessions::delete');
 Router::connect('/signup', 'Users::signup');
 

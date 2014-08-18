@@ -352,7 +352,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			array_push($data, array(
 				'email'=>$address['email'],
 				'relation'=>$address['relation'],
-				'address'=>$address['address'],				
+				'address'=>$address['address'],
 				'username'=>$userFind['username']
 				));
 		}
