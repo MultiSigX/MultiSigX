@@ -13,11 +13,11 @@
 
       <div class="row featurette">
         <div class="col-md-5">
-          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+          <img class="featurette-image img-responsive" src="/img/feature2.jpg" alt="Generic placeholder image">
         </div>
         <div class="col-md-7">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead"></p>
+          <h2 class="featurette-heading">Security is the key! <span class="text-muted">You have the keys</span></h2>
+          <p class="lead">MultiSigX can also be used for redundancy to protect against loss - with a 2-of-3 address, not only does theft require obtaining 2 different keys, but you can still use the coins if you forget any single key. This allows for more flexible options than just backups.</p>
         </div>
       </div>
 
@@ -25,11 +25,11 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">For every coin and for every user of <span class="text-muted">Digital Currencies.</span></h2>
+          <p class="lead">MultiSigX have lots of uses, wallet sharing, increased security and escrow to say the first that come to mind. Increased security: 2FA purposes or even help provide services like double spend prevention and instant confirmation.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+          <img class="featurette-image img-responsive" src="/img/feature3.jpg" alt="Generic placeholder image">
         </div>
       </div>
       <hr class="featurette-divider">
