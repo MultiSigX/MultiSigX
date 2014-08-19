@@ -5,7 +5,6 @@ use app\extensions\action\OAuth2;
 use app\models\Pages;
 use app\models\Users;
 use app\models\Details;
-use app\models\Transactions;
 use app\models\Addresses;
 use app\models\Parameters;
 use app\models\Settings;
