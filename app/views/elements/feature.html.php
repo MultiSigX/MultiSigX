@@ -26,7 +26,7 @@
       <div class="row featurette">
         <div class="col-md-7">
           <h2 class="featurette-heading">For every coin and for every user of <span class="text-muted">Digital Currencies.</span></h2>
-          <p class="lead">MultiSigX have lots of uses, wallet sharing, increased security and escrow to say the first that come to mind. Increased security: 2FA purposes or even help provide services like double spend prevention and instant confirmation.</p>
+          <p class="lead">MultiSigX have lots of uses, wallet sharing, increased security and escrow to say the first that come to mind. Increased security: 2FA purposes or even help provide services like double spend prevention and instant confirmation. MultiSig is used for Bitcoin BTC, GreenCoin, XGC</p>
         </div>
         <div class="col-md-5">
           <img class="featurette-image img-responsive" src="/img/feature3.jpg" alt="Generic placeholder image">
