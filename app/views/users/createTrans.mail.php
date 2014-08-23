@@ -1,5 +1,5 @@
 <div style="background-color:#eeeeee;height:50px;padding-left:20px;padding-top:10px">
-	<img src="https://<?=COMPANY_URL?>/img/<?=COMPANY_URL?>.gif" alt="<?=COMPANY_URL?>">
+	<img src="https://<?=COMPANY_URL?>/img/<?=COMPANY_URL?>.png" alt="<?=COMPANY_URL?>">
 </div>
 <h4>Hi,</h4>
 <p><?=$compact['data']['who']['firstname']?> <?=$compact['data']['who']['lastname']?>, with username: <?=$compact['data']['who']['username']?> and email: <?=$compact['data']['who']['email']?> has created a withdrawal of <?=$compact['data']['withdraw_amount']?> <?=$compact['data']['currency']?> <?=$compact['data']['currencyName']?>.</p>

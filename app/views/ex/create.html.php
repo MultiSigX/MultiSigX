@@ -43,36 +43,43 @@
 				<?=$this->form->hidden('address[1]', array('value'=>'')); ?>
 				<?=$this->form->hidden('address[2]', array('value'=>'')); ?>
 				<?=$this->form->hidden('address[3]', array('value'=>'')); ?>				
-				<h4>Save MultiSigX for:</h4>
-				<?php 
-				$curr = array();
-				foreach($addresses as $address){
-					array_push($curr, $address['currency']);
-				}
-				?>
-				<select name="currency" class="form-control" onBlur="checkform();" id="Currency">
-				<?php 
-				foreach($currencies as $currency){ 
-/*					if(in_array($currency['currency']['unit'],$curr)){
-						$disable = "disabled";
-					}else{
-						$disable = "";
-					}
-*/					
-				?>
-					<option value="<?=$currency['currency']['unit']?>" <?=$disable?>><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
-				<?php }?>
-				</select>
-				<h4>Create MultiSigX with:</h4>
-				<select name="security" class="form-control" onBlur="checkform();">
-					<option value="2">2 of 3</option>
-					<option value="3">3 of 3</option>					
-				</select>	<br>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Save MultiSigX for:</h4>
+						<?php 
+						$curr = array();
+						foreach($addresses as $address){
+							array_push($curr, $address['currency']);
+						}
+						?>
+						<select name="currency" class="form-control" onBlur="checkform();" id="Currency">
+						<?php 
+						foreach($currencies as $currency){ 
+		/*					if(in_array($currency['currency']['unit'],$curr)){
+								$disable = "disabled";
+							}else{
+								$disable = "";
+							}
+		*/					
+						?>
+							<option value="<?=$currency['currency']['unit']?>" <?=$disable?>><?=$currency['currency']['name']?> - <?=$currency['currency']['unit']?></option>
+						<?php }?>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<h4>Create MultiSigX with:</h4>
+						<select name="security" class="form-control" onBlur="checkform();">
+							<option value="2">2 of 3</option>
+							<option value="3">3 of 3</option>					
+						</select>					
+					</div>
+				</div>
+				<br>
 
 				<table class="table table-striped table-condensed table-bordered">
 					<tr>
-						<th>Email</th>
-						<th>Relation</th>
+						<th width="50%">Email</th>
+						<th width="50%">Relation</th>
 					</tr>
 					<tr>
 						<td><?=$this->form->field('email[1]', array('label'=>'','value'=>$user['email'],'readonly'=>'readonly','class'=>'form-control')); ?></td>

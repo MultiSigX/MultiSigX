@@ -70,7 +70,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">MultiSigX&#8482; Features</div>
 			<div class="panel-body">
-			<h3>Individuals<sup>*</sup> - FREE 0% commission</h3>
+			<h3>Individuals<sup>*</sup> - NOMINAL 0.001% commission</h3>
 			<ul>
 				<li>Self, Self, Print</li>
 				<li>Self, 2<sup>nd</sup> email, Print</li>				

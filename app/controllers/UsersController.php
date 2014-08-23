@@ -771,7 +771,7 @@ foreach($data as $tx){
 					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
 					'commission_amount' => $addresses['createTran']['commission_amount'],
 					'tx_fee' => $addresses['createTran']['tx_fee'],
-					'createTrans' => $createTrans,
+					'signTrans' => $signTrans,
 					'signrawtransaction' => $signrawtransaction,
 				);				
 				foreach($data['emails'] as $email){
@@ -788,7 +788,7 @@ foreach($data as $tx){
 				}
 			}
 		}
-		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/2'));
+		return $this->redirect(array('controller'=>'Ex','action'=>'dashboard'));
 	}
 
 	public function confirmTrans(){
@@ -893,7 +893,7 @@ foreach($data as $tx){
 					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
 					'commission_amount' => $addresses['createTran']['commission_amount'],
 					'tx_fee' => $addresses['createTran']['tx_fee'],
-					'createTrans' => $createTrans,
+					'signTrans' => $signTrans,
 					'signrawtransaction' => $signrawtransaction,
 				);				
 				foreach($data['emails'] as $email){
@@ -912,23 +912,59 @@ foreach($data as $tx){
 			if($addresses['security']==2 && $noOfTrans == 2){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
 				if(array_key_exists('error' ,$sendrawtransaction)){
-					
 					return compact('sendrawtransaction');	
 				}else{
-				$data = array(
-					'sendTrans'=>$sendrawtransaction,
-					'sendTran.DateTime'=>new \MongoDate(),
-					'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
-					'sendTran.username'=>$user['username'],
-					'sendTran.user_id'=>$user['_id'],					
-					'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
-					'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
-					'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
-				);
-				$conditions = array('msxRedeemScript.address'=>$multiAddress);
-				Addresses::update($data,$conditions);
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+					$data = array(
+						'sendTrans'=>$sendrawtransaction,
+						'sendTran.DateTime'=>new \MongoDate(),
+						'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
+						'sendTran.username'=>$user['username'],
+						'sendTran.user_id'=>$user['_id'],					
+						'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
+						'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
+						'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
+					);
+					$conditions = array('msxRedeemScript.address'=>$multiAddress);
+					Addresses::update($data,$conditions);
+
+					$email = array();
+					$relation = array();
+					foreach($addresses['addresses'] as $address){
+						array_push($email,$address['email']);
+						array_push($relation,$address['relation']);
+					}
+					$data = array(
+						'who'=>$user,
+						'currency'=>$currency,
+						'currencyName'=>$currencyName,
+						'multiAddress'=>$multiAddress,
+						'security'=>$addresses['security'],
+						'name'=>$addresses['name'],
+						'CoinName'=>$addresses['CoinName'],
+						'DateTime'=>$addresses['DateTime'],
+						'emails'=>$email,
+						'txid'=>$sendrawtransaction,
+						'relation'=>$relation,
+						'withdraw_address' => $addresses['createTran']['withdraw_address'],
+						'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'commission_amount' => $addresses['createTran']['commission_amount'],
+						'tx_fee' => $addresses['createTran']['tx_fee'],
+					);				
+					foreach($data['emails'] as $email){
+					// sending email to the users 
+					/////////////////////////////////Email//////////////////////////////////////////////////
+						$function = new Functions();
+						$compact = array('data'=>$data);
+						// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+						$from = array(NOREPLY => "noreply@".COMPANY_URL);
+						$email = $email;
+						$attach = null;
+						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX,com Transaction complete",$from,'','','',$attach);
+					/////////////////////////////////Email//////////////////////////////////////////////////				
+					}
+					
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
 				}
 			}
 			if($addresses['security']==3 && $noOfTrans == 3){
@@ -936,20 +972,57 @@ foreach($data as $tx){
 				if(array_key_exists('error' ,$sendrawtransaction)){
 					return compact('sendrawtransaction');	
 				}else{
-				$data = array(
-					'sendTrans'=>$sendrawtransaction,
-					'sendTran.DateTime'=>new \MongoDate(),
-					'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
-					'sendTran.username'=>$user['username'],
-					'sendTran.user_id'=>$user['_id'],					
-					'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
-					'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
-					'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
-				);
-				$conditions = array('msxRedeemScript.address'=>$multiAddress);
-				Addresses::update($data,$conditions);
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+					$data = array(
+						'sendTrans'=>$sendrawtransaction,
+						'sendTran.DateTime'=>new \MongoDate(),
+						'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
+						'sendTran.username'=>$user['username'],
+						'sendTran.user_id'=>$user['_id'],					
+						'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
+						'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
+						'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
+					);
+					$conditions = array('msxRedeemScript.address'=>$multiAddress);
+					Addresses::update($data,$conditions);
+
+					$email = array();
+					$relation = array();
+					foreach($addresses['addresses'] as $address){
+						array_push($email,$address['email']);
+						array_push($relation,$address['relation']);
+					}
+					$data = array(
+						'who'=>$user,
+						'currency'=>$currency,
+						'currencyName'=>$currencyName,
+						'multiAddress'=>$multiAddress,
+						'security'=>$addresses['security'],
+						'name'=>$addresses['name'],
+						'CoinName'=>$addresses['CoinName'],
+						'DateTime'=>$addresses['DateTime'],
+						'emails'=>$email,
+						'txid'=>$sendrawtransaction,
+						'relation'=>$relation,
+						'withdraw_address' => $addresses['createTran']['withdraw_address'],
+						'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'commission_amount' => $addresses['createTran']['commission_amount'],
+						'tx_fee' => $addresses['createTran']['tx_fee'],
+					);				
+					foreach($data['emails'] as $email){
+					// sending email to the users 
+					/////////////////////////////////Email//////////////////////////////////////////////////
+						$function = new Functions();
+						$compact = array('data'=>$data);
+						// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
+						$from = array(NOREPLY => "noreply@".COMPANY_URL);
+						$email = $email;
+						$attach = null;
+						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX,com Transaction complete",$from,'','','',$attach);
+					/////////////////////////////////Email//////////////////////////////////////////////////				
+					}					
+					
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
 				}
 			}
 		}

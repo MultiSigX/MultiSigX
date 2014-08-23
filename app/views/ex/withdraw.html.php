@@ -106,10 +106,10 @@ $Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission
       </div>
       <div class="modal-body" style="text-align:center ">
 				<?=$this->form->field('sendToAddress', array('type' => 'text', 'label'=>'To Address','placeholder'=>'1J2sVS4Yt5QRrvBK22ZySqgsMNe9ypysqo','class'=>'form-control','onBlur'=>'CreateTrans('.$final_balance.','.$commission.','.$currencies['txFee'].');' )); ?>
-				<?=$this->form->field('sendAmount', array('type' => 'text', 'label'=>'Amount','placeholder'=>'0.0000','class'=>'form-control','value'=>$Amount,'readonly'=>'readonly')); ?>				
-				<?=$this->form->field('sendTxFee', array('type' => 'text', 'label'=>'Tx Fee to Miners','placeholder'=>'0.0001','class'=>'form-control','value'=>$currencies['txFee'],'onBlur'=>'CreateTrans('.$final_balance.','.$commission.',this.value);' )); ?>
+				<?=$this->form->field('sendAmount', array('type' => 'text', 'label'=>'Amount '.$addresses['currency'],'placeholder'=>'0.0000','class'=>'form-control','value'=>$Amount,'readonly'=>'readonly')); ?>				
+				<?=$this->form->field('sendTxFee', array('type' => 'text', 'label'=>'Tx Fee to Miners '.$addresses['currency'],'placeholder'=>'0.0001','class'=>'form-control','value'=>$currencies['txFee'],'onBlur'=>'CreateTrans('.$final_balance.','.$commission.',this.value);' )); ?>
 				<?=$this->form->field('commission', array('type' => 'text', 'label'=>'Commission %','placeholder'=>'1','class'=>'form-control','value'=>$commission,'readonly'=>'readonly' )); ?>
-				<?=$this->form->field('commissionValue', array('type' => 'text', 'label'=>'Commission','placeholder'=>'1','class'=>'form-control','value'=>$final_balance*$commission/100,'readonly'=>'readonly' )); ?>				
+				<?=$this->form->field('commissionValue', array('type' => 'text', 'label'=>'Commission '.$addresses['currency'],'placeholder'=>'1','class'=>'form-control','value'=>$final_balance*$commission/100,'readonly'=>'readonly' )); ?>				
       </div>
       <div class="modal-footer">
 				<?=$this->form->submit('Create' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'CreateSubmit')); ?>

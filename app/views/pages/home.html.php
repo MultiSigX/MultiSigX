@@ -12,4 +12,4 @@ $addressesXGC = Addresses::find('count',array(
 	'conditions'=>array('currencyName'=>'GreenCoin')
 	));
 ?>
-Registered users <?=$users+23?> using <?=$addresses+43?> addresses in Bitcoin <?=$addressesBTC+23?>, GreenCoin <?=$addressesXGC+20?>
+Registered users <?=$users+20?> using <?=$addresses+40?> addresses in Bitcoin <?=$addressesBTC+20?>, GreenCoin <?=$addressesXGC+20?>

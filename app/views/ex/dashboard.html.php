@@ -14,6 +14,9 @@
 							array_push($current, $address['currency']);
 						}
 						?>
+						<?php if($msg!=""){ ?>
+							<p class="alert alert-warning"><?=$msg?></p>
+						<?php }	?>
 						<h3>You can create MultiSigX in these <?=substr($curr,1,strlen($curr))?> currencies.</h3> 
 						<h4>Your current MultiSigX</h4>
 						<p>Secure your bitcoins on MultiSigX wallets.
@@ -50,20 +53,7 @@
 										&nbsp;&nbsp;
 										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon"></i></a>
 										&nbsp;&nbsp;
-										<?php 
-										$movenext = "";
-										if(($address['createTrans']!="")){
-											$movenext = 1;
-										}
-										if(($address['signTrans']!="")){
-											$movenext = 2;
-										}
-										if(($address['sendTrans']!="")){
-											$movenext = 3;
-										}
-										?>
-										
-										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>/<?=$movenext?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-mail-forward icon"></i></a>
+										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon"></i></a>
 										<strong>
 										<?php 
 											foreach($balances as $balance){?>
@@ -84,7 +74,7 @@
 					<?php 
 							}?>
 							<?php 
-							if(count($addresses)==0){?>
+							if(count($refered)==0){?>
 								<p class="alert alert-danger">You are not referred in any MultiSigX wallets.</p>
 								<?php 
 							}else{?>
@@ -109,7 +99,7 @@
 										&nbsp;&nbsp;
 										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon"></i></a>
 										&nbsp;&nbsp;
-										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins"><i class="icon-mail-forward icon"></i></a>
+										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon"></i></a>
 										<strong>
 										<?php 
 											foreach($balances as $balance){?>

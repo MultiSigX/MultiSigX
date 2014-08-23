@@ -1,5 +1,5 @@
 <div style="background-color:#eeeeee;height:50px;padding-left:20px;padding-top:10px">
-	<img src="https://<?=COMPANY_URL?>/img/<?=COMPANY_URL?>.gif" alt="<?=COMPANY_URL?>">
+	<img src="https://<?=COMPANY_URL?>/img/<?=COMPANY_URL?>.png" alt="<?=COMPANY_URL?>">
 </div>
 <h4>Hi,</h4>
 <p>User <strong><?=$compact['data']['username']?>, <?=$compact['data']['createEmail']?></strong> has added you as one of the security for the coins.</p>

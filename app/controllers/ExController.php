@@ -31,7 +31,8 @@ class ExController extends \lithium\action\Controller {
 	public function index(){
 	return $this->render(array('json' => array("EX"=>false)));
 	}
-	public function dashboard(){
+	public function dashboard($what = null){
+		
 		$UC = new UsersController();
 	
 		$user = Session::read('member');
@@ -58,9 +59,11 @@ class ExController extends \lithium\action\Controller {
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
-	
+		if($what=="signed"){
+			$msg = "You have already signed this withdrawal. Please wait for others to sign and send this transaction!";
+		}
 
-		return compact('user','addresses','refered','currencies','balances','title','keywords','description');
+		return compact('user','addresses','refered','currencies','balances','title','keywords','description','msg');
 	}
 	
 	public function create(){
@@ -368,47 +371,54 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 	}
 	public function settings(){}
 
-	public function withdraw($address=null,$step=0){
-
+	public function withdraw($address=null,$step=null){
+		
+		if($address==null){
+			return $this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));
+		}				
 		$user = Session::read('member');
+		
 		$id = $user['_id'];
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
-		if($address==''){$this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));}				
+		
 		$addresses = Addresses::find('first',array(
 			'conditions'=>array('msxRedeemScript.address'=>$address)
 		));
-
-
-		if($step==1){
-			if(($addresses['createTrans']=="")){
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/'));
-				exit;
+		
+		foreach($addresses['addresses'] as $multiUser){
+			$multiUserEmail = $multiUser['email'];
+			if($user['email']==$multiUserEmail){
+				$authorizeUsername = $user['username'];
 			}
 		}
-		if($step==2){
-			if(($addresses['signTrans']=="")){
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
-				exit;
-			}
-			if(($addresses['sendTrans']!="")){
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/3'));
-				exit;
-			}
+
+		switch($step){
+			case '';
+				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/create'));
+			break;
 			
+			case 'create';
+				if($addresses['createTrans']!=""){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/sign'));
+				}
+			break;
+			
+			case 'sign';
+				if($addresses['createTrans']==""){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/create'));
+				}
+			break;
+			
+			case 'send';
+				if(count($addresses['signTrans']) < $addresses['security']){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/sign'));
+				}				
+			break;
+			
+			case 'confirm';			
+			break;
 		}
-		if($step<2){
-			if(($addresses['signTrans']!="")){
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/2'));
-				exit;
-			}
-		}
-		if($step<1){
-			if(($addresses['createTrans']!="")){
-				return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/1'));
-				exit;
-			}
-		}
-
+		
 		$UC = new UsersController();
 
 		$final = $UC->CheckBalance($address,$addresses['currencyName'],true);
