@@ -551,12 +551,24 @@ foreach($data as $tx){
 				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
 			));
 			
-			$Amount = $this->request->data['sendAmount'];
-			$Address = $this->request->data['sendToAddress'];
-			$TxFee = $this->request->data['sendTxFee'];
+			$Amount[0] = $this->request->data['sendAmount'][0];
+			$Amount[1] = $this->request->data['sendAmount'][1];
+			$Amount[2] = $this->request->data['sendAmount'][2];
+			$Address[0] = $this->request->data['sendToAddress'][0];
+			$Address[1] = $this->request->data['sendToAddress'][1];
+			$Address[2] = $this->request->data['sendToAddress'][2];
+			$TxFee = $this->request->data['SendTrxFee'];
+			$finalBalance = $this->request->data['finalBalance'];
 			$Commission = $this->request->data['commission'];
-			$CommissionValue = $this->request->data['commissionValue'];			
+			$CommissionValue = $this->request->data['CommissionTotal'];			
 			$currency = $this->request->data['currency'];
+			
+			$calcBalance = round($Amount[0]+$Amount[1]+$Amount[2]+$TxFee+$CommissionValue,8);
+			print_r($calcBalance);
+			print_r($finalBalance);
+			if(round($finalBalance,8)!=$calcBalance){
+				return $this->redirect(array('controller'=>'ex','action'=>'withdraw/'.$multiAddress.'/create/No'));
+			}
 			
 			switch ($currency){
 				case "BTC":
@@ -601,11 +613,19 @@ foreach($data as $tx){
 				'scriptPubKey'=>$x_scriptPubKey,
 				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
 			);
-			$createData = array(
-				$Address=>round($Amount,8),
-				$wallet_address=>round($CommissionValue,8)
-			);
-	
+			
+			$createData = array($wallet_address=>round($CommissionValue,8));
+			
+			if($Amount[0]>=0){
+				$createData = array_merge_recursive($createData,array($Address[0]=>round($Amount[0],8)));
+			}
+			if($Amount[1]>=0){
+			
+				$createData = array_merge_recursive($createData,array($Address[1]=>round($Amount[1],8)));
+			}
+			if($Amount[2]>=0){
+				$createData = array_merge_recursive($createData,array($Address[2]=>round($Amount[2],8)));
+			}
 				$createrawtransaction = $coin->createrawtransaction(array($createTrans),$createData);
 				if(is_array($createrawtransaction)){
 					return compact('createrawtransaction');	
@@ -616,10 +636,16 @@ foreach($data as $tx){
 						'createTran.IP'=>$_SERVER['REMOTE_ADDR'],
 						'createTran.username'=>$user['username'],
 						'createTran.user_id'=>$user['_id'],
-						'createTran.withdraw_address' => $Address,
-						'createTran.withdraw_amount' => round($Amount,8),
+						'createTran.withdraw.address.0' => $Address[0],
+						'createTran.withdraw.amount.0' => round($Amount[0],8),
+						'createTran.withdraw.address.1' => $Address[1],
+						'createTran.withdraw.amount.1' => round($Amount[1],8),
+						'createTran.withdraw.address.2' => $Address[2],
+						'createTran.withdraw.amount.2' => round($Amount[2],8),
+						
 						'createTran.commission_amount' => round($CommissionValue,8),
-						'createTran.tx_fee' => $this->request->data['sendTxFee'],
+						
+						'createTran.tx_fee' => round($this->request->data['SendTrxFee'],8),
 					);
 					$conditions = array('msxRedeemScript.address'=>$multiAddress);
 					Addresses::update($data,$conditions);
@@ -645,10 +671,15 @@ foreach($data as $tx){
 						'emails'=>$email,
 						'txid'=>$x_txid,
 						'relation'=>$relation,
-						'withdraw_address' => $Address,
-						'withdraw_amount' => round($Amount,8),
+						'withdraw.address.0' => $Address[0],
+						'withdraw.amount.0' => round($Amount[0],8),
+						'withdraw.address.1' => $Address[1],
+						'withdraw.amount.1' => round($Amount[1],8),
+						'withdraw.address.2' => $Address[2],
+						'withdraw.amount.2' => round($Amount[2],8),
+
 						'commission_amount' => round($CommissionValue,8),
-						'tx_fee' => round($this->request->data['sendTxFee'],8),
+						'tx_fee' => round($this->request->data['SendTrxFee'],8),
 						'createTrans' => $createTrans,
 						'createrawtransaction' => $createrawtransaction,
 					);
@@ -669,7 +700,7 @@ foreach($data as $tx){
 				} // if $createrawtransaction
 			}	
 //			print_r($data);
-		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/1'));
+		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/sign'));
 	}
 	
 	public function signTrans(){
@@ -738,9 +769,11 @@ foreach($data as $tx){
 					'signTran.0.IP'=>$_SERVER['REMOTE_ADDR'],
 					'signTran.0.username'=>$user['username'],
 					'signTran.0.user_id'=>$user['_id'],					
-					'signTran.0.withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'signTran.0.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
-					'signTran.0.commission_amount' => $addresses['createTran']['commission_amount'],
+					'signTran.0.withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
+					'signTran.0.withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
+					'signTran.0.withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
+					'signTran.0.withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],					'signTran.0.withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
+					'signTran.0.withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],					'signTran.0.commission_amount' => $addresses['createTran']['commission_amount'],
 					'signTran.0.tx_fee' => $addresses['createTran']['tx_fee'],
 				);
 				$conditions = array('msxRedeemScript.address'=>$multiAddress);
@@ -767,13 +800,18 @@ foreach($data as $tx){
 					'emails'=>$email,
 					'txid'=>$x_txid,
 					'relation'=>$relation,
-					'withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+					'withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
+					'withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
+					'withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
+					'withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],
+					'withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
+					'withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],
 					'commission_amount' => $addresses['createTran']['commission_amount'],
 					'tx_fee' => $addresses['createTran']['tx_fee'],
 					'signTrans' => $signTrans,
 					'signrawtransaction' => $signrawtransaction,
 				);				
+				
 				foreach($data['emails'] as $email){
 				// sending email to the users 
 				/////////////////////////////////Email//////////////////////////////////////////////////
@@ -783,7 +821,7 @@ foreach($data as $tx){
 					$from = array(NOREPLY => "noreply@".COMPANY_URL);
 					$email = $email;
 					$attach = null;
-					$function->sendEmailTo($email,$compact,'users','signTrans',"MultiSigX,com sign transaction",$from,'','','',$attach);
+					$function->sendEmailTo($email,$compact,'users','signTrans',"MultiSigX.com sign transaction",$from,'','','',$attach);
 				/////////////////////////////////Email//////////////////////////////////////////////////				
 				}
 			}
@@ -964,7 +1002,7 @@ foreach($data as $tx){
 					/////////////////////////////////Email//////////////////////////////////////////////////				
 					}
 					
-					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/send'));		
 				}
 			}
 			if($addresses['security']==3 && $noOfTrans == 3){
@@ -1022,12 +1060,19 @@ foreach($data as $tx){
 					/////////////////////////////////Email//////////////////////////////////////////////////				
 					}					
 					
-					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/3'));		
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/send'));		
 				}
 			}
 		}
-		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/2'));		
+		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/sign'));		
 	}
-	
+	public function DeleteCreateTrans($multiAddress=null){
+		$user = Session::read('default');
+		if ($user==""){	return $this->redirect('Users::signup');}
+			$conditions = array('msxRedeemScript.address'=>$multiAddress);
+			$unset = array('$unset'=>array('createTran'=>'','createTrans'=>'','signTran'=>'','signTrans'=>'','sendTran'=>'','sendTrans'=>''));
+			Addresses::update($unset,$conditions);	
+			return $this->redirect(array('controller'=>'ex','action'=>'withdraw/'.$multiAddress));		
+	}
 }
 ?>

@@ -62,7 +62,10 @@
 		<?=$this->form->submit('Sign up' ,array('class'=>'btn btn-primary btn-block')); ?>
 		<?=$this->form->end(); ?>
 			</div>
-		</div>
+	<div class="panel-footer">
+		Already registered? <a href="/signin">Signin</a>
+	</div>
+			</div>
 
 
 	</div>

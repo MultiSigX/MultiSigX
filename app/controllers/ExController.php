@@ -371,7 +371,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 	}
 	public function settings(){}
 
-	public function withdraw($address=null,$step=null){
+	public function withdraw($address=null,$step=null,$msg=null){
 		
 		if($address==null){
 			return $this->redirect(array('controller'=>'Ex','action'=>'dashboard/'));
@@ -398,26 +398,50 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			break;
 			
 			case 'create';
-				if($addresses['createTrans']!=""){
+				if($addresses['createTrans']!=null){
 					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/sign'));
 				}
-			break;
+				$button = 'Create';
+				break;
 			
 			case 'sign';
-				if($addresses['createTrans']==""){
+				if(count($addresses['signTrans']) == (int) $addresses['security']){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/send'));
+				}
+				if($addresses['createTrans']==null){
 					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/create'));
 				}
+				$button = 'Sign';
 			break;
 			
 			case 'send';
-				if(count($addresses['signTrans']) < $addresses['security']){
-					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/sign'));
-				}				
+				if(count($addresses['signTrans']) == (int) $addresses['security']){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/confirm'));
+				}
+				$button = 'Send';
 			break;
 			
 			case 'confirm';			
+				if($addresses['sendTrans']!=null){
+					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/send'));
+				}
+			$button = 'Confirm';
 			break;
 		}
+		
+		$transact = array();
+		
+		//who has created, signed, send transactions
+		if($addresses['createTran']!=null){
+				$create = $addresses['createTran'];
+		}
+		if($addresses['signTran']!=null){
+				$sign = $addresses['signTran'];
+		}
+		if($addresses['sendTran']!=""){
+				$send = $addresses['sendTran'];
+		}
+		$transact = array('create'=>$create,'sign'=>$sign,'send'=>$send);
 		
 		$UC = new UsersController();
 
@@ -440,19 +464,24 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				'username'=>$userFind['username']
 				));
 		}
+		
+		
 		$next = $step;
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
+
 		$relations = Relations::find('all',array(
 			'order'=>array('type'=>-1)
 		));
-	
+
+		
+		
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','addresses','data','final_balance','next','title','keywords','description','currencies','relations');
+		return compact('user','addresses','data','final_balance','next','title','keywords','description','currencies','relations','button','transact','msg');
 	}
 	
 }

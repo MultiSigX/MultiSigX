@@ -194,16 +194,102 @@ function ChangeTheme(name,uri){
 }
 
 function CreateTrans(amount, commission, txfee){
+
 //alert(amount);
 //alert(commission);
 //alert(txfee);
 // $Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100);
-$("#SendAmount").val((parseFloat(amount) - parseFloat(txfee) - (parseFloat(amount)*parseFloat(commission)/100)));
-	if($("#SendToAddress").val()!="" && $("#SendToAddress").val().length >= 34){
+SendTxFee = Math.round((amount - $("#SendAmount0").val() - $("#SendAmount1").val() - $("#SendAmount2").val() - (parseFloat(amount)*parseFloat(commission)/100))*1000000)/1000000;
+if(SendTxFee<=0){
+	if($("#SendAmount2").val()==0){
+		amount1 = Math.round((amount - $("#SendAmount0").val() - (parseFloat(amount)*parseFloat(commission)/100))*1000000)/1000000;
+		$("#SendAmount1").val(amount1-SendTxFee);
+	}
+return false;
+}
+$("#SendTxFee").html(SendTxFee);
+$("#SendTrxFee").val(SendTxFee);
+	if($("#SendToAddress0").val()!="" && $("#SendToAddress0").val().length >= 34){
 		$("#CreateSubmit").removeAttr('disabled');			
 	}else{
-		document.getElementById('CreateSubmit').disabled = true;				
+		document.getElementById('CreateSubmit').disabled = true;
 	}
+	if($("#SendToAddress0").val()!=""){
+		$("#Error0").html("Enter correct address and amount!");
+	}else{
+		$("#Error0").html("");
+	}
+	if($("#SendToAddress1").val()!=""){
+		$("#Error1").html("Enter correct address and amount!");
+	}else{
+		$("#Error1").html("");
+	}
+	if($("#SendToAddress2").val()!=""){
+		$("#Error2").html("Enter correct address and amount!");
+	}else{
+		$("#Error0").html("");
+	}
+
+	if($("#SendAmount0").val()<0){
+		$("#Error0").html("Check Amount!");
+	}else{
+		$("#Error0").html("");
+	}
+	if($("#SendAmount1").val()<0){
+		$("#Error1").html("Check Amount!");
+	}else{
+		$("#Error1").html("");
+	}
+	if($("#SendAmount2").val()<0){
+		$("#Error2").html("Check Amount!");
+	}else{
+		$("#Error2").html("");
+	}
+	
+	if($("#SendAmount0").val()>0){
+		if($("#SendToAddress0").val()!="" && $("#SendToAddress0").val().length >= 34){
+			$("#CreateSubmit").removeAttr('disabled');			
+		}else{
+			$("#Error0").html("Enter correct address and amount!");
+			document.getElementById('CreateSubmit').disabled = true;
+		}
+		$("#Error0").html("Enter correct address and amount!");
+	}else{
+		$("#Error0").html("");
+	}
+	if($("#SendAmount1").val()>0){
+		if($("#SendToAddress1").val()!="" && $("#SendToAddress0").val().length >= 34){
+			$("#CreateSubmit").removeAttr('disabled');			
+		}else{
+			$("#Error1").html("Enter correct address and amount!");
+			document.getElementById('CreateSubmit').disabled = true;
+		}
+		$("#Error1").html("Enter correct address and amount!");
+	}else{
+		$("#Error1").html("");
+	}
+	if($("#SendAmount2").val()>0){
+		if($("#SendToAddress2").val()!="" && $("#SendToAddress0").val().length >= 34){
+			$("#CreateSubmit").removeAttr('disabled');			
+		}else{
+			$("#Error2").html("Enter correct address and amount!");
+			document.getElementById('CreateSubmit').disabled = true;
+		}
+
+		$("#Error2").html("Enter correct address and amount!");
+	}else{
+		$("#Error2").html("");
+	}	
+	
+	
+}
+
+function CheckTotal(amount,commission){
+	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTxFee").html());
+	
+	if(Math.round(Total*1000000)/1000000==Math.round(amount*1000000)/1000000){return true;}else{
+		$("#CreateAlert").html("<b>Totals do not match! Please recheck!</b>");
+	return false;}
 }
 
 function SignTrans(){

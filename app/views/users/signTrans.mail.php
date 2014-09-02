@@ -12,8 +12,12 @@
 </ul>
 </p>
 
-<p>The amount <?=$compact['data']['withdraw_amount']?> <?=$compact['data']['currency']?> <?=$compact['data']['currencyName']?> has been withdrawn to <?=$compact['data']['withdraw_address']?>, with commission amount <?=$compact['data']['commission_amount']?> and transaction fees to miners <?=$compact['data']['tx_fee']?> from the transaction id txid: "<?=$compact['data']['txid']?>"</p>
-
+<p>The amount for <?=$compact['data']['currency']?> <?=$compact['data']['currencyName']?> has been withdrawn to:<br>
+1. <?=$compact['data']['withdraw.address.0']?> - <?=number_format($compact['data']['withdraw.amount.0'],8)?><br>
+2. <?=$compact['data']['withdraw.address.1']?> - <?=number_format($compact['data']['withdraw.amount.1'],8)?><br>
+3. <?=$compact['data']['withdraw.address.2']?> - <?=number_format($compact['data']['withdraw.amount.2'],8)?><br>
+ with commission amount <?=$compact['data']['commission_amount']?> and transaction fees to miners <?=$compact['data']['tx_fee']?> from the transaction id txid: "<?=$compact['data']['txid']?>"</p>
+		
 <p>
 The raw transaction is {'hex':<?php print_r($compact['data']['signrawtransaction']['hex'])?>,'complete':
 <?php if($compact['data']['signrawtransaction']['complete']){echo "true";}else{echo "false";}?>

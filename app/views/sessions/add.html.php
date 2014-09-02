@@ -33,7 +33,7 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 					<?=$this->form->field('loginpassword', array('type' => 'password', 'label'=>'','class'=>'span1','maxlength'=>'6', 'placeholder'=>'123456','class'=>'form-control')); ?>
 					</div>		
 				</div>		
-				<small>Please check your registered email in 5 seconds. You will receive "<strong>Login Email Password</strong>" use it in the box below.</small>
+				<small>Please check your registered email in 5 seconds. You will receive "<strong>Login Email Password</strong>" use it in the box above.</small>
 			</div>		
 
 			<div style="display:none" id="TOTPPassword" class="alert alert-danger">
@@ -52,7 +52,7 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 			<?=$this->form->end(); ?>
 			<a href="/users/forgotpassword">Forgot password?</a>
 			</div>
-			<div class="panel-footer">Secure SSL Login</div>
+			<div class="panel-footer">Secure SSL Login! Not registered? <a href="/signup">Signup</a></div>
 		</div>
 
 
