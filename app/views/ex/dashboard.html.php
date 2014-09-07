@@ -1,10 +1,9 @@
+
 <div class="white">
 	<div class="col-md-12  container-fluid" >
 		<div class="panel panel-primary">
 			<div class="panel-heading">Dashboard</div>
-			<div class="panel-body">
-				<div class="row" style="margin:10px">
-					<div class="col-md-12" style="border-bottom:2px solid gray;padding:10px " >
+			<div class="panel-body" style="text-align:center">
 						<?php foreach($currencies as $currency){ 
 						$curr = $curr . ", ". $currency['currency']['name']." ".$currency['currency']['unit'];
 						}?>
@@ -18,116 +17,107 @@
 							<p class="alert alert-warning"><?=$msg?></p>
 						<?php }	?>
 						<h3>You can create MultiSigX in these <?=substr($curr,1,strlen($curr))?> currencies.</h3> 
-						<h4>Your current MultiSigX</h4>
-						<p>Secure your bitcoins on MultiSigX wallets.
-							<?php 
-							foreach($currencies as $currency){
+						<h4>Your current MultiSigX. Secure your bitcoins on MultiSigX wallets.</h4>
+						<?php 
+//							foreach($currencies as $currency){
 //							if(!in_array($currency['currency']['unit'],$current)){
 									?>
-									<a href="/ex/create" class="btn btn-primary">Create new <?=$currency['currency']['name']?> MultiSigX</a>
+									<a href="/ex/create" class="btn btn-primary">Create new 
+									<?php
+									//=$currency['currency']['name'];
+									?> MultiSigX</a>
 							<?php 
-								}
-		//				}?>
-						</p>
-					<?php 
-						if(count($addresses)==0){?>
-							<p class="alert alert-danger">You have not created any MultiSigX wallets.</p>
-					<?php 
-						}else{?>
-							<h2>Your own wallets:</h2>
-					<?php 
-						}?>					
-					<?php 
-						foreach($addresses as $address){?>
-							<hr class="fearurette-dashboard">
-								<div class="row">
-									<div class="col-md-4 col-xs-6"><?=$address['currencyName']?> <?=$address['currency']?></div>
-									<div class="col-md-4 col-xs-6"><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></div>									
-									<div class="col-md-4 col-xs-6">
-										<small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small>
-									</div>														
-								</div>
-								<div class="row" style="border-bottom:dotted gray">					
-									<div class="col-md-4 col-xs-6">
-										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon"></i></a>
-										&nbsp;&nbsp;
-										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon"></i></a>
-										&nbsp;&nbsp;
-										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon"></i></a>
-										<strong>
-										<?php 
-											foreach($balances as $balance){?>
-											<?php 
-												if($balance['address']==$address['msxRedeemScript']['address']){
-													print_r($balance['balance']." ". $address['currency']);
-												}?>
-										<?php 
-											}?>
-										</strong>
-									</div>
-									<div class="col-md-4 col-xs-6"><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small></div>						
-									<div class="col-md-4 col-xs-12">
-										<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
-										<a href="#" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Delete MultiSigX address" onClick="DeleteCoin('<?=$address['msxRedeemScript']['address']?>')"><i class="icon-remove icon"></i></a>
-									</div>						
-								</div> <!--  row -->
-					<?php 
-							}?>
-							<?php 
-							if(count($refered)==0){?>
-								<p class="alert alert-danger">You are not referred in any MultiSigX wallets.</p>
+//								}
+//					}?>
+							<br><br>
+							<div class="panel panel-primary">
+								<div class="panel-heading"><?php 
+									if(count($addresses)==0){?>
+										<p class="alert alert-danger">You have not created any MultiSigX wallets.</p>
 								<?php 
-							}else{?>
-								<h2>You are referred in wallets:</h2>					
-							<?php 
-							}?>
-					<?php 
-						foreach($refered as $address){
-							if($address['username']!=$user['username']){
-					?>
-							<hr class="fearurette-dashboard">
-								<div class="row">
-									<div class="col-md-4 col-xs-6"><?=$address['currencyName']?> <?=$address['currency']?></div>
-									<div class="col-md-4 col-xs-6"><?=$address['CoinName']?></div>									
-									<div class="col-md-4 col-xs-6">
-										<small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small>
-									</div>														
+									}else{?><h2>Your own wallets:</h2><?php 
+									}?></div>
+								<div class="panel-body">
+								<?php foreach($addresses as $address){?>
+								<hr class="fearurette-dashboard">
+								<h3><?=$address['currencyName']?> <?=$address['currency']?></h3>
+								<h3><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></h3>
+								<h3><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></h3>
+								<h4>
+								<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon icon-3x"></i></a>
+								&nbsp;&nbsp;
+								<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon icon-3x"></i></a>
+								&nbsp;&nbsp;
+								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i></a>
+								</h4>
+													<?php 
+														foreach($balances as $balance){?>
+														<?php if($balance['address']==$address['msxRedeemScript']['address']){?>
+																<h4><?=$balance['balance']." ". $address['currency'];?></h4>
+														<?php }?>
+													<?php 
+														}?>
+								<h4><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small>
+								<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
+													<a href="#" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Delete MultiSigX address" onClick="DeleteCoin('<?=$address['msxRedeemScript']['address']?>')"><i class="icon-remove icon"></i></a>
+									</h4>
+									<?php }?>
 								</div>
-								<div class="row"  style="border-bottom:dotted gray">					
-									<div class="col-md-4 col-xs-6">
-										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon"></i></a>
-										&nbsp;&nbsp;
-										<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon"></i></a>
-										&nbsp;&nbsp;
-										<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon"></i></a>
-										<strong>
-										<?php 
-											foreach($balances as $balance){?>
+								<div class="panel-footer">
+								The above wallets are secured by MultiSigX! Be safe, be secure.
+								</div>
+							</div>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<?php 
+										if(count($refered)==0){?>
+											<p class="alert alert-danger">You are not referred in any MultiSigX wallets.</p>
 											<?php 
-												if($balance['address']==$address['msxRedeemScript']['address']){
-													print_r($balance['balance']." ". $address['currency']);
-												}?>
+										}else{?>
+											<h2>You are referred in wallets:</h2>					
 										<?php 
-											}?>
-										</strong>
-									</div>
-									<div class="col-md-4 col-xs-6"><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small></div>						
-									<div class="col-md-4 col-xs-12">
-										<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
-									</div>						
-								</div> <!--  row -->
-						<?php 
-						}?>
-					<?php 
-					}?>
+										}?>
+								</div>
+								<div class="panel-body">
+								<?php 
+									foreach($refered as $address){
+										if($address['username']!=$user['username']){
+								?><hr class="fearurette-dashboard">
+								<h3><?=$address['currencyName']?> <?=$address['currency']?></h3>
+								<h3><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></h3>
+								<h3><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></h3>
+								<h4>
+								<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon icon-3x"></i></a>
+								&nbsp;&nbsp;
+								<a href="#" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon icon-3x"></i></a>
+								&nbsp;&nbsp;
+								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i></a>
+								</h4>
+													<?php 
+														foreach($balances as $balance){?>
+														<?php if($balance['address']==$address['msxRedeemScript']['address']){?>
+																<h4><?=$balance['balance']." ". $address['currency'];?></h4>
+														<?php }?>
+													<?php 
+														}?>
+								<h4><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small>
+								<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
+													<a href="#" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Delete MultiSigX address" onClick="DeleteCoin('<?=$address['msxRedeemScript']['address']?>')"><i class="icon-remove icon"></i></a>
+									</h4>
+									<?php }?>
+								<?php }?>
+								</div>
+								<div class="panel-footer">
+								The above wallets are secured by MultiSigX! Be safe, be secure.
+								</div>
+						</div>
 					</div>
-				</div>
-			</div>
 			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://greencoin.io" target="_blank">http://greencoin.io</a>, try MultiSigX security.  </div>
 		</div>
 	</div>
 </div>
 <?=$final?>
+
 
 <div class="modal fade" id="DepositCoins" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">

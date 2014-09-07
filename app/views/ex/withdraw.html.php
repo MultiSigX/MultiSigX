@@ -150,7 +150,7 @@ foreach($relations as $relation){
 			</div>
 		</div>
 	</div>
-</div>
+
 <?php 
 	$Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100); 
 	$comm = number_format($final_balance*$commission/100,4);
