@@ -413,19 +413,13 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 				}
 				$button = 'Sign';
 			break;
-			
+
 			case 'send';
-				if(count($addresses['signTrans']) == (int) $addresses['security']){
-					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/confirm'));
-				}
 				$button = 'Send';
 			break;
 			
-			case 'confirm';			
-				if($addresses['sendTrans']!=null){
-					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/send'));
-				}
-			$button = 'Confirm';
+			default:
+			return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$address.'/create'));
 			break;
 		}
 		

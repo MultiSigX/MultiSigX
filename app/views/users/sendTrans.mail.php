@@ -12,7 +12,7 @@
 </ul>
 </p>
 
-<p>The amount in <?=$compact['data']['currency']?> <?=$compact['data']['currencyName']?> has been withdrawn to :<br>
+<p>The amount for <?=$compact['data']['currency']?> <?=$compact['data']['currencyName']?> has been withdrawn to :<br>
 1. <?=$compact['data']['withdraw.address.0']?> - <?=number_format($compact['data']['withdraw.amount.0'],8)?><br>
 2. <?=$compact['data']['withdraw.address.1']?> - <?=number_format($compact['data']['withdraw.amount.1'],8)?><br>
 3. <?=$compact['data']['withdraw.address.2']?> - <?=number_format($compact['data']['withdraw.amount.2'],8)?><br>

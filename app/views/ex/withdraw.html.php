@@ -14,7 +14,8 @@
 						<?=$addresses['CoinName']?><br>
 						<?=$addresses['name']?><br>
 						<?=$addresses['currencyName']?> <?=$addresses['currency']?><br>
-						Balance: <?=$final_balance?> <?=$addresses['currency']?>
+						Balance: <?=$final_balance?> <?=$addresses['currency']?><br>
+						Security: <strong style="color:red"><?=$addresses['security']?></strong> sign required of 3 to send payments<br>
 					</h4>
 					</div>
 					<div class="panel-footer">
@@ -42,10 +43,13 @@ foreach($relations as $relation){
 								<?php if($d['username']==$user['username']){?>
 										<h3><?=$d['relation']?>: <a href="mailto:<?=$d['email']?>?subject=MultiSigX" target="_blank"><?=$d['email']?></a></h3>
 									<?php }?>
+									
 								<?php }
 								$commission = max($commarray);
 								?>
+								<h3> Signed by:</h3>
 								<?php if($transact['create']['username']==$user['username']){?>
+								
 									<h4>
 									Transaction created on:<br>
 									<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
@@ -58,14 +62,18 @@ foreach($relations as $relation){
 									<?php if($transact['sign']==null){?>
 									<a href="/users/DeleteCreateTrans/<?=$addresses['msxRedeemScript']['address']?>"><i class="glyphicon glyphicon-remove"></i> Delete</a>
 									<?php }else{?>
-									<h3> Signed by:</h3>
+									
 									<?php }?>
+
 								<?php }?>
 								<?php 
 									$signed = "No";
-									
+									$noOfSign = 0;
 									foreach($transact['sign'] as $sign){
-										echo "<h4>".$sign['username']."</h4>";
+										$noOfSign++;
+									}
+									foreach($transact['sign'] as $sign){
+										echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
 										if($sign['username']==$user['username']){	
 											$signed = "Yes";		
 											break;
@@ -76,13 +84,18 @@ foreach($relations as $relation){
 											<h3><button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#Modal<?=$button?>"><?=$button?></button>
 											</h3>
 								<?php }else{ ?>
-											<h3>You have already signed this transaction, please wait while others to sign.</h3>
+											<h3>You have already signed this transaction.</h3>
 								<?php } ?>
-								<?php 
-					if($msg=='No'){
-						print_r("<div class='alert alert-danger'>Transaction not created!</div>");
-					}
-					?>								
+								<?php if($noOfSign==$addresses['security']){?>
+									<?php if($addresses['sendTrans']==null){?>
+										<h3><button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#Modal<?=$button?>"><?=$button?></button>
+									<?php }else{?>
+										<h3>The transaction is complete!<br>Funds transferred!</h3>
+									<?php }?>
+								<?php }?>
+								<?php if($msg=='No'){
+									print_r("<div class='alert alert-danger'>Transaction not created!</div>");
+								}?>								
 								</div>
 							</div>
 						</div>
@@ -122,6 +135,7 @@ foreach($relations as $relation){
 						</h4>
 					<?php }?>					
 
+					
 									
 								</div>
 							</div>
@@ -243,22 +257,43 @@ foreach($relations as $relation){
 	<?=$this->form->end(); ?>	
 </div>
 
-<div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalConfirm" aria-hidden="true">
-	<?=$this->form->create("",array('url'=>'/users/confirmTrans','class'=>'form-group has-error')); ?>
+<div class="modal fade" id="ModalSend" tabindex="-1" role="dialog" aria-labelledby="myModalSend" aria-hidden="true">
+	<?=$this->form->create("",array('url'=>'/users/sendTrans','class'=>'form-group has-error')); ?>
 	<?=$this->form->hidden('address', array('value'=>$addresses['msxRedeemScript']['address'])); ?>
 	<?=$this->form->hidden('currency', array('value'=>$addresses['currency'])); ?>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      	<h4 class="modal-title" id="SignModalLabel">Confirm Transaction</h4>
+      	<h4 class="modal-title" id="SignModalLabel">Send Transaction <small>from your MultiSigX wallet</small></h4>
       </div>
       <div class="modal-body" style="text-align:center ">
-				<p>You will need the private key from the document<br><strong>MultiSigX.com-<?=$addresses['name']?>-MSX-Print-[x].pdf</strong> which was emailed to you on <?=gmdate('Y-M-d H:i:s',$addresses['DateTime']->sec)?></p>
-				<?=$this->form->field('confirmPrivKey', array('type' => 'text', 'label'=>'Private Key','placeholder'=>'5KWUbdCd6hScBzzToger9xUZmELnw16uK5d3j9TH85VJZddFmhw','class'=>'form-control','onBlur'=>'ConfirmTrans();' )); ?>
-      </div>
+						<h4>Withdraw coins from<br>
+						<code><?=$addresses['msxRedeemScript']['address']?></code><br>
+						<?=$addresses['CoinName']?><br>
+						<?=$addresses['name']?><br>
+						<?=$addresses['currencyName']?> <?=$addresses['currency']?><br>
+						Balance: <?=$final_balance?> <?=$addresses['currency']?><br>
+						Security: <strong style="color:red"><?=$addresses['security']?></strong> sign required of 3 to send payments<br>
+					</h4>
+							<h4>
+									Transaction created on:<br>
+									<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
+									by <?=$transact['create']['username']?>, send to
+									<?php 
+									for($i=0;$i<3;$i++){?>
+									<code class="label label-success"><?=number_format($transact['create']['withdraw']['amount'][$i],8)?> <?=$addresses['currency']?> - <?=$transact['create']['withdraw']['address'][$i]?></code><br>
+									<?php }?>
+									</h4>
+									<h3> Signed by:</h3>
+									<?php 
+									foreach($transact['sign'] as $sign){
+										echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
+									}
+									?>
+				  </div>
       <div class="modal-footer">
-				<?=$this->form->submit('Sign' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'ConfirmSubmit')); ?>
+							<?=$this->form->submit('Send' ,array('class'=>'btn btn-primary','id'=>'SendSubmit')); ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

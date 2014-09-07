@@ -116,8 +116,7 @@ class UsersController extends \lithium\action\Controller {
 		return compact('title','keywords','description','saved','Users');	
 
 	}
-	
-		public function email(){
+	public function email(){
 		$user = Session::read('member');
 		$id = $user['_id'];
 		$details = Details::find('first',
@@ -140,8 +139,7 @@ class UsersController extends \lithium\action\Controller {
 		
 		return compact('title','keywords','description','msg');	
 	}
-
-	public function confirm($email=null,$verify=null){
+ public function confirm($email=null,$verify=null){
 		if($email == "" || $verify==""){
 			if($this->request->data){
 				if($this->request->data['email']=="" || $this->request->data['verified']==""){
@@ -173,7 +171,6 @@ class UsersController extends \lithium\action\Controller {
 			}else{return $this->redirect('Users::email');}
 
 	}
-
 	public function SendPassword($username=""){
 		$users = Users::find('first',array(
 					'conditions'=>array('username'=>$username)
@@ -238,7 +235,6 @@ class UsersController extends \lithium\action\Controller {
 			$mailer->send($message);
 			return $this->render(array('json' => array("Password"=>"Password sent to email","TOTP"=>$totp)));
 	}
-
 	public function username($username=null){
 		$usercount = Users::find('all',array(
 			'conditions'=>array('username'=>$username)
@@ -333,7 +329,6 @@ class UsersController extends \lithium\action\Controller {
 		$qrcode->png($address, QR_OUTPUT_DIR.$address.".png", 'H', 7, 2);		
 		return $this->render(array('json' => array("QRCode"=>$address)));
 	}
-	
 	public function CheckBalance($address=null,$name=null,$local=null){
 	if ($name==""){return $this->render(array('json' => array("CheckBalance"=>false)));}
 //	$address = '1Czx5pXiQ2Qk4hFqvXvnWgnuRUKza8pdNN';
@@ -437,7 +432,6 @@ foreach($data as $tx){
 	$html = $html .'</table>';
 		return $this->render(array('json' => array("html"=>$html,"name"=>$name)));
 	}
-	
 	public function ChangeTheme($name=null,$uri=null){
 		if ($name==""){return $this->render(array('json' => array("ChangeTheme"=>false)));}	
 		$user = Session::read('default');
@@ -540,6 +534,7 @@ foreach($data as $tx){
 		$uri = "/ex/dashboard";
 		return $this->render(array('json' => array("Deleted"=>"Yes","uri"=>$uri)));	
 	}
+
 	public function createTrans(){
 		$user = Session::read('default');
 		if ($user==""){	return $this->redirect('Users::signup');}
@@ -620,7 +615,6 @@ foreach($data as $tx){
 				$createData = array_merge_recursive($createData,array($Address[0]=>round($Amount[0],8)));
 			}
 			if($Amount[1]>=0){
-			
 				$createData = array_merge_recursive($createData,array($Address[1]=>round($Amount[1],8)));
 			}
 			if($Amount[2]>=0){
@@ -693,7 +687,7 @@ foreach($data as $tx){
 						$from = array(NOREPLY => "noreply@".COMPANY_URL);
 						$email = $email;
 						$attach = null;
-						$function->sendEmailTo($email,$compact,'users','createTrans',"MultiSigX,com create transaction",$from,'','','',$attach);
+						$function->sendEmailTo($email,$compact,'users','createTrans',"MultiSigX.com create transaction",$from,'','','',$attach);
 					/////////////////////////////////Email//////////////////////////////////////////////////				
 					}
 				
@@ -702,7 +696,6 @@ foreach($data as $tx){
 //			print_r($data);
 		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/sign'));
 	}
-	
 	public function signTrans(){
 		$user = Session::read('default');
 		if ($user==""){	return $this->redirect('Users::signup');}
@@ -714,6 +707,8 @@ foreach($data as $tx){
 			$addresses = Addresses::find('first',array(
 				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
 			));
+			
+			$noOfTrans = count($addresses['signTran']);
 			
 			switch ($currency){
 				case "BTC":
@@ -757,24 +752,31 @@ foreach($data as $tx){
 				'scriptPubKey'=>$x_scriptPubKey,
 				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
 			);
-			$rawtransact = $addresses['createTrans'];
-
+			
+			if($noOfTrans==0){
+				$rawtransact = $addresses['createTrans'];
+			}else{
+				$rawtransact = $addresses['signTrans'][$noOfTrans-1]['hex'];
+			}
+			
 			$signrawtransaction = $coin->signrawtransaction($rawtransact,array($signTrans),array($privKey));
 			if(is_array($signrawtransaction['error'])){
 				return compact('signrawtransaction');	
 			}else{
 				$data = array(
-					'signTrans.0'=>$signrawtransaction,
-					'signTran.0.DateTime'=>new \MongoDate(),
-					'signTran.0.IP'=>$_SERVER['REMOTE_ADDR'],
-					'signTran.0.username'=>$user['username'],
-					'signTran.0.user_id'=>$user['_id'],					
-					'signTran.0.withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
-					'signTran.0.withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
-					'signTran.0.withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
-					'signTran.0.withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],					'signTran.0.withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
-					'signTran.0.withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],					'signTran.0.commission_amount' => $addresses['createTran']['commission_amount'],
-					'signTran.0.tx_fee' => $addresses['createTran']['tx_fee'],
+					'signTrans.'.($noOfTrans)=>$signrawtransaction,
+					'signTran.'.($noOfTrans).'.DateTime'=>new \MongoDate(),
+					'signTran.'.($noOfTrans).'.IP'=>$_SERVER['REMOTE_ADDR'],
+					'signTran.'.($noOfTrans).'.username'=>$user['username'],
+					'signTran.'.($noOfTrans).'.user_id'=>$user['_id'],					
+					'signTran.'.($noOfTrans).'.withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
+					'signTran.'.($noOfTrans).'.withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
+					'signTran.'.($noOfTrans).'.withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
+					'signTran.'.($noOfTrans).'.withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],
+					'signTran.'.($noOfTrans).'.withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
+					'signTran.'.($noOfTrans).'.withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],
+					'signTran.'.($noOfTrans).'.commission_amount' => $addresses['createTran']['commission_amount'],
+					'signTran.'.($noOfTrans).'.tx_fee' => $addresses['createTran']['tx_fee'],
 				);
 				$conditions = array('msxRedeemScript.address'=>$multiAddress);
 				Addresses::update($data,$conditions);
@@ -828,22 +830,18 @@ foreach($data as $tx){
 		}
 		return $this->redirect(array('controller'=>'Ex','action'=>'dashboard'));
 	}
-
-	public function confirmTrans(){
+	public function sendTrans(){
 		$user = Session::read('default');
 		if ($user==""){	return $this->redirect('Users::signup');}
 		if($this->request->data){
 			$multiAddress = $this->request->data['address'];
 			$currency = $this->request->data['currency'];
-			$privKey = $this->request->data['confirmPrivKey'];
 	
 			$addresses = Addresses::find('first',array(
 				'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
 			));
 			
 			$noOfTrans = count($addresses['signTran']);
-			
-			
 			
 			switch ($currency){
 				case "BTC":
@@ -864,91 +862,13 @@ foreach($data as $tx){
 				$wallet_address = GREENCOIN_WALLET_ADDRESS;
 				break;
 			}		
-// bitcoin.signrawtransaction (signedone["hex"],
-//  [{"txid":unspent[WhichTrans]["txid"],
-//  "vout":unspent[WhichTrans]["vout"],"scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
-//  "redeemScript":unspent[WhichTrans]["redeemScript"]}],
-//  [multisigprivkeytwo])		
-			foreach($transaction['txid'] as $txid){
-				foreach($txid['vout'] as $vout){
-					foreach($vout['scriptPubKey']['addresses'] as $address){
-						if($address == $multiAddress){
-							$x_txid = $txid['txid'];
-							$x_vout = $vout['n'];
-							$x_value = $vout['value'];
-							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
-						}
-					}
-				}
-			}
-			$signTrans = array(
-				'txid'=>$x_txid,
-				'vout'=>$x_vout,
-				'scriptPubKey'=>$x_scriptPubKey,
-				'redeemScript'=>$addresses['msxRedeemScript']['redeemScript'],
-			);
-			$rawtransact = $addresses['signTrans'][$noOfTrans-1]['hex'];
-			$signrawtransaction = $coin->signrawtransaction($rawtransact,array($signTrans),array($privKey));
-			if(array_key_exists('error' ,$signrawtransaction)){
-				return compact('signrawtransaction');	
+			if($addresses['signTrans'][($noOfTrans-1)]['complete']==true){
+			$signrawtransaction = $addresses['signTrans'][($noOfTrans-1)]['hex'];
 			}else{
-				$data = array(
-					'signTrans.'.($noOfTrans)=>$signrawtransaction,
-					'signTran.'.($noOfTrans).'.DateTime'=>new \MongoDate(),
-					'signTran.'.($noOfTrans).'.IP'=>$_SERVER['REMOTE_ADDR'],
-					'signTran.'.($noOfTrans).'.username'=>$user['username'],
-					'signTran.'.($noOfTrans).'.user_id'=>$user['_id'],					
-					'signTran.'.($noOfTrans).'.withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'signTran.'.($noOfTrans).'.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
-					'signTran.'.($noOfTrans).'.commission_amount' => $addresses['createTran']['commission_amount'],
-					'signTran.'.($noOfTrans).'.tx_fee' => $addresses['createTran']['tx_fee'],
-				);
-				$conditions = array('msxRedeemScript.address'=>$multiAddress);
-				Addresses::update($data,$conditions);
-
-				$addresses = Addresses::find('first',array(
-					'conditions'=>array('msxRedeemScript.address'=>$multiAddress)
-				));
-				$email = array();
-				$relation = array();
-				foreach($addresses['addresses'] as $address){
-					array_push($email,$address['email']);
-					array_push($relation,$address['relation']);
-				}
-				$data = array(
-					'who'=>$user,
-					'currency'=>$currency,
-					'currencyName'=>$currencyName,
-					'multiAddress'=>$multiAddress,
-					'security'=>$addresses['security'],
-					'name'=>$addresses['name'],
-					'CoinName'=>$addresses['CoinName'],
-					'DateTime'=>$addresses['DateTime'],
-					'emails'=>$email,
-					'txid'=>$x_txid,
-					'relation'=>$relation,
-					'withdraw_address' => $addresses['createTran']['withdraw_address'],
-					'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
-					'commission_amount' => $addresses['createTran']['commission_amount'],
-					'tx_fee' => $addresses['createTran']['tx_fee'],
-					'signTrans' => $signTrans,
-					'signrawtransaction' => $signrawtransaction,
-				);				
-				foreach($data['emails'] as $email){
-				// sending email to the users 
-				/////////////////////////////////Email//////////////////////////////////////////////////
-					$function = new Functions();
-					$compact = array('data'=>$data);
-					// sendEmailTo($email,$compact,$controller,$template,$subject,$from,$mail1,$mail2,$mail3)
-					$from = array(NOREPLY => "noreply@".COMPANY_URL);
-					$email = $email;
-					$attach = null;
-					$function->sendEmailTo($email,$compact,'users','signTrans',"MultiSigX,com sign transaction",$from,'','','',$attach);
-				/////////////////////////////////Email//////////////////////////////////////////////////				
-				}
+				return $this->redirect(array('controller'=>'ex','action'=>'dashboard/'));	
 			}
-			if($addresses['security']==2 && $noOfTrans == 2){
-				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
+			if($addresses['security']==$noOfTrans){
+				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction);
 				if(array_key_exists('error' ,$sendrawtransaction)){
 					return compact('sendrawtransaction');	
 				}else{
@@ -958,8 +878,12 @@ foreach($data as $tx){
 						'sendTran.IP'=>$_SERVER['REMOTE_ADDR'],
 						'sendTran.username'=>$user['username'],
 						'sendTran.user_id'=>$user['_id'],					
-						'sendTran.withdraw_address' => $addresses['createTran']['withdraw_address'],
-						'sendTran.withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'sendTran.withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
+						'sendTran.withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
+						'sendTran.withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
+						'sendTran.withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],
+						'sendTran.withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
+						'sendTran.withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],
 						'sendTran.commission_amount' => $addresses['createTran']['commission_amount'],
 						'sendTran.tx_fee' => $addresses['createTran']['tx_fee'],
 					);
@@ -984,8 +908,12 @@ foreach($data as $tx){
 						'emails'=>$email,
 						'txid'=>$sendrawtransaction,
 						'relation'=>$relation,
-						'withdraw_address' => $addresses['createTran']['withdraw_address'],
-						'withdraw_amount' => $addresses['createTran']['withdraw_amount'],
+						'withdraw.address.0' => $addresses['createTran']['withdraw']['address'][0],
+						'withdraw.amount.0' => $addresses['createTran']['withdraw']['amount'][0],
+						'withdraw.address.1' => $addresses['createTran']['withdraw']['address'][1],
+						'withdraw.amount.1' => $addresses['createTran']['withdraw']['amount'][1],
+						'withdraw.address.2' => $addresses['createTran']['withdraw']['address'][2],
+						'withdraw.amount.2' => $addresses['createTran']['withdraw']['amount'][2],
 						'commission_amount' => $addresses['createTran']['commission_amount'],
 						'tx_fee' => $addresses['createTran']['tx_fee'],
 					);				
@@ -998,13 +926,14 @@ foreach($data as $tx){
 						$from = array(NOREPLY => "noreply@".COMPANY_URL);
 						$email = $email;
 						$attach = null;
-						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX,com Transaction complete",$from,'','','',$attach);
+						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX.com Transaction complete",$from,'','','',$attach);
 					/////////////////////////////////Email//////////////////////////////////////////////////				
 					}
 					
 					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/send'));		
 				}
 			}
+			
 			if($addresses['security']==3 && $noOfTrans == 3){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction['hex']);
 				if(array_key_exists('error' ,$sendrawtransaction)){
@@ -1056,16 +985,16 @@ foreach($data as $tx){
 						$from = array(NOREPLY => "noreply@".COMPANY_URL);
 						$email = $email;
 						$attach = null;
-						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX,com Transaction complete",$from,'','','',$attach);
+						$function->sendEmailTo($email,$compact,'users','sendTrans',"MultiSigX.com Transaction complete",$from,'','','',$attach);
 					/////////////////////////////////Email//////////////////////////////////////////////////				
 					}					
-					
 					return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/send'));		
 				}
 			}
 		}
 		return $this->redirect(array('controller'=>'Ex','action'=>'withdraw/'.$multiAddress.'/sign'));		
 	}
+
 	public function DeleteCreateTrans($multiAddress=null){
 		$user = Session::read('default');
 		if ($user==""){	return $this->redirect('Users::signup');}
