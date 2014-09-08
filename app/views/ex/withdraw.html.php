@@ -69,8 +69,10 @@ foreach($relations as $relation){
 								<?php 
 									$signed = "No";
 									$noOfSign = 0;
-									foreach($transact['sign'] as $sign){
-										$noOfSign++;
+									if(count($transact['sign'])>0){
+										foreach($transact['sign'] as $sign){
+											$noOfSign++;
+										}
 									}
 									foreach($transact['sign'] as $sign){
 										echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
