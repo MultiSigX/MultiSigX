@@ -47,24 +47,25 @@ foreach($relations as $relation){
 								<?php }
 								$commission = max($commarray);
 								?>
-								<h3> Signed by:</h3>
+								
 								<?php if($transact['create']['username']==$user['username']){?>
 								
 									<h4>
 									Transaction created on:<br>
 									<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
 									by <?=$transact['create']['username']?>, send to
-									<?php 
-									for($i=0;$i<3;$i++){?>
+									<?php for($i=0;$i<3;$i++){
+										if($transact['create']['withdraw']['amount'][$i]>0){
+									?>
 									<code class="label label-success"><?=number_format($transact['create']['withdraw']['amount'][$i],8)?> <?=$addresses['currency']?> - <?=$transact['create']['withdraw']['address'][$i]?></code><br>
-									<?php }?>
+									<?php }
+									}?>
 									</h4>
 									<?php if($transact['sign']==null){?>
 									<a href="/users/DeleteCreateTrans/<?=$addresses['msxRedeemScript']['address']?>"><i class="glyphicon glyphicon-remove"></i> Delete</a>
 									<?php }else{?>
-									
+								
 									<?php }?>
-
 								<?php }?>
 								<?php 
 									$signed = "No";
@@ -74,12 +75,14 @@ foreach($relations as $relation){
 											$noOfSign++;
 										}
 									}
-									if(count($transact['sign'])>0){
+									if(count($transact['sign'])>0){?>
+									<h3> Signed by:</h3>	
+									<?php
 										foreach($transact['sign'] as $sign){
 											echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
 											if($sign['username']==$user['username']){	
 												$signed = "Yes";		
-												break;
+//												break;
 											}
 										}
 									}
@@ -132,13 +135,24 @@ foreach($relations as $relation){
 						Transaction created on:<br>
 						<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
 						by <?=$transact['create']['username']?>, send to
-						<?php 
-						for($i=0;$i<3;$i++){?>
+						<?php for($i=0;$i<3;$i++){
+							if($transact['create']['withdraw']['amount'][$i]>0){
+						?>
 						<code class="label label-success"><?=number_format($transact['create']['withdraw']['amount'][$i],8)?> <?=$addresses['currency']?> - <?=$transact['create']['withdraw']['address'][$i]?></code><br>
-						<?php }?>
+						<?php }
+						}?>
 						</h4>
 					<?php }?>					
-
+									<?php if($transact['sign']==null){?>
+									<?php }else{?>
+								<h3> Signed by:</h3>	
+									<?php }?>
+									<?php if(count($transact['sign'])>0){
+										foreach($transact['sign'] as $sign){
+											echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
+										}
+									}
+								?>
 					
 									
 								</div>

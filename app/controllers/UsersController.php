@@ -863,14 +863,16 @@ foreach($data as $tx){
 				break;
 			}		
 			if($addresses['signTrans'][($noOfTrans-1)]['complete']==true){
-			$signrawtransaction = $addresses['signTrans'][($noOfTrans-1)]['hex'];
+				$signrawtransaction = $addresses['signTrans'][($noOfTrans-1)]['hex'];
 			}else{
 				return $this->redirect(array('controller'=>'ex','action'=>'dashboard/'));	
 			}
 			if($addresses['security']==$noOfTrans){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction);
-				if(array_key_exists('error' ,$sendrawtransaction)){
+				if(is_array($sendrawtransaction)){
+					if(array_key_exists('error' ,$sendrawtransaction)){
 					return compact('sendrawtransaction');	
+					}
 				}else{
 					$data = array(
 						'sendTrans'=>$sendrawtransaction,
