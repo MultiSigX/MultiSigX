@@ -559,8 +559,8 @@ foreach($data as $tx){
 			$currency = $this->request->data['currency'];
 			
 			$calcBalance = round($Amount[0]+$Amount[1]+$Amount[2]+$TxFee+$CommissionValue,8);
-			print_r($calcBalance);
-			print_r($finalBalance);
+//			print_r($calcBalance);
+//			print_r($finalBalance);
 			if(round($finalBalance,8)!=$calcBalance){
 				return $this->redirect(array('controller'=>'ex','action'=>'withdraw/'.$multiAddress.'/create/No'));
 			}
