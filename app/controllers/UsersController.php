@@ -611,13 +611,13 @@ foreach($data as $tx){
 			
 			$createData = array($wallet_address=>round($CommissionValue,8));
 			
-			if($Amount[0]>=0){
+			if($Amount[0]>0 && $Address[0]!=""){
 				$createData = array_merge_recursive($createData,array($Address[0]=>round($Amount[0],8)));
 			}
-			if($Amount[1]>=0){
+			if($Amount[1]>0 && $Address[1]!=""){
 				$createData = array_merge_recursive($createData,array($Address[1]=>round($Amount[1],8)));
 			}
-			if($Amount[2]>=0){
+			if($Amount[2]>0 && $Address[2]!=""){
 				$createData = array_merge_recursive($createData,array($Address[2]=>round($Amount[2],8)));
 			}
 				$createrawtransaction = $coin->createrawtransaction(array($createTrans),$createData);
