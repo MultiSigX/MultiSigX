@@ -74,11 +74,13 @@ foreach($relations as $relation){
 											$noOfSign++;
 										}
 									}
-									foreach($transact['sign'] as $sign){
-										echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
-										if($sign['username']==$user['username']){	
-											$signed = "Yes";		
-											break;
+									if(count($transact['sign'])>0){
+										foreach($transact['sign'] as $sign){
+											echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
+											if($sign['username']==$user['username']){	
+												$signed = "Yes";		
+												break;
+											}
 										}
 									}
 								?>
