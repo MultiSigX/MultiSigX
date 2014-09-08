@@ -166,7 +166,7 @@ class UsersController extends \lithium\action\Controller {
 				if(empty($details)==1){
 					return $this->redirect('Users::email');
 				}else{
-					return $this->redirect('ex::dashboard');
+					return $this->redirect('Users::signin');
 				}
 			}else{return $this->redirect('Users::email');}
 
