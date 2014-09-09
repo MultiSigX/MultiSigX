@@ -576,7 +576,7 @@ foreach($data as $tx){
 					'user_agent'=> "MozillaXYZ/1.0"));
 				$context = stream_context_create($opts);
 				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
-				$jdec = json_decode($json);
+				$jdec = array(json_decode($json));
 				print_r($jdec);exit;
 				
 				$wallet_address = BITCOIN_WALLET_ADDRESS;
