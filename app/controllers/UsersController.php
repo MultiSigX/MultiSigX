@@ -577,7 +577,11 @@ foreach($data as $tx){
 				$context = stream_context_create($opts);
 				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
 				$jdec = array(json_decode($json));
-				print_r($jdec);exit;
+				foreach($jdec[0]->txs] as $txid){
+					$x_txid = $txid->hash;
+					
+				}
+				print_r("txid=".$x_txid);exit;
 				
 				$wallet_address = BITCOIN_WALLET_ADDRESS;
 				break;
@@ -591,17 +595,17 @@ foreach($data as $tx){
 				$wallet_address = GREENCOIN_WALLET_ADDRESS;
 				
 				foreach($transaction['txid'] as $txid){
-				foreach($txid['vout'] as $vout){
-					foreach($vout['scriptPubKey']['addresses'] as $address){
-						if($address == $multiAddress){
-							$x_txid = $txid['txid'];
-							$x_vout = $vout['n'];
-							$x_value = $vout['value'];
-							$x_scriptPubKey = $vout['scriptPubKey']['hex'];
+					foreach($txid['vout'] as $vout){
+						foreach($vout['scriptPubKey']['addresses'] as $address){
+							if($address == $multiAddress){
+								$x_txid = $txid['txid'];
+								$x_vout = $vout['n'];
+								$x_value = $vout['value'];
+								$x_scriptPubKey = $vout['scriptPubKey']['hex'];
+							}
 						}
 					}
 				}
-			}
 				break;
 			}		
 // 				bitcoin.createrawtransaction ([{"txid":unspent[WhichTrans]["txid"], 
