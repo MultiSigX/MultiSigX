@@ -578,7 +578,7 @@ foreach($data as $tx){
 				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
 				$function = new Functions();
 				$jdec = $function->objectToArray(json_decode($json));
-				print_r($jdec);
+//				print_r($jdec);
 				foreach($jdec['txs'] as $txid){
 					foreach($txid->out as $out){
 						if($out->addr == $multiAddress){
@@ -589,11 +589,12 @@ foreach($data as $tx){
 						}
 					}
 				}
-				print_r("script=".$x_scriptPubKey);
+
+/*				print_r("script=".$x_scriptPubKey);
 				print_r("value=".$x_value);
 				print_r("out=".$x_vout);
 				print_r("txid=".$x_txid);exit;
-				
+*/				
 				$wallet_address = BITCOIN_WALLET_ADDRESS;
 				break;
 
