@@ -916,8 +916,8 @@ foreach($data as $tx){
 			}else{
 				return $this->redirect(array('controller'=>'ex','action'=>'dashboard/'));	
 			}
-print_r($addresses['security']);
-print_r($noOfTrans);
+// print_r($addresses['security']);
+// print_r($noOfTrans);
 
 			if($addresses['security']==$noOfTrans){
 				$sendrawtransaction = $coin->sendrawtransaction($signrawtransaction);
