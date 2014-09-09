@@ -577,7 +577,7 @@ foreach($data as $tx){
 				$context = stream_context_create($opts);
 				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
 				$jdec = array(json_decode($json));
-				foreach($jdec[0]->txs] as $txid){
+				foreach($jdec[0]->txs as $txid){
 					$x_txid = $txid->hash;
 					
 				}
