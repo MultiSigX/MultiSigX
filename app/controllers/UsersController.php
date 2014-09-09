@@ -579,11 +579,19 @@ foreach($data as $tx){
 				$function = new Functions();
 				$jdec = $function->objectToArray(json_decode($json));
 				print_r($jdec);
-				foreach($jdec[0]['txs'] as $txid){
-					$x_txid = $txid->hash;
-					
-					
+				foreach($jdec['txs'] as $txid){
+					foreach($txid->out as $out){
+						if($out->addr == $multiAddress){
+							$x_txid = $txid->hash;
+							$x_value = $out->value;
+							$x_vout = $out->n;
+							$x_scriptPubKey = $out->script;
+						}
+					}
 				}
+				print_r("script=".$x_scriptPubKey);
+				print_r("value=".$x_value);
+				print_r("out=".$x_vout);
 				print_r("txid=".$x_txid);exit;
 				
 				$wallet_address = BITCOIN_WALLET_ADDRESS;
