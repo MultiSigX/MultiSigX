@@ -298,10 +298,12 @@ foreach($relations as $relation){
 									Transaction created on:<br>
 									<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
 									by <?=$transact['create']['username']?>, send to
-									<?php 
-									for($i=0;$i<3;$i++){?>
+									<?php for($i=0;$i<3;$i++){
+									if($transact['create']['withdraw']['amount'][$i]>0){
+									?>
 									<code class="label label-success"><?=number_format($transact['create']['withdraw']['amount'][$i],8)?> <?=$addresses['currency']?> - <?=$transact['create']['withdraw']['address'][$i]?></code><br>
-									<?php }?>
+									<?php }
+									}?>
 									</h4>
 									<h3> Signed by:</h3>
 									<?php 
