@@ -744,6 +744,27 @@ foreach($data as $tx){
 				$transaction = Bitblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
+
+				$opts = array(
+			  'http'=> array(
+					'method'=> "GET",
+					'user_agent'=> "MozillaXYZ/1.0"));
+				$context = stream_context_create($opts);
+				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
+				$function = new Functions();
+				$jdec = $function->objectToArray(json_decode($json));
+//				print_r($jdec);
+				foreach($jdec['txs'] as $txid){
+					foreach($txid->out as $out){
+						if($out->addr == $multiAddress){
+							$x_txid = $txid->hash;
+							$x_value = $out->value;
+							$x_vout = $out->n;
+							$x_scriptPubKey = $out->script;
+						}
+					}
+				}
+
 				$wallet_address = BITCOIN_WALLET_ADDRESS;
 				break;
 
@@ -753,14 +774,6 @@ foreach($data as $tx){
 				$transaction = Greenblocks::find("first",array(
 					"conditions"=>array("txid.vout.scriptPubKey.addresses"=>$multiAddress)
 				));
-				$wallet_address = GREENCOIN_WALLET_ADDRESS;
-				break;
-			}		
-// bitcoin.signrawtransaction (rawtransact,
-//  [{"txid":unspent[WhichTrans]["txid"],
-//  "vout":unspent[WhichTrans]["vout"],"scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
-//  "redeemScript":unspent[WhichTrans]["redeemScript"]}],
-//  [multisigprivkeyone])			
 			foreach($transaction['txid'] as $txid){
 				foreach($txid['vout'] as $vout){
 					foreach($vout['scriptPubKey']['addresses'] as $address){
@@ -773,6 +786,15 @@ foreach($data as $tx){
 					}
 				}
 			}
+
+				$wallet_address = GREENCOIN_WALLET_ADDRESS;
+				break;
+			}		
+// bitcoin.signrawtransaction (rawtransact,
+//  [{"txid":unspent[WhichTrans]["txid"],
+//  "vout":unspent[WhichTrans]["vout"],"scriptPubKey":unspent[WhichTrans]["scriptPubKey"],
+//  "redeemScript":unspent[WhichTrans]["redeemScript"]}],
+//  [multisigprivkeyone])			
 			$signTrans = array(
 				'txid'=>$x_txid,
 				'vout'=>$x_vout,
