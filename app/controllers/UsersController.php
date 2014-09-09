@@ -576,9 +576,12 @@ foreach($data as $tx){
 					'user_agent'=> "MozillaXYZ/1.0"));
 				$context = stream_context_create($opts);
 				$json = file_get_contents('http://blockchain.info/address/'.$multiAddress.'/?format=json', false, $context);
-				$jdec = array(json_decode($json));
-				foreach($jdec[0]->txs as $txid){
+				$function = new Functions();
+				$jdec = $function->objectToArray(json_decode($json));
+				print_r($jdec);
+				foreach($jdec[0]['txs'] as $txid){
 					$x_txid = $txid->hash;
+					
 					
 				}
 				print_r("txid=".$x_txid);exit;
