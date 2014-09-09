@@ -302,7 +302,7 @@ foreach($relations as $relation){
 									if($transact['create']['withdraw']['amount'][$i]>0){
 									?>
 									<code class="label label-success"><?=number_format($transact['create']['withdraw']['amount'][$i],8)?> <?=$addresses['currency']?> - <?=$transact['create']['withdraw']['address'][$i]?></code><br>
-									<?php }
+									<?php } 
 									}?>
 									</h4>
 									<h3> Signed by:</h3>
