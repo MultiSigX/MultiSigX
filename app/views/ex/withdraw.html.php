@@ -204,7 +204,7 @@ foreach($relations as $relation){
 									<span id="Error<?=$i?>"></span>
 									</td>
 									<td>
-									<?=$this->form->field('sendAmount['.$i.']', array('type' => 'number', 'label'=>'','placeholder'=>'0.0000','class'=>'form-control','value'=>$value,'min'=>0,'max'=>$Amount,'step'=>0.0001,'style'=>'text-align:right','onChange'=>'CreateTrans('.$final_balance.','.$commission.','.$currencies['txFee'].');','pattern'=>'' )); ?>
+									<?=$this->form->field('sendAmount['.$i.']', array('type' => 'number', 'label'=>'','placeholder'=>'0.0000','class'=>'form-control','value'=>$value,'min'=>0,'max'=>$Amount,'step'=>0.000001,'style'=>'text-align:right','onChange'=>'CreateTrans('.$final_balance.','.$commission.','.$currencies['txFee'].');','pattern'=>'' )); ?>
 									</td>
 								</tr>
 								<?php } ?>
