@@ -171,7 +171,7 @@ foreach($relations as $relation){
 
 <?php 
 	$Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100); 
-	$comm = number_format($final_balance*$commission/100,4);
+	$comm = number_format($final_balance*$commission/100,8);
 ?>
 
 <div class="modal fade" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalCreate" aria-hidden="true">
