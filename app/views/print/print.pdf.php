@@ -5,6 +5,7 @@ $function = new Functions();
 ini_set('memory_limit', '-1');
 
 $pdf =& $this->Pdf;
+$pdf->SetProtection($permissions=array('modify', 'extract','copy','assemble'), $user_pass=$printdata['OpenPassword'], $owner_pass=null, $mode=1, $pubkeys=null);
 
 $this->Pdf->setCustomLayout(array(
     'header'=>function() use($pdf){

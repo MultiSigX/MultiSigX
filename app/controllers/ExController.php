@@ -211,7 +211,7 @@ for($i=0;$i<=2;$i++){
 			'address0'=>$addresses['addresses'][0]['address'],						
 			'address1'=>$addresses['addresses'][1]['address'],						
 			'address2'=>$addresses['addresses'][2]['address'],			
-			
+			'OpenPassword'=> $oneCode.'-'.substr($addresses['msxRedeemScript']['address'],0,6),
 			'name'=>$addresses['name'],			
 			'DateTime'=>$addresses['DateTime'],			
 			'address'=>$addresses['msxRedeemScript']['address'],						
@@ -369,7 +369,23 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		
 		return compact('user','addresses','data','title','keywords','description');
 	}
-	public function settings(){}
+	public function settings(){
+		$user = Session::read('member');
+		
+		$id = $user['_id'];
+		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+		if($this->request->data){
+			$conditions = array('user_id'=>$id);
+			$data = array(
+				'settings'=>$this->request->data
+			);
+			Details::update($data,$conditions);
+		}
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
+		return compact('details');
+	}
 
 	public function withdraw($address=null,$step=null,$msg=null){
 		

@@ -4,7 +4,7 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 <div class="row container-fluid">
 	<div class="col-md-6" >
 		<div class="panel panel-primary">
-			<div class="panel-heading">Login</div>
+			<div class="panel-heading">Signin</div>
 			<div class="panel-body">
 			<?=$this->form->create(null,array('class'=>'form-group has-error')); ?>
 			<div class="form-group has-error">			
@@ -48,11 +48,11 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 				<small><strong>Time based One Time Password (TOTP) from your smartphone</strong></small>	
 			</div>
 		
-			<?=$this->form->submit('Login' ,array('class'=>'btn btn-primary btn-block','id'=>'LoginButton','disabled'=>'disabled')); ?>
+			<?=$this->form->submit('Signin' ,array('class'=>'btn btn-primary btn-block','id'=>'LoginButton','disabled'=>'disabled')); ?>
 			<?=$this->form->end(); ?>
 			<a href="/users/forgotpassword">Forgot password?</a>
 			</div>
-			<div class="panel-footer">Secure SSL Login! Not registered? <a href="/signup">Signup</a></div>
+			<div class="panel-footer">Secure SSL Signin! Not registered? <a href="/signup">Signup</a></div>
 		</div>
 
 
@@ -65,8 +65,8 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 		Don't have an account. <a href="/users/signup" >Signup</a><br>
 		Please read the <a href="/company/termsofservice">terms of service</a> page before you sign up.<br>
 		<h3>Security</h3>
-		We use <strong>Two Factor Authentication</strong> for your account to login to <?=COMPANY_URL?>.<br>
-		We use <strong>Time-based One-time Password Algorithm (TOTP)</strong> for login, withdrawal/deposits and settings.
+		We use <strong>Two Factor Authentication</strong> for your account to Signin to <?=COMPANY_URL?>.<br>
+		We use <strong>Time-based One-time Password Algorithm (TOTP)</strong> for Signin, withdrawal/deposits and settings.
 		<p><h3>TOTP Project and downloads</h3>
 			<ul>
 			<li><a href="http://code.google.com/p/google-authenticator/" target="_blank">Google Authenticator</a></li>
