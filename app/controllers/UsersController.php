@@ -1057,5 +1057,31 @@ foreach($data as $tx){
 			Addresses::update($unset,$conditions);	
 			return $this->redirect(array('controller'=>'ex','action'=>'withdraw/'.$multiAddress));		
 	}
+	
+		public function CheckTOTP(){
+		$user = Session::read('default');
+		if ($user==""){return $this->render(array('json' => false));}
+		$id = $user['_id'];
+		$details = Details::find('first',
+			array('conditions'=>array('user_id'=> (string) $id))
+		);
+
+		$CheckCode = $this->request->query['CheckCode'];		
+		$ga = new GoogleAuthenticator();
+		$checkResult = $ga->verifyCode($details['secret'], $CheckCode, 2);		
+		if ($checkResult) {
+			$data = array(
+				'TOTP.Validate'=>false,
+				'TOTP.Security'=>false,				
+			);
+			$details = Details::find('first',
+				array('conditions'=>array('user_id'=> (string) $id))
+			)->save($data);
+			return $this->render(array('json' => array('value'=>true)));
+		}else{
+			return $this->render(array('json' => array('value'=>false)));
+		}
+	}
+
 }
 ?>

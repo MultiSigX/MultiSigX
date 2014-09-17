@@ -309,6 +309,26 @@ function ConfirmTrans(){
 
 }
 
+function CheckTOTP(){
+	if($("#CheckCode").val()==""){return false;}
+	$.getJSON('/Users/CheckTOTP/',{
+			  CheckCode:$("#CheckCode").val()
+			  },
+		function(ReturnValues){
+			if(ReturnValues['value']==false){
+				$("#ErrorTOTP").attr('class','alert alert-danger');
+				//window.location.assign("/ex/settings");		
+			}
+			if(ReturnValues['value']==true){
+				$("#SuccessTOTP").attr('class','alert alert-success');
+				$("#EnterTOTP").attr('class','hidden');
+				$("#ErrorTOTP").attr('class','hidden');
+			}
+		}
+	);
+}
+
+
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);

@@ -1,15 +1,50 @@
+<?php
+use li3_qrcode\extensions\action\QRcode;
+?>
 <div class="col-md-12  container-fluid" >
 	<div class="panel panel-primary">
 		<div class="panel-heading">Settings</div>
 		<div class="panel-body" style="text-align:center">
 			<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXSettingForm')); ?>
 			<h4>Gender</h4>
-			<input type="radio" name="Gender" id="GenderMale" checked  value="Male"> Male
-			<input type="radio" name="Gender" id="GenderFemale" value="Female"> Female<br>
-			<h4>Alternate email</h4>
-			<?=$this->form->field('email', array('label'=>'','type'=>'email','value'=>$detail['settings']['email'],'class'=>'form-control')); ?>
+			<input type="radio" name="Gender" id="GenderMale" checked  value="Male" /> Male
+			<input type="radio" name="Gender" id="GenderFemale" value="Female" /> Female<br>
+			<h4>Mobile Phone</h4>
+			<input type="tel" name="mobile" id="mobile" placeholder="+CC xxxxxxxxxx" />
 			<input type="submit" id="SubmitButton" class="btn btn-primary" value="Save" onClick='$("#SubmitButton").attr("disabled", "disabled");'><br>
 			<?=$this->form->end(); ?>
+
+			<h4>Google TOTP<br>(Time based One Time Password)</h4>
+			<ol>
+				<li><strong>Install app:</strong>
+    Install the app on your device. For Android at <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Google play</a> while for iOS at <a href="https://itunes.apple.com/en/app/google-authenticator/id388497605?mt=8" target="_blank">Apple Store</a>. 
+				</li>
+				<li><strong>Add account:</strong>
+    Add an account to the Google Authenticator App and scan the QR code or manually enter exact code.</li>
+				<li><strong>Confirm code:</strong>
+    Google Authenticator will now show a number which in order to complete the two factor setup you need to enter below. </li>
+				</ol>
+				<p>The QR code for Google Authenticator access to your wallet is:</p>
+			<img src="<?=$qrCodeUrl?>" scrolling="no" height="200px" /><br>
+			<p>You can also copy the code manually:</p>
+			<?=$details['secret']?>
+			
+			<form role="form" class="form-horizontal ">
+				<div class="form-group col-xs-12">
+					<label class="control-label" for="wallet-google-conf-code">Authenticator code</label><br>
+					<div class="col-md-4 col-md-offset-4">
+						<div class="alert alert-success hidden" id="SuccessTOTP">TOTP Authenticated</div>
+						<div class="input-group" id="EnterTOTP">
+							<input class="form-control" required="required" maxlength="6" pattern="[0-9]{6}" id="CheckCode" placeholder="Please enter received code" type="password">
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-primary" onClick="CheckTOTP();">Enable TOTP</button>
+								</span>
+						</div><br>
+						<span id="ErrorTOTP" class="alert alert-danger hidden">TOTP not correct</span>
+					</div>
+				</div>
+			</form>
+																
 		</div>
 		<div class="panel-footer">
 		</div>

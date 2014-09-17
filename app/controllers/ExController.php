@@ -384,7 +384,12 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$details = Details::find('first',array(
 			'conditions'=>array('user_id'=>$id)
 		));
-		return compact('details');
+		$secret = $details['secret'];
+		$ga = new GoogleAuthenticator();
+		$qrCodeUrl = $ga->getQRCodeGoogleUrl("MultiSigX-".$details['username'], $secret);
+		
+		
+		return compact('details','qrCodeUrl');
 	}
 
 	public function withdraw($address=null,$step=null,$msg=null){
