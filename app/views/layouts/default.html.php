@@ -43,6 +43,7 @@ if(count($detail)==0){
 
     <!-- Bootstrap core CSS -->
     <link href="/bootstrap/css/<?=$theme?>-bootstrap.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
+    <link href="/bootstrap/css/Admin.css?v=<?=rand(1,100000000)?>" rel="stylesheet">				
     <!-- Custom styles for this template -->
     <link href="/bootstrap/css/dashboard.css?v=<?=rand(1,100000000)?>" rel="stylesheet"> 
 <style type="text/css">

@@ -5,15 +5,26 @@ use li3_qrcode\extensions\action\QRcode;
 	<div class="panel panel-primary">
 		<div class="panel-heading">Settings</div>
 		<div class="panel-body" style="text-align:center">
-			<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXSettingForm')); ?>
-			<h4>Gender</h4>
-			<input type="radio" name="Gender" id="GenderMale" checked  value="Male" /> Male
-			<input type="radio" name="Gender" id="GenderFemale" value="Female" /> Female<br>
-			<h4>Mobile Phone</h4>
-			<input type="tel" name="mobile" id="mobile" placeholder="+CC xxxxxxxxxx" />
-			<input type="submit" id="SubmitButton" class="btn btn-primary" value="Save" onClick='$("#SubmitButton").attr("disabled", "disabled");'><br>
-			<?=$this->form->end(); ?>
-
+		
+			<div class="panel panel-primary">
+				<div class="panel-heading">Personal</div>
+				<div class="panel-body">
+				<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXSettingForm')); ?>
+					<h4>Gender</h4>
+					<input type="radio" name="Gender" id="GenderMale" <?php if($details['settings']['Gender']=="Male"){echo " checked ";}?> value="Male" /> Male
+					<input type="radio" name="Gender" id="GenderFemale" <?php if($details['settings']['Gender']=="Female"){echo " checked ";}?> value="Female" /> Female<br>
+					<h4>Mobile Phone</h4>
+					<input type="tel" name="mobile" id="mobile" placeholder="+CC xxxxxxxxxx" value="<?=$details['settings']['mobile']?>"/><br>
+					
+					<input type="submit" id="SubmitButton" class="btn btn-primary" value="Save" onClick='$("#SubmitButton").attr("disabled", "disabled");'><br>
+				<?=$this->form->end(); ?>
+				
+			</div>
+		</div>
+		
+			<div class="panel panel-danger">
+				<div class="panel-heading">Security</div>
+				<div class="panel-body">
 			<h4>Google TOTP<br>(Time based One Time Password)</h4>
 			<ol>
 				<li><strong>Install app:</strong>
@@ -44,8 +55,22 @@ use li3_qrcode\extensions\action\QRcode;
 					</div>
 				</div>
 			</form>
-																
+			
+			<h4>Change Password</h4>
+					<?=$this->form->create("",array('url'=>'/ex/password/','role'=>'form','class'=>'form-horizontal')); ?>
+					<div class="col-md-4 col-md-offset-4">
+					<?=$this->form->field('oldpassword', array('type' => 'password', 'label'=>'Old Password','placeholder'=>'Password','class'=>'form-control')); ?>					
+					<?=$this->form->field('password', array('type' => 'password', 'label'=>'New Password','placeholder'=>'Password','class'=>'form-control' )); ?>
+					<?=$this->form->field('password2', array('type' => 'password', 'label'=>'Repeat new password','placeholder'=>'same as above','class'=>'form-control' )); ?>
+					<?=$this->form->hidden('key', array('value'=>$details['key']))?><br>
+					<?=$this->form->submit('Change' ,array('class'=>'btn btn-primary')); ?>					
+					</div>
+					<?=$this->form->end(); ?>
+				
+			</div>
+			</div>														
 		</div>
+		
 		<div class="panel-footer">
 		</div>
 	</div>
