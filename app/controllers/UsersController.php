@@ -1176,7 +1176,11 @@ $toMobile = $Phone.$toMobile;
 	$msg = " Dear ".$details['username'].",Please enter MultiSigX verification code: ".$SMSCode." on phone verify page on the website https://MultiSigX.com/ex/settings Thanks";
 	//Dear ##Field##,Please enter MultiSigX verification code: ##Field## on phone verify page on the website https://MultiSigX.com/ex/settings.Thanks
 	
-	$returnvalues = $function->SMS($toMobile,$msg);	
+	if($toCountry=="IN"){
+		$returnvalues = $function->SMS($toMobile,$msg);	
+	}else{
+		$returnvalues = $function->WorldSMS($toMobile,$msg);	
+	}
 	
 	print_r($toMobile."-".$msg);exit;
 	return $this->render(array('json' => array("msg"=>"sent")));

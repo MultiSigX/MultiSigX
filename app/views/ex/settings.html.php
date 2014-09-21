@@ -58,7 +58,7 @@ use app\models\Countries;
 				<div class="panel-heading">Upload Picture</div>
 				<div class="panel-body">			
 					<div class="col-md-12 ">
-					<?=$this->form->create(null,array('class'=>'form-group has-error','id'=>'MSXPictureSettingForm','type'=>'file')); ?>					
+					<?=$this->form->create(null,array('url'=>'','class'=>'form-group has-error','id'=>'MSXPictureSettingForm','type'=>'file')); ?>					
 					<label for="Picture">Your picture</label>
 						<input id="Picture" name="Picture" type="file" />
 						<p class="help-block">Your picture should be jpg, png, gif with max size 300x300 px</p>
