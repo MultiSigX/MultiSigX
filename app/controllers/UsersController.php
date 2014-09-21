@@ -8,6 +8,7 @@ use app\models\Details;
 use app\models\Addresses;
 use app\models\Parameters;
 use app\models\Settings;
+use app\models\Countries;
 use app\models\Greenblocks;
 use app\models\Bitblocks;
 use app\models\File;
@@ -1130,6 +1131,77 @@ foreach($data as $tx){
 	return compact('msg');
 	}
 
+	public function SendSMS(){
+	
+		$user = Session::read('member');
+		$id = $user['_id'];
+	
+	// $toMobile = "917597219319";
+		$ga = new GoogleAuthenticator();
+		$secret = $ga->createSecret(64);
+		$details = Details::find('first',array(
+					'conditions'=>array('user_id'=>(string)$id)
+		));
+		
+		
+		if($details['SMSCodeused']=='Yes' || $details['SMSCodeused']==""){
+		$SMSCode = $ga->getCode($secret);	
+			$data = array(
+				'SMSCode' => $SMSCode,
+				'SMSCodeused' => 'No'
+			);
+			$details = Details::find('all',array(
+						'conditions'=>array('user_id'=>(string)$id)
+			))->save($data);
+		}
+		
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>(string)$id)
+		));
+		$toMobile = $details['settings']['mobile'];
+		$toCountry = $details['settings']['Country'];
+		
+		
+		$country = Countries::find('first',array(
+			'conditions'=>array('ISO'=>$toCountry)
+		));
+		
+		$Phone = (int)$country['Phone'];
+		
+		
+		$SMSCode = $details['SMSCode'];
+		$function = new Functions();
+	
+$toMobile = $Phone.$toMobile;
+	$msg = " Dear ".$details['username'].",Please enter MultiSigX verification code: ".$SMSCode." on phone verify page on the website https://MultiSigX.com/ex/settings Thanks";
+	//Dear ##Field##,Please enter MultiSigX verification code: ##Field## on phone verify page on the website https://MultiSigX.com/ex/settings.Thanks
+	
+	$returnvalues = $function->SMS($toMobile,$msg);	
+	
+	print_r($toMobile."-".$msg);exit;
+	return $this->render(array('json' => array("msg"=>"sent")));
+	}
+	
+	public function CheckSMS(){
+		$user = Session::read('member');
+		$id = $user['_id'];
+		$CheckCode = $this->request->query['CheckCode'];				
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>(string)$id)
+		));
+		$SMSCode = $details['SMSCode'];
+	if($CheckCode==$SMSCode){
+			$data = array(
+				'SMSCodeused' => 'Yes'
+			);
+				$details = Details::find('all',array(
+						'conditions'=>array('user_id'=>(string)$id)
+			))->save($data);
+		return $this->render(array('json' => array("msg"=>"Confirmed")));
+	}else{
+		return $this->render(array('json' => array("msg"=>"NotConfirmed")));
+	}
+	}
 	
 }
 ?>

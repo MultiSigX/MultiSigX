@@ -270,6 +270,52 @@ class Functions extends \lithium\action\Controller {
 
 	
 	}
+
+function SMS($mobile,$msg){
+		$smsdata = array(
+			'user' => SMSLANE_USERNAME,
+			'password' => SMSLANE_PASSWORD,
+			'msisdn' => str_replace("+","", $mobile),
+			'sid' => SMSLANE_SID,
+			'gwid'=> 2,
+			'msg' => $msg,
+			'fl' =>"0",
+		);
+	
+		$sms = new Smslane();		
+
+		list($header, $content) = $sms->SendSMS(
+			"http://www.smslane.com/vendorsms/pushsms.aspx", // the url to post to
+			"http://".$_SERVER['HTTP_HOST']."/users/accounts", // its your url
+			$smsdata
+		);
+		
+//		print_r($header);
+//		print_r($content);
+	}
+	
+function WorldSMS($mobile,$msg){
+		$smsdata = array(
+			'user' => SMSLANE_USERNAME,
+			'password' => SMSLANE_PASSWORD,
+			'msisdn' => str_replace("+","", $mobile),
+			'sid' => SMSLANE_SID,
+			'msg' => $msg,
+			'fl' =>"0",
+		);
+	
+		$sms = new Smslane();		
+
+		list($header, $content) = $sms->worldSMS(
+			"http://www.smslane.com/vendorsms/pushsms.aspx", // the url to post to
+			"http://".$_SERVER['HTTP_HOST']."/users/accounts", // its your url
+			$smsdata
+		);
+		
+//		print_r($header);
+//		print_r($content);
+	}
+	
 	
 }
 ?>

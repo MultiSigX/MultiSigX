@@ -32,7 +32,13 @@ use app\extensions\action\Functions;
 							<ul class="dropdown-menu" style="width:200px">
 								<!-- User image -->
 								<li class="user-header bg-light-blue text-center"><br>
-												<img src="../img/avatar3.png" class="img-circle" alt="<?=$user['firstname']?> <?=$user['lastname']?>" width="150" />
+								<?php 
+								if($details['settings']['Gender']==""){$Picture="/img/avatar0.png";};
+								if($details['settings']['Gender']=="Male"){$Picture="/img/avatarM1.png";};
+								if($details['settings']['Gender']=="Female"){$Picture="/img/avatarF1.png";};
+								if($details['settings']['Picture']['name']!=""){$Picture="/documents/".$user['_id']."_".$details['settings']['Picture']['name'];};
+								?>
+												<img src="<?=$Picture?>" class="img-circle" alt="<?=$user['firstname']?> <?=$user['lastname']?>" width="150" />
 												<p>
 															<?=$user['firstname']?> <?=$user['lastname']?><br>
 															<small>Member since <?=gmdate('d M Y',$user['created'])?></small>

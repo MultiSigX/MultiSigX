@@ -7,6 +7,7 @@ use app\models\Currencies;
 use app\models\Addresses;
 use app\models\Relations;
 use app\models\Pages;
+use app\models\File;
 
 use lithium\data\Connections;
 use app\extensions\action\Functions;
@@ -55,7 +56,9 @@ class ExController extends \lithium\action\Controller {
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
-
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
@@ -63,7 +66,7 @@ class ExController extends \lithium\action\Controller {
 			$msg = "You have already signed this withdrawal. Please wait for others to sign and send this transaction!";
 		}
 
-		return compact('user','addresses','refered','currencies','balances','title','keywords','description','msg');
+		return compact('user','details','addresses','refered','currencies','balances','title','keywords','description','msg');
 	}
 	
 	public function create(){
@@ -330,12 +333,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
 
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','addresses','data','title','keywords','description');
+		return compact('user','details','addresses','data','title','keywords','description');
 	}
 
 	public function name($name = null){
@@ -362,12 +368,15 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$page = Pages::find('first',array(
 			'conditions'=>array('pagename'=>$this->request->controller.'/'.$this->request->action)
 		));
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
 
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','addresses','data','title','keywords','description');
+		return compact('user','details','addresses','data','title','keywords','description');
 	}
 	public function settings(){
 		$user = Session::read('member');
@@ -376,10 +385,34 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
 		if($this->request->data){
 			$conditions = array('user_id'=>$id);
+			
+			if($this->request->data['Picture']['name']!=''){
+				$remove = File::remove('all',array(
+					'conditions'=>array( 'user_id' => $id)
+				));
+				$fileData = array(
+							'file' => $this->request->data['Picture'],
+							'user_id'=>$id,
+				);
+				$file = File::create();
+				$file->save($fileData);
+			}
+			
 			$data = array(
-				'settings'=>$this->request->data
+				'settings'=>$this->request->data,
 			);
+			
 			Details::update($data,$conditions);
+
+		}
+		
+		$image_address = File::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
+		if($image_address['_id']!=""){
+			$imagename_address = $id.'_'.$image_address['filename'];
+			$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_address;
+			file_put_contents($path, $image_address->file->getBytes());
 		}
 		$details = Details::find('first',array(
 			'conditions'=>array('user_id'=>$id)
@@ -387,11 +420,12 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$secret = $details['secret'];
 		$ga = new GoogleAuthenticator();
 		$qrCodeUrl = $ga->getQRCodeGoogleUrl("MultiSigX-".$details['username'], $secret);
-		
-		
-		return compact('details','qrCodeUrl');
+
+		return compact('details','qrCodeUrl','imagename_address');
 	}
 
+
+	
 	public function withdraw($address=null,$step=null,$msg=null){
 		
 		if($address==null){
@@ -490,13 +524,16 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			'order'=>array('type'=>-1)
 		));
 
+		$details = Details::find('first',array(
+			'conditions'=>array('user_id'=>$id)
+		));
 		
 		
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','addresses','data','final_balance','next','title','keywords','description','currencies','relations','button','transact','msg');
+		return compact('user','details','addresses','data','final_balance','next','title','keywords','description','currencies','relations','button','transact','msg');
 	}
 	
 		public function password(){
