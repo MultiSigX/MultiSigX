@@ -15,7 +15,8 @@ class Users extends \lithium\data\Model {
 		'updated'	=>	array('type' => 'datetime', 'null' => false),
 		'created'	=>	array('type' => 'datetime', 'null' => false),
 		'verified'	=>	array('type' => 'string', 'null' => true),
-		'ip'	=>	array('type' => 'string', 'null' => true),		
+		'ip'	=>	array('type' => 'string', 'null' => true),
+		'referrer'=>array('type' => 'string', 'null' => true),
 	);
 
 	protected $_meta = array(

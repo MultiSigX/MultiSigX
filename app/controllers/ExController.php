@@ -400,6 +400,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			
 			$data = array(
 				'settings'=>$this->request->data,
+				'SMSVerified'=>'No',
 			);
 			
 			Details::update($data,$conditions);
@@ -424,7 +425,31 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		return compact('details','qrCodeUrl','imagename_address');
 	}
 
-
+	public function savepicture(){
+	$user = Session::read('member');
+		
+		$id = $user['_id'];
+		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+		if($this->request->data){
+			$conditions = array('user_id'=>$id);
+					if($this->request->data['Picture']['name']!=''){
+				$remove = File::remove('all',array(
+					'conditions'=>array( 'user_id' => $id)
+				));
+				$fileData = array(
+							'file' => $this->request->data['Picture'],
+							'user_id'=>$id,
+				);
+				$file = File::create();
+				$file->save($fileData);
+				$data = array(
+					'Picture'=>$this->request->data['Picture'],
+				);
+				Details::update($data,$conditions);
+			}
+		}
+		return $this->redirect(array('controller'=>'Ex','action'=>'settings/'));
+	}
 	
 	public function withdraw($address=null,$step=null,$msg=null){
 		

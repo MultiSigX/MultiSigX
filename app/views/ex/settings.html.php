@@ -33,13 +33,23 @@ use app\models\Countries;
 				</div>
 			</div>
 		</div>
+		<div class="panel panel-primary">
+				<div class="panel-heading">Referral Program</div>
+				<div class="panel-body">
+				<h3>Refer link: https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?></h3>
+				<button class="fb-share-button" data-href="https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?>" data-type="button"></button>
+				</div>
+		</div>
 					
 					
 		<div class="panel panel-primary">
 				<div class="panel-heading">Validate Mobile</div>
 				<div class="panel-body">			
 					<div class="col-md-12 ">
-					<a href="#" class="btn btn-primary" onclick="sendSMS();">Send SMS to mobile</a><br><br>
+					<?php if($details['SMSVerified']=="Yes"){?>
+					<button href="#" class="btn btn-primary" >Mobile verified</button><br><br>
+					<?php }else{?>
+					<button href="#" class="btn btn-primary" onclick="sendSMS();" id="SMSSending">Send SMS to mobile</button><br><br>
 					<label class="control-label" for="wallet-google-conf-code">Validate Mobile</label><br>
 						<div class="alert alert-success hidden" id="SuccessTOTP">Mobile Validated</div>
 						<div class="input-group" id="EnterMobileCode">
@@ -48,6 +58,9 @@ use app\models\Countries;
 									<button type="button" class="btn btn-primary" onClick="CheckMobile();">Check Mobile</button>
 								</span>
 						</div><br>
+					<?php }?>
+					
+					
 						<span id="ErrorMobile" class="alert alert-danger hidden">Mobile Code not correct</span>
 					</div>
 				</div>
@@ -58,7 +71,7 @@ use app\models\Countries;
 				<div class="panel-heading">Upload Picture</div>
 				<div class="panel-body">			
 					<div class="col-md-12 ">
-					<?=$this->form->create(null,array('url'=>'','class'=>'form-group has-error','id'=>'MSXPictureSettingForm','type'=>'file')); ?>					
+					<?=$this->form->create(null,array('url'=>'/ex/savepicture','class'=>'form-group has-error','id'=>'MSXPictureSettingForm','type'=>'file')); ?>					
 					<label for="Picture">Your picture</label>
 						<input id="Picture" name="Picture" type="file" />
 						<p class="help-block">Your picture should be jpg, png, gif with max size 300x300 px</p>

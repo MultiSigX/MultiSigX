@@ -335,6 +335,8 @@ function changeFlag(flag){
 }
 
 function sendSMS(){
+	$("#SMSSending").html("SMS sent");
+	$("#SMSSending").attr("disabled", "disabled");
 	$.getJSON('/Users/SendSMS/',{},
 		function(ReturnValues){
 		});

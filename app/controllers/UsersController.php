@@ -35,6 +35,9 @@ class UsersController extends \lithium\action\Controller {
 	public function index(){
 	}
 	public function signup() {	
+		if($this->request->query[r]!=""){
+			$referrer = $this->request->query[r];
+		}
 		if($this->request->data) {	
       $Users = Users::create($this->request->data);
       $saved = $Users->save();
@@ -49,6 +52,75 @@ class UsersController extends \lithium\action\Controller {
 //			$key_secret = $oauth->request_token();
 			$ga = new GoogleAuthenticator();
 			
+			if($this->request->data['referrer']!=""){
+				$refer = Details::first(array(
+						'fields'=>array('left','user_id','ancestors','username'),
+						'conditions'=>array('bitcoinaddress'=>$this->request->data['referrer'])
+					));
+				$refer_ancestors = $refer['ancestors'];
+
+				$ancestors = array();
+
+				foreach ($refer_ancestors as $ra){
+					array_push($ancestors, $ra);
+				}
+				$refer_username = (string) $refer['username'];
+
+				array_push($ancestors,$refer_username);
+
+				$refer_id = (string) $refer['user_id'];
+				$refer_left = (integer)$refer['left'];
+				$refer_left_inc = (integer)$refer['left'];
+
+				$refername = Users::find('first',array(
+						'fields'=>array('firstname','lastname'),
+						'conditions'=>array('_id'=>$refer['user_id'])
+				));
+				$refer_name = $refername['firstname'].' '.$refername['lastname'];
+
+
+			}else{
+				$refer_left = 0;
+				$refer_name = "";
+				$refer_username = "";
+				$refer_id = "";
+				$ancestors = array();
+			}
+
+			Details::update(
+				array(
+					'$inc' => array('right' => (integer)2)
+				),
+				array('right' => array('>'=>(integer)$refer_left_inc)),
+				array('multi' => true)
+			);
+			Details::update(
+				array(
+					'$inc' => array('left' => (integer)2)
+				),
+				array('left' => array('>'=>(integer)$refer_left_inc)),
+				array('multi' => true)
+			);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			$data = array(
 				'user_id'=>(string)$Users->_id,
 				'username'=>(string)$Users->username,
@@ -58,13 +130,18 @@ class UsersController extends \lithium\action\Controller {
 				'key'=>$ga->createSecret(64),
 				'secret'=>$ga->createSecret(64),
 				'Friend'=>array(),
-				'balance.BTC' => (float)0,
-				'balance.LTC' => (float)0,				
-				'balance.XGC' => (float)0,								
-				'balance.USD' => (float)0,				
-				'balance.EUR' => (float)0,
-				'balance.GBP' => (float)0,				
-			);
+				'bitcoinaddress'=>$bitcoinaddress,
+				
+				'refer'=>$Users->referrer,
+				'refer_name'=>$refer_name,
+				'refer_username'=>$refer_username,				
+				'refer_id'=>$refer_id,
+				'ancestors'=> $ancestors,				
+
+				'left'=>(integer)($refer_left+1),
+				'right'=>(integer)($refer_left+2),
+
+				);
 			Details::create()->save($data);
 
 			$email = $this->request->data['email'];
@@ -114,7 +191,7 @@ class UsersController extends \lithium\action\Controller {
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
-		return compact('title','keywords','description','saved','Users');	
+		return compact('title','keywords','description','saved','Users','referrer');	
 
 	}
 	public function email(){
@@ -1148,7 +1225,8 @@ foreach($data as $tx){
 		$SMSCode = $ga->getCode($secret);	
 			$data = array(
 				'SMSCode' => $SMSCode,
-				'SMSCodeused' => 'No'
+				'SMSCodeused' => 'No',
+				'SMSVerified'=>'No',
 			);
 			$details = Details::find('all',array(
 						'conditions'=>array('user_id'=>(string)$id)
@@ -1182,7 +1260,7 @@ $toMobile = $Phone.$toMobile;
 		$returnvalues = $function->WorldSMS($toMobile,$msg);	
 	}
 	
-	print_r($toMobile."-".$msg);exit;
+//	print_r($toMobile."-".$msg);exit;
 	return $this->render(array('json' => array("msg"=>"sent")));
 	}
 	
@@ -1196,7 +1274,10 @@ $toMobile = $Phone.$toMobile;
 		$SMSCode = $details['SMSCode'];
 	if($CheckCode==$SMSCode){
 			$data = array(
-				'SMSCodeused' => 'Yes'
+				'SMSCodeused' => 'Yes',
+				'SMSVerified'=>'Yes',
+				'mobile.verified'=>'Yes',
+				'mobile.number'=>$details['settings']['mobile'],
 			);
 				$details = Details::find('all',array(
 						'conditions'=>array('user_id'=>(string)$id)

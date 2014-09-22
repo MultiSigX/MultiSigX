@@ -36,7 +36,7 @@ use app\extensions\action\Functions;
 								if($details['settings']['Gender']==""){$Picture="/img/avatar0.png";};
 								if($details['settings']['Gender']=="Male"){$Picture="/img/avatarM1.png";};
 								if($details['settings']['Gender']=="Female"){$Picture="/img/avatarF1.png";};
-								if($details['settings']['Picture']['name']!=""){$Picture="/documents/".$user['_id']."_".$details['settings']['Picture']['name'];};
+								if($details['Picture']['name']!=""){$Picture="/documents/".$user['_id']."_".$details['Picture']['name'];};
 								?>
 												<img src="<?=$Picture?>" class="img-circle" alt="<?=$user['firstname']?> <?=$user['lastname']?>" width="150" />
 												<p>

@@ -58,7 +58,15 @@
 		<?=$this->form->field('password2', array('type' => 'password', 'label'=>'','placeholder'=>'same as above', 'class'=>'form-control','onkeyup'=>'CheckPassword(this.value);' )); ?>
 				</div>
 			</div>				
-		<?php // echo $this->recaptcha->challenge();?>
+					<div class="form-group has-error">			
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-asterisk" id="EmailIcon"></i>
+					</span>
+
+		<?=$this->form->field('referrer', array('label'=>'','placeholder'=>'Referrer ID', 'class'=>'form-control','value'=>$referrer  )); ?>
+				</div>
+			</div>				
 		<?=$this->form->submit('Sign up' ,array('class'=>'btn btn-primary btn-block')); ?>
 		<?=$this->form->end(); ?>
 			</div>
