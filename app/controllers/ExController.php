@@ -8,6 +8,7 @@ use app\models\Addresses;
 use app\models\Relations;
 use app\models\Pages;
 use app\models\File;
+use app\models\Commissions;
 
 use lithium\data\Connections;
 use app\extensions\action\Functions;
@@ -406,6 +407,10 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 			Details::update($data,$conditions);
 
 		}
+		$function = new Functions();
+		$countChild = $function->countChilds($id);
+		$levelOne = $function->levelOneChild($id);
+		$commissions = Commissions::find('all');
 		
 		$image_address = File::find('first',array(
 			'conditions'=>array('user_id'=>$id)
@@ -422,7 +427,7 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$ga = new GoogleAuthenticator();
 		$qrCodeUrl = $ga->getQRCodeGoogleUrl("MultiSigX-".$details['username'], $secret);
 
-		return compact('details','qrCodeUrl','imagename_address');
+		return compact('details','qrCodeUrl','imagename_address','countChild','levelOne','commissions');
 	}
 
 	public function savepicture(){
@@ -552,13 +557,31 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		$details = Details::find('first',array(
 			'conditions'=>array('user_id'=>$id)
 		));
+
+		$function = new Functions();
+		$countChild = $function->countChilds($id);
+		$levelOne = $function->levelOneChild($id);
+		$commissions = Commissions::find('all');
+		foreach($commissions as $commission){
+			if($countChild-$levelOne>=$commission['min'] && $countChild-$levelOne<=$commission['max']){
+				$reduceComm = $commission['Level'][1];
+				break;
+			}
+			if($levelOne>=$commission['min'] && $levelOne<=$commission['max']){
+				$reduceComm = $commission['Level'][0];
+				break;
+			}			
+		}
+		
+		
+		
 		
 		
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		
-		return compact('user','details','addresses','data','final_balance','next','title','keywords','description','currencies','relations','button','transact','msg');
+		return compact('user','details','addresses','data','final_balance','next','title','keywords','description','currencies','relations','button','transact','msg','reduceComm');
 	}
 	
 		public function password(){

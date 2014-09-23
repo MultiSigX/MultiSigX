@@ -316,6 +316,149 @@ function WorldSMS($mobile,$msg){
 //		print_r($content);
 	}
 	
+	public function getChilds($user_id){
+	#Retrieving a Full Tree
+	/* 	SELECT node.user_id
+	FROM details AS node,
+			details AS parent
+	WHERE node.lft BETWEEN parent.lft AND parent.rgt
+		   AND parent.user_id = 3
+	ORDER BY node.lft;
+	
+	parent = db.details.findOne({user_id: ObjectId("50f19bc39d5d0ce409000012")});
+	query = {left: {$gt: parent.left, $lt: parent.right}};
+	select = {user_id: 1};
+	db.details.find(query,select).sort({left: 1})
+	 */
+		$ParentDetails = Details::find('first',array(
+			'conditions'=>array(
+			'user_id' => $user_id
+			)));
+
+			$left = $ParentDetails['left'];
+			$right = $ParentDetails['right'];
+
+			$NodeDetails = Details::find('all',array(
+			'conditions' => array(
+				'left'=>array('$gt'=>$left),
+				'right'=>array('$lt'=>$right)
+			)),
+			array('order'=>array('left'=>'ASC'))
+		);
+		return $NodeDetails;
+	}
+	
+	public function countChilds($user_id){
+	#Retrieving a Full Tree
+	/* 	SELECT node.user_id
+	FROM details AS node,
+			details AS parent
+	WHERE node.lft BETWEEN parent.lft AND parent.rgt
+		   AND parent.user_id = 3
+	ORDER BY node.lft;
+	
+	parent = db.details.findOne({user_id: ObjectId("50e876e49d5d0cbc08000000")});
+	query = {left: {$gt: parent.left, $lt: parent.right}};
+	select = {user_id: 1};
+	db.details.find(query,select).sort({left: 1})
+	 */
+		$ParentDetails = Details::find('first',array(
+			'conditions'=>array(
+			'user_id' => $user_id
+			)));
+		
+			$left = $ParentDetails['left'];
+			$right = $ParentDetails['right'];
+		$NodeDetails = Details::count(array(
+			'conditions' => array(
+				'left'=>array('$gt'=>$left),
+				'right'=>array('$lt'=>$right)
+			))
+		);
+		return $NodeDetails;
+	}
+	
+	public function levelOneChild($user_id){
+		$ParentDetails = Details::find('first',array(
+			'conditions'=>array(
+			'user_id' => $user_id
+			)));
+	
+	$children = Details::find("all",array(
+		'conditions'=>array('ancestors'=>$ParentDetails['username'])
+	));
+	$single = 0;
+	foreach($children as $child){
+		if(count($child['ancestors'])==1){
+			$single++;
+		}
+	}
+
+	return $single;
+	
+	}
+	
+	public function getParents($user_id){
+	#Retrieving a Single Path above a user
+	/* SELECT parent.user_id
+	FROM details AS node,
+			details AS parent
+	WHERE node.lft BETWEEN parent.lft AND parent.rgt
+			AND node.user_id = 10
+	ORDER BY node.lft;
+	
+	node = db.details.findOne({user_id: ObjectId("50e876e49d5d0cbc08000000")});
+	query = {left: {$gt: node.left, $lt: node.right}};
+	select = {user_id: 1};
+	db.details.find(query,select).sort({left: 1})
+	 */
+			$NodeDetails = Details::find('first',array(
+				'conditions'=>array(
+				'user_id' => $user_id
+			)));
+			$left = $NodeDetails['left'];
+			$right = $NodeDetails['right'];
+
+			$ParentDetails = Details::find('all',array(
+				'conditions' => array(
+					'left'=>array('$lt'=>$left),
+					'right'=>array('$gt'=>$right)
+				)),
+				array('order'=>array('left'=>'ASC'))
+			);
+		return $ParentDetails;
+	}	
+
+	public function countParents($user_id){
+	#Retrieving a Single Path above a user
+	/* SELECT parent.user_id
+	FROM details AS node,
+			details AS parent
+	WHERE node.lft BETWEEN parent.lft AND parent.rgt
+			AND node.user_id = 10
+	ORDER BY node.lft;
+	
+	node = db.details.findOne({user_id: ObjectId("50e876e49d5d0cbc08000000")});
+	query = {left: {$gt: node.left, $lt: node.right}};
+	select = {user_id: 1};
+	db.details.find(query,select).sort({left: 1})
+	 */
+			$NodeDetails = Details::find('first',array(
+				'conditions'=>array(
+				'user_id' => $user_id
+			)));
+
+			$left = $NodeDetails['left'];
+			$right = $NodeDetails['right'];
+
+			$ParentDetails = Details::count(array(
+				'conditions' => array(
+					'left'=>array('$lt'=>$left),
+					'right'=>array('$gt'=>$right)
+				))
+			);
+		return $ParentDetails;
+	}	
 	
 }
 ?>

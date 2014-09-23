@@ -46,6 +46,7 @@ foreach($relations as $relation){
 									
 								<?php }
 								$commission = max($commarray);
+								$commission = $commission * (100-$reduceComm)/100;
 								?>
 								
 								<?php if($transact['create']['username']==$user['username']){?>
