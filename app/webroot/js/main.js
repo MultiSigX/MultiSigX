@@ -335,10 +335,11 @@ function changeFlag(flag){
 }
 
 function sendSMS(){
-	$("#SMSSending").html("SMS sent");
+	$("#SMSSending").html("SMS sending...");
 	$("#SMSSending").attr("disabled", "disabled");
 	$.getJSON('/Users/SendSMS/',{},
 		function(ReturnValues){
+			$("#SMSSending").html("SMS sent!");		
 		});
 }
 

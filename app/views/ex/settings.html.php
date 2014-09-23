@@ -6,7 +6,37 @@ use app\models\Countries;
 	<div class="panel panel-primary">
 		<div class="panel-heading">Settings</div>
 		<div class="panel-body">
-		
+		<div class="panel panel-primary">
+				<div class="panel-heading">Referral Program</div>
+				<div class="panel-body">
+				<h3>Refer link:</h3>
+				<blockquote>
+				By referring friends you can reduce the commission percent.
+				<table class="table table-condensed table-hover" style="text-align:center">
+					<tr>
+						<th width="25%">#</th>
+						<th width="25%" style="text-align:center">Level 1</th>
+						<th width="25%" style="text-align:center">Level 2 above</th>
+					</tr>
+				<?php foreach ($commissions as $commission){?>
+					<tr>
+						<th><?=$commission['min']?> to <?=$commission['max']?></th>
+						<td><?=$commission['Level'][0]?></td>
+						<td><?=$commission['Level'][1]?></td>
+					</tr>
+				<?php }?>
+					<tr class="success">
+						<th>Your friends</th>
+						<td><?=$levelOne?></td>
+						<td><?=$countChild-$levelOne?></td>
+					</tr>
+				</table>
+				</blockquote>
+				<h4>Link</h4>
+				<p>https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?></p>
+				<a href="mailto:?&body=https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?>&subject=MultiSigX Refer">Send email</a>
+				</div>
+		</div>		
 			<div class="panel panel-primary">
 				<div class="panel-heading">Personal</div>
 				<div class="panel-body">
@@ -33,40 +63,6 @@ use app\models\Countries;
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-primary">
-				<div class="panel-heading">Referral Program</div>
-				<div class="panel-body">
-				<h3>Refer link:</h3>
-				<blockquote>
-				By referring friends you can reduce the commission percent.
-				<table class="table table-condensed table-hover" style="text-align:center">
-					<tr>
-						<th width="25%">#</th>
-						<th width="25%" style="text-align:center">Level 1</th>
-						<th width="25%" style="text-align:center">Level 2 above</th>
-					</tr>
-				<?php foreach ($commissions as $commission){?>
-					<tr>
-						<th><?=$commission['min']?> to <?=$commission['max']?></th>
-						<td><?=$commission['Level'][0]?></td>
-						<td><?=$commission['Level'][1]?></td>
-					</tr>
-				<?php }?>
-					<tr class="success">
-						<th>Your friends</th>
-						<td><?=$levelOne?></td>
-						<td><?=$countChild-$levelOne?></td>
-						
-					</tr>
-				</table>
-				
-				</blockquote>
-				<h4>Link</h4>
-				<p>https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?></p>
-				<a href="mailto:?&body=https://<?=COMPANY_URL?>/signup/?r=<?=$details['bitcoinaddress']?>&subject=MultiSigX Refer">Send email</a>
-				</div>
-		</div>
-					
 					
 		<div class="panel panel-primary">
 				<div class="panel-heading">Validate Mobile</div>

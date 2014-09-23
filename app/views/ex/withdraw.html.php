@@ -8,6 +8,18 @@
 					<div class="panel-heading">
 						<h2>MultiSigX Coin Details</h2>
 					</div>
+								<?php 
+								$commarray = array();
+								foreach($data as $d){
+									foreach($relations as $relation){
+										if($d['relation']==$relation['type']){
+											array_push($commarray, $relation['commission']);
+										}
+									}
+								}
+								$commission = max($commarray);
+								$commission = $commission * (100-$reduceComm)/100;
+								?>
 					<div class="panel-body">
 						<h4>Withdraw coins from<br>
 						<code><?=$addresses['msxRedeemScript']['address']?></code><br>
@@ -15,6 +27,7 @@
 						<?=$addresses['name']?><br>
 						<?=$addresses['currencyName']?> <?=$addresses['currency']?><br>
 						Balance: <?=$final_balance?> <?=$addresses['currency']?><br>
+						Commission: <?=$commission?>%<br>
 						Security: <strong style="color:red"><?=$addresses['security']?></strong> sign required of 3 to send payments<br>
 					</h4>
 					</div>
@@ -30,25 +43,12 @@
 								<h2><i class=" icon icon-user"></i> <?=$user['username']?></h2>
 								</div>
 								<div class="panel-body">
-								<?php 
-								$commarray = array();
-								foreach($data as $d){?>
-<?php
-foreach($relations as $relation){
-	if($d['relation']==$relation['type']){
-		array_push($commarray, $relation['commission']);
-	}
-}
-?>
-								<?php if($d['username']==$user['username']){?>
+								<?php foreach($data as $d){
+										if($d['username']==$user['username']){?>
 										<h3><?=$d['relation']?>: <a href="mailto:<?=$d['email']?>?subject=MultiSigX" target="_blank"><?=$d['email']?></a></h3>
-									<?php }?>
-									
-								<?php }
-								$commission = max($commarray);
-								$commission = $commission * (100-$reduceComm)/100;
-								?>
-								
+									<?php }
+									}?>
+							
 								<?php if($transact['create']['username']==$user['username']){?>
 								
 									<h4>

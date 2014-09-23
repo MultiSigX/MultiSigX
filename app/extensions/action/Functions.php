@@ -286,7 +286,7 @@ function SMS($mobile,$msg){
 
 		list($header, $content) = $sms->SendSMS(
 			"http://www.smslane.com/vendorsms/pushsms.aspx", // the url to post to
-			"http://".$_SERVER['HTTP_HOST']."/users/accounts", // its your url
+			"http://".$_SERVER['HTTP_HOST']."/users/sms", // its your url
 			$smsdata
 		);
 		
@@ -296,10 +296,10 @@ function SMS($mobile,$msg){
 	
 function WorldSMS($mobile,$msg){
 		$smsdata = array(
-			'user' => SMSLANE_USERNAME,
-			'password' => SMSLANE_PASSWORD,
+			'user' => WORLDSMSLANE_USERNAME,
+			'password' => WORLDSMSLANE_PASSWORD,
 			'msisdn' => str_replace("+","", $mobile),
-			'sid' => SMSLANE_SID,
+			'sid' => WORLDSMSLANE_SID,
 			'msg' => $msg,
 			'fl' =>"0",
 		);
@@ -307,8 +307,8 @@ function WorldSMS($mobile,$msg){
 		$sms = new Smslane();		
 
 		list($header, $content) = $sms->worldSMS(
-			"http://www.smslane.com/vendorsms/pushsms.aspx", // the url to post to
-			"http://".$_SERVER['HTTP_HOST']."/users/accounts", // its your url
+			"http://world.smslane.com/vendorsms/GlobalPush.aspx", // the url to post to
+			"http://".$_SERVER['HTTP_HOST']."/users/sms", // its your url
 			$smsdata
 		);
 		

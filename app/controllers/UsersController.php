@@ -1250,7 +1250,7 @@ foreach($data as $tx){
 		$SMSCode = $details['SMSCode'];
 		$function = new Functions();
 	
-$toMobile = $Phone.$toMobile;
+	$toMobile = $Phone.$toMobile;
 	$msg = " Dear ".$details['username'].",Please enter MultiSigX verification code: ".$SMSCode." on phone verify page on the website https://MultiSigX.com/ex/settings Thanks";
 	//Dear ##Field##,Please enter MultiSigX verification code: ##Field## on phone verify page on the website https://MultiSigX.com/ex/settings.Thanks
 	
@@ -1287,6 +1287,6 @@ $toMobile = $Phone.$toMobile;
 		return $this->render(array('json' => array("msg"=>"NotConfirmed")));
 	}
 	}
-	
+	public function sms(){}
 }
 ?>
