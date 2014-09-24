@@ -176,7 +176,20 @@ function checkform() {
 			document.getElementById('SubmitButton').disabled = true;			
 		}
 	}
+	if($("#Email1").val()==$("#Email2").val()){
+		$("#Email2").focus();
+		document.getElementById('SubmitButton').disabled = true;		
+	}
+	if($("#Email1").val()==$("#Email3").val()){
+		$("#Email3").focus();
+		document.getElementById('SubmitButton').disabled = true;		
+	}
+	if($("#Email2").val()==$("#Email3").val()){
+		$("#Email3").focus();
+		document.getElementById('SubmitButton').disabled = true;		
+	}
 }
+
 function ChangeRelationEmail(name,value,default_escrow){
 	if(value=="MultiSigX - Escrow")	{
 		$("#"+name).val(default_escrow);
@@ -210,9 +223,27 @@ return false;
 $("#SendTxFee").html(SendTxFee);
 $("#SendTrxFee").val(SendTxFee);
 	if($("#SendToAddress0").val()!="" && $("#SendToAddress0").val().length >= 34){
-		$("#CreateSubmit").removeAttr('disabled');			
+		if($("#SendAmount0").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
 	}else{
 		document.getElementById('CreateSubmit').disabled = true;
+	}
+	if($("#SendToAddress1").val()!="" && $("#SendToAddress1").val().length >= 34){
+		if($("#SendAmount1").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
+	}
+	if($("#SendToAddress2").val()!="" && $("#SendToAddress2").val().length >= 34){
+		if($("#SendAmount2").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
 	}
 	if($("#SendToAddress0").val()!=""){
 		$("#Error0").html("Enter correct address and amount!");
@@ -284,12 +315,88 @@ $("#SendTrxFee").val(SendTxFee);
 	
 }
 
+function CreateMobileCodeCheck(){
+	$("#ErrorCreateMobileCode").attr("class", "glyphicon glyphicon-asterisk");
+	if($("#CheckCreateMobileCode").val()==""){
+	document.getElementById('CreateSubmit').disabled = true;
+	return false;
+	}
+	if($("#CheckCreateMobileCode").val().length<6){
+	document.getElementById('CreateSubmit').disabled = true;
+	return false;
+	}
+
+	$.getJSON('/Users/CheckTOTP/',{
+		 CheckCode:$("#CheckCreateMobileCode").val()
+	},
+	function(ReturnValues){	
+		if(ReturnValues['value']==false){
+			$("#ErrorCreateMobileCode").attr("class", "glyphicon glyphicon-remove");			
+			document.getElementById('CreateSubmit').disabled = true;			
+		return false;
+		}
+		if(ReturnValues['value']==true){
+			$("#ErrorCreateMobileCode").attr("class", "glyphicon glyphicon-ok");			
+			document.getElementById('CreateSubmit').disabled = false;
+		return true;
+		}
+	});
+}
+
 function CheckTotal(amount,commission){
-	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTxFee").html());
+	if($("#SendToAddress0").val()!="" && $("#SendToAddress0").val().length >= 34){
+		if($("#SendAmount0").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+			$("#SendAmount0").focus();
+			return false;
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
+	}
+	if($("#SendToAddress1").val()!="" && $("#SendToAddress1").val().length >= 34){
+		if($("#SendAmount1").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+			$("#SendAmount1").focus();
+			return false;
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
+	}
+	if($("#SendToAddress2").val()!="" && $("#SendToAddress2").val().length >= 34){
+		if($("#SendAmount2").val()<=0){
+			document.getElementById('CreateSubmit').disabled = true;
+			$("#SendAmount2").focus();
+			return false;		
+		}else{
+			$("#CreateSubmit").removeAttr('disabled');			
+		}
+	}
+
 	
+	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTxFee").html());
+	if($("#ErrorCreateMobileCode").attr("class")=="glyphicon glyphicon-remove"){
+		document.getElementById('CreateSubmit').disabled = true;
+		return false;
+	}
+	if($("#ErrorCreateMobileCode").attr("class")=="glyphicon glyphicon-asterisk"){
+		document.getElementById('CreateSubmit').disabled = true;
+		return false;
+	}
+	if($("#CheckCreateMobileCode").val()==""){
+		$("#ErrorCreateMobileCode").attr("class", "glyphicon glyphicon-remove");			
+		document.getElementById('CreateSubmit').disabled = true;
+		return false;
+	}
+	if($("#CheckCreateMobileCode").val().length<6){
+		$("#ErrorCreateMobileCode").attr("class", "glyphicon glyphicon-remove");			
+		document.getElementById('CreateSubmit').disabled = true;
+		return false;
+	}
 	if(Math.round(Total*1000000)/1000000==Math.round(amount*1000000)/1000000){return true;}else{
 		$("#CreateAlert").html("<b>Totals do not match! Please recheck!</b>");
+		document.getElementById('CreateSubmit').disabled = true;
 	return false;}
+	
 }
 
 function SignTrans(){
@@ -298,8 +405,65 @@ function SignTrans(){
 	}else{
 		document.getElementById('SignSubmit').disabled = true;				
 	}
-
 }
+
+function SignMobileCodeCheck(){
+	$("#ErrorSignMobileCode").attr("class", "glyphicon glyphicon-asterisk");
+	if($("#CheckSignMobileCode").val()==""){
+	document.getElementById('SignSubmit').disabled = true;
+	return false;
+	}
+	if($("#CheckSignMobileCode").val().length<6){
+	document.getElementById('SignSubmit').disabled = true;
+	return false;
+	}
+
+	$.getJSON('/Users/CheckTOTP/',{
+		 CheckCode:$("#CheckSignMobileCode").val()
+	},
+	function(ReturnValues){	
+		if(ReturnValues['value']==false){
+			$("#ErrorSignMobileCode").attr("class", "glyphicon glyphicon-remove");			
+			document.getElementById('SignSubmit').disabled = true;			
+		return false;
+		}
+		if(ReturnValues['value']==true){
+			$("#ErrorSignMobileCode").attr("class", "glyphicon glyphicon-ok");			
+			document.getElementById('SignSubmit').disabled = false;
+		return true;
+		}
+	});
+}
+
+function SendMobileCodeCheck(){
+	$("#ErrorSendMobileCode").attr("class", "glyphicon glyphicon-asterisk");
+	if($("#CheckSendMobileCode").val()==""){
+	document.getElementById('SendSubmit').disabled = true;
+	return false;
+	}
+	if($("#CheckSendMobileCode").val().length<6){
+	document.getElementById('SendSubmit').disabled = true;
+	return false;
+	}
+
+	$.getJSON('/Users/CheckTOTP/',{
+		 CheckCode:$("#CheckSendMobileCode").val()
+	},
+	function(ReturnValues){	
+		if(ReturnValues['value']==false){
+			$("#ErrorSendMobileCode").attr("class", "glyphicon glyphicon-remove");			
+			document.getElementById('SendSubmit').disabled = true;			
+		return false;
+		}
+		if(ReturnValues['value']==true){
+			$("#ErrorSendMobileCode").attr("class", "glyphicon glyphicon-ok");			
+			document.getElementById('SendSubmit').disabled = false;
+		return true;
+		}
+	});
+}
+
+
 function ConfirmTrans(){
 	if($("#ConfirmPrivKey").val()!="" && $("#ConfirmPrivKey").val().length >= 34){
 		$("#ConfirmSubmit").removeAttr('disabled');			

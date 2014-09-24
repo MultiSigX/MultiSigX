@@ -51,7 +51,11 @@ class ExController extends \lithium\action\Controller {
 		$refered = Addresses::find('all',array(
 			'conditions'=>array('addresses.email'=>$user['email'])
 		));
-
+		
+		foreach($refered as $address){
+			$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
+			array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
+		}
 		$currencies = Currencies::find('all',array('order'=>array('currency.name'=>-1)));		
 		
 		$page = Pages::find('first',array(

@@ -22,7 +22,7 @@
 					</div>
 					<div class="col-md-6">
 					<strong>Name your MultiSigX coin:</strong>
-					<?=$this->form->field('CoinName', array('label'=>'','class'=>'code form-control','onkeyup'=>'checkform()')); ?>
+					<?=$this->form->field('CoinName', array('label'=>'','class'=>'code form-control','onblur'=>'checkform()')); ?>
 					</div>
 				</div>
 				<?=$this->form->hidden('key', array('value'=>$details['key'])); ?>
@@ -45,7 +45,7 @@
 				<?=$this->form->hidden('address[3]', array('value'=>'')); ?>				
 				<div class="row">
 					<div class="col-md-6">
-						<h4>Save MultiSigX for:</h4>
+						<h4>Save MultiSigX for: <code>Coin name</code></h4>
 						<?php 
 						$curr = array();
 						foreach($addresses as $address){
@@ -67,7 +67,7 @@
 						</select>
 					</div>
 					<div class="col-md-6">
-						<h4>Create MultiSigX with:</h4>
+						<h4>Create MultiSigX with <code>Security</code>:</h4>
 						<select name="security" class="form-control" onBlur="checkform();">
 							<option value="2">2 of 3</option>
 							<option value="3">3 of 3</option>					
@@ -78,8 +78,8 @@
 
 				<table class="table table-striped table-condensed table-bordered">
 					<tr>
-						<th width="50%">Email</th>
-						<th width="50%">Relation</th>
+						<th width="50%">Email <code>(Each email should be unique and valid)</code></th>
+						<th width="50%">Relation <code>(Correct relation defines correct commission percent)</code></th>
 					</tr>
 					<tr>
 						<td><?=$this->form->field('email[1]', array('label'=>'','value'=>$user['email'],'readonly'=>'readonly','class'=>'form-control')); ?></td>
@@ -95,7 +95,7 @@
 						
 					</tr>
 					<tr>
-						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
+						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onblur'=>'checkform()')); ?></td>
 						<td>
 						<select name="relation[2]" id="Relation2" class="form-control" onChange="ChangeRelationEmail('Email2',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
@@ -105,7 +105,7 @@
 						</td>
 					</tr>					
 					<tr>
-						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onkeyup'=>'checkform()')); ?></td>
+						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onBlur'=>'checkform()')); ?></td>
 						<td>
 						<select name="relation[3]" id="Relation3" class="form-control"  onChange="ChangeRelationEmail('Email3',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
@@ -118,7 +118,7 @@
 
 				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address >> Email all users " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();' disabled="true">
 				<?=$this->form->end(); ?>
-				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. All the keys are created in your browser memory and creates the files for sending to all 3 email addresses.</p>
+				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. The keys are created in your browser memory, the unique password protected PDF files are send to each email address.</p>
 			</div>
 			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://greencoin.io" target="_blank">http://greencoin.io</a>, try MultiSigX security.  </div>
 		</div>

@@ -238,13 +238,26 @@
 									<th>Grand Total</th>
 									<td style="text-align:right"><?=number_format($final_balance,8)?></td>
 								</tr>
+								<tr>
+									<td></td>
+									<th>Google Authenticator Code</th>
+									<td>
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-asterisk" id="ErrorCreateMobileCode"></i>
+										</span>
+										<input class="form-control" required="required" maxlength="6" pattern="[0-9]{6}" id="CheckCreateMobileCode" placeholder="Mobile Code" type="password" onKeyup="return CreateMobileCodeCheck();">
+										</div>
+									
+									</td>
+								</tr>
 							</table>
 							<div id="CreateAlert" class="alert alert-warning">
 							Create transaction will not transfer funds to the addresses. It will authorize others to sign this transaction and finally transfer funds.
 							</div>
       </div>
       <div class="modal-footer">
-				<?=$this->form->submit('Create' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'CreateSubmit','onClick'=>'return CheckTotal('.$final_balance.','.$commission.');')); ?>
+				<?=$this->form->button('Create' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'CreateSubmit','onClick'=>'return CheckTotal('.$final_balance.','.$commission.');')); ?>
 				<?=$this->form->reset('Reset' ,array('class'=>'btn btn-primary','id'=>'ResetSubmit')); ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -266,7 +279,15 @@
       <div class="modal-body" style="text-align:center ">
 				<p>You will need the private key from the document<br><strong>MultiSigX.com-<?=$addresses['name']?>-MSX-Print-[x].pdf</strong> which was emailed to you on <?=gmdate('Y-M-d H:i:s',$addresses['DateTime']->sec)?></p>
 				<?=$this->form->field('privKey', array('type' => 'text', 'label'=>'Private Key','placeholder'=>'5KWUbdCd6hScBzzToger9xUZmELnw16uK5d3j9TH85VJZddFmhw','class'=>'form-control','onBlur'=>'SignTrans();' )); ?>
-      </div>
+      <h5>Google Authenticator Code</h5>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-asterisk" id="ErrorSignMobileCode"></i>
+							</span>
+							<input class="form-control" required="required" maxlength="6" pattern="[0-9]{6}" id="CheckSignMobileCode" placeholder="Mobile Code" type="password" onKeyup="return SignMobileCodeCheck();">
+						</div>
+						</div>
+						
       <div class="modal-footer">
 				<?=$this->form->submit('Sign' ,array('class'=>'btn btn-primary','disabled'=>'disabled','id'=>'SignSubmit')); ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -312,9 +333,16 @@
 										echo "<h4>".$sign['username']." <br><small>".gmdate(DATE_RFC850,$sign['DateTime']->sec)."</small></h4>";
 									}
 									?>
+						<h5>Google Authenticator Code</h5>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-asterisk" id="ErrorSendMobileCode"></i>
+							</span>
+							<input class="form-control" required="required" maxlength="6" pattern="[0-9]{6}" id="CheckSendMobileCode" placeholder="Mobile Code" type="password" onKeyup="return SendMobileCodeCheck();">
+						</div>
 				  </div>
       <div class="modal-footer">
-							<?=$this->form->submit('Send' ,array('class'=>'btn btn-primary','id'=>'SendSubmit')); ?>
+							<?=$this->form->submit('Send' ,array('class'=>'btn btn-primary','id'=>'SendSubmit','disabled'=>'disabled')); ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

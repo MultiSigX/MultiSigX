@@ -67,6 +67,8 @@
 								The above wallets are secured by MultiSigX! Be safe, be secure.
 								</div>
 							</div>
+							
+							<!------------------ Referred Wallets ------------------->
 							<div class="panel panel-primary">
 								<div class="panel-heading">
 									<?php 
@@ -86,12 +88,21 @@
 								<h3><?=$address['currencyName']?> <?=$address['currency']?></h3>
 								<h3><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></h3>
 								<h3><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></h3>
+														
 								<h4>
+								<?php 
+								//print_r($balance['balance']);
+								if($balance['balance']=="0" || $balance['balance']==""){?>
 								<a href="#" class=" tooltip-x btn btn-success active btn-lg" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon icon-3x"></i> <br>&nbsp;Deposit&nbsp;</a>
+								<?php }?>
 								&nbsp;&nbsp;
+								
 								<a href="#" class=" tooltip-x btn btn-primary active btn-lg" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon icon-3x"></i> <br>&nbsp;&nbsp;Check&nbsp;&nbsp;</a>
+								
 								&nbsp;&nbsp;
+								
 								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x btn btn-danger active btn-lg" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i> <br>Withdraw</a>
+								
 								</h4>
 													<?php 
 														foreach($balances as $balance){?>
@@ -107,9 +118,11 @@
 									<?php }?>
 								<?php }?>
 								</div>
+								
 								<div class="panel-footer">
 								The above wallets are secured by MultiSigX! Be safe, be secure.
 								</div>
+								<!------------------ Referred Wallets ------------------->
 						</div>
 					</div>
 			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://greencoin.io" target="_blank">http://greencoin.io</a>, try MultiSigX security.  </div>
@@ -127,8 +140,9 @@
       	<h4 class="modal-title" id="DepositModalLabel">Deposit Coins</h4>
       </div>
       <div class="modal-body" style="text-align:center ">
+							<p>Send coins to this address. They are safe with <?=$address['security'] ?> of 3 security.</p>
         <h4 id="DepositAddress"></h4>
-				<img src="holder.js/300x300" style="border:1px solid" id="DepositAddressImg">
+								<img src="holder.js/300x300" style="border:1px solid" id="DepositAddressImg">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
