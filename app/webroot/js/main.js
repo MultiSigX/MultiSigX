@@ -1,5 +1,16 @@
 //JS Document
-
+function UpdateDetails(){
+	var delay = 10000;
+	var now, before = new Date();
+	CheckServer();
+	setInterval(function() {
+    now = new Date();
+    var elapsedTime = (now.getTime() - before.getTime());
+    CheckServer();
+    before = new Date();    
+}, delay);
+	
+}
 function SendPassword(){
 	$.getJSON('/Users/SendPassword/'+$("#Username").val(),
 		function(ReturnValues){
@@ -20,8 +31,6 @@ function SendPassword(){
 		}
 	);
 }
-
-
 function CheckFirstName(value){
 	if(value.length>=2){
 		$("#FirstNameIcon").attr("class", "glyphicon glyphicon-ok");	
@@ -96,8 +105,28 @@ function CheckPassword(value){
 		$("#Password2Icon").attr("class", "glyphicon glyphicon-remove");							
 	}
 }
-
+function CheckDataEntered(){
+	if($("#ChangeAddress").val()=="MultiSigX"){
+		$("#DefaultAddress").val("");
+		return true;
+	}else{
+		if($("#DefaultAddress").val()!="" && $("#DefaultAddress").val().length >= 34){
+			$.getJSON('/Common/CurrencyAddress/'+$("#Currency").val()+'/'+$("#DefaultAddress").val(),
+				function(ReturnValues){
+					if(ReturnValues['verify']['isvalid']==true){
+						return true;
+					}else{
+						$("#DefaultAddress").val("Invalid Address");
+					}
+				});
+		}else{
+			$("#DefaultAddress").val("Invalid Address");
+		}
+	}
+}
 function PasstoPhrase(){
+	
+	if(CheckDataEntered()===false){return false;}
 	value1 = $("#Passphrase1").val();
 	value2 = $("#Passphrase2").val()	
 	value3 = $("#Passphrase3").val()	
@@ -117,11 +146,14 @@ function PasstoPhrase(){
 		var this_priv = keys.privkey.toString();
 		var this_public = keys.pubkey.toString();
 		var this_pubkeycompress = keys.pubkeycompress.toString();		
+//		alert(this_public);
+//		alert(this_priv);
 		$(address).val(this_public);
 		$(private).val(this_priv);
 		$(pubkeycompress).val(this_pubkeycompress);		
 	}
 	checkform();
+	$("#FinalButton").removeAttr("disabled");
 }
 
 function GenerateKeys(j,value,email){
@@ -177,15 +209,15 @@ function checkform() {
 		}
 	}
 	if($("#Email1").val()==$("#Email2").val()){
-		$("#Email2").focus();
+//		$("#Email2").focus();
 		document.getElementById('SubmitButton').disabled = true;		
 	}
 	if($("#Email1").val()==$("#Email3").val()){
-		$("#Email3").focus();
+//		$("#Email3").focus();
 		document.getElementById('SubmitButton').disabled = true;		
 	}
 	if($("#Email2").val()==$("#Email3").val()){
-		$("#Email3").focus();
+//		$("#Email3").focus();
 		document.getElementById('SubmitButton').disabled = true;		
 	}
 }
@@ -206,22 +238,24 @@ function ChangeTheme(name,uri){
 	});	
 }
 
-function CreateTrans(amount, commission, txfee){
+function CreateTrans(amount, commission, txFee){
 
 //alert(amount);
 //alert(commission);
-//alert(txfee);
+//alert(txFee);
 // $Amount = (float)$final_balance-$currencies['txFee']-($final_balance*$commission/100);
-SendTxFee = Math.round((amount - $("#SendAmount0").val() - $("#SendAmount1").val() - $("#SendAmount2").val() - (parseFloat(amount)*parseFloat(commission)/100))*1000000)/1000000;
-if(SendTxFee<=0){
+
+ChangeAmount = Math.round((amount - $("#SendAmount0").val() - $("#SendAmount1").val() - $("#SendAmount2").val() - (parseFloat(amount)*parseFloat(commission)/100) - txFee)*1000000)/1000000;
+if(ChangeAmount<0){
 	if($("#SendAmount2").val()==0){
-		amount1 = Math.round((amount - $("#SendAmount0").val() - (parseFloat(amount)*parseFloat(commission)/100))*1000000)/1000000;
-		$("#SendAmount1").val(amount1-SendTxFee);
+		amount1 = Math.round((amount - $("#SendAmount0").val() - (parseFloat(amount)*parseFloat(commission)/100) - txFee)*1000000)/1000000;
+		$("#SendAmount1").val(amount1-txFee-ChangeAmount);
 	}
 return false;
 }
-$("#SendTxFee").html(SendTxFee);
-$("#SendTrxFee").val(SendTxFee);
+$("#ChangeAmount").html(Math.round(ChangeAmount*1000000)/1000000);
+$("#ChangeAmountValue").val(Math.round(ChangeAmount*1000000)/1000000);
+
 	if($("#SendToAddress0").val()!="" && $("#SendToAddress0").val().length >= 34){
 		if($("#SendAmount0").val()<=0){
 			document.getElementById('CreateSubmit').disabled = true;
@@ -372,8 +406,12 @@ function CheckTotal(amount,commission){
 		}
 	}
 
+	alert($("#ChangeAmountValue").val());
 	
-	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTxFee").html());
+	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTrxFee").val()) + parseFloat($("#ChangeAmountValue").val());
+	
+	alert(Math.round(Total*1000000)/1000000);
+	
 	if($("#ErrorCreateMobileCode").attr("class")=="glyphicon glyphicon-remove"){
 		document.getElementById('CreateSubmit').disabled = true;
 		return false;
@@ -392,6 +430,8 @@ function CheckTotal(amount,commission){
 		document.getElementById('CreateSubmit').disabled = true;
 		return false;
 	}
+	
+	alert(Math.round(amount*1000000)/1000000);
 	if(Math.round(Total*1000000)/1000000==Math.round(amount*1000000)/1000000){return true;}else{
 		$("#CreateAlert").html("<b>Totals do not match! Please recheck!</b>");
 		document.getElementById('CreateSubmit').disabled = true;
@@ -521,11 +561,14 @@ function CheckMobile(){
 
 }
 
-function validateEmail(email) { 
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-} 
-
+function CheckServer(){
+		$.getJSON('/Admin/CheckServer/',
+		function(ReturnValues){
+			if(ReturnValues['Refresh']=="No"){
+				window.location.assign("/signin");								
+			}
+		});
+}
 function DeleteCoin(address){
 	$.getJSON('/Users/DeleteCoin/'+address,
 	function(ReturnValues){
@@ -533,3 +576,18 @@ function DeleteCoin(address){
 	});	
 
 }
+function ChangeCurrency(currency){
+	$("#Simple").html('Your own '+ currency + ' address');
+}
+function ChangeDefaultAddress(defaultaddress){
+	if(defaultaddress=="Simple"){
+		$("#DefaultAddress").attr("class", "form-control")
+	}else{
+		$("#DefaultAddress").attr("class", "hidden")
+	}
+}
+function validateEmail(email) { 
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+} 
+

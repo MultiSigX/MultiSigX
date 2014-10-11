@@ -16,6 +16,8 @@
 1. <?=$compact['data']['withdraw.address.0']?> - <?=number_format($compact['data']['withdraw.amount.0'],8)?><br>
 2. <?=$compact['data']['withdraw.address.1']?> - <?=number_format($compact['data']['withdraw.amount.1'],8)?><br>
 3. <?=$compact['data']['withdraw.address.2']?> - <?=number_format($compact['data']['withdraw.amount.2'],8)?><br>
+* Change Address: <?=$compact['data']['withdraw.changeAddress']?> - <?=number_format($compact['data']['withdraw.changeAmount'],8)?><br>
+
  with commission amount <?=$compact['data']['commission_amount']?> and transaction fees to miners <?=$compact['data']['tx_fee']?> from the transaction id txid: "<?=$compact['data']['txid']?>"</p>
 		
 <p>

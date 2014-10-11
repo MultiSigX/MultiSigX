@@ -178,7 +178,9 @@
 <div class="modal fade" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalCreate" aria-hidden="true">
 	<?=$this->form->create("",array('url'=>'/users/createTrans','class'=>'form-group has-error')); ?>
 	<?=$this->form->hidden('address', array('value'=>$addresses['msxRedeemScript']['address'])); ?>
-	<?=$this->form->hidden('SendTrxFee', array('value'=>0)); ?>
+	<?=$this->form->hidden('SendTrxFee', array('value'=>$currencies['txFee'])); ?>
+	<?=$this->form->hidden('ChangeAmountValue', array('value'=>0)); ?>	
+	<?=$this->form->hidden('ChangeAddressValue', array('value'=>$addresses['Change']['value'])); ?>	
 	<?=$this->form->hidden('CommissionTotal', array('value'=>number_format($comm,8))); ?>
 	<?=$this->form->hidden('finalBalance', array('value'=>$final_balance)); ?>
 	<?=$this->form->hidden('currency', array('value'=>$addresses['currency'])); ?>
@@ -209,6 +211,13 @@
 									</td>
 								</tr>
 								<?php } ?>
+								<tr>
+									<td style="border-top:1px solid black"><?=($i+1)?></td>
+									<td style="border-top:1px solid black;text-align:left">Change to: <?=$addresses['Change']['value']?></td>
+									<td style="background-color:#eee; text-align:right;border-top:1px solid black">
+										<span style="color:red;font-size:large" id="ChangeAmount"><?=number_format(0,8)?></span>
+									</td>
+								</tr>
 								<tr style="background-color:#ddd;color:black;font-size:large;">
 									<td style="border-top:1px solid black"></td>
 									<th style="border-top:1px solid black">Total</th>

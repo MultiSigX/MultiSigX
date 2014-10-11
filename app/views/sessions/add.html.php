@@ -12,7 +12,7 @@ MultiSigX&#8482; is the securing your coins from hacking, phising, web wallet fa
 					<span class="input-group-addon">
 						<i class="glyphicon glyphicon-asterisk" id="UserNameIcon"></i>
 					</span>
-						<?=$this->form->field('username', array('label'=>'','onkeyup'=>'CheckUserNameLogin(this.value);', 'onBlur'=>'SendPassword();', 'placeholder'=>'username', 'class'=>'form-control')); ?>
+						<?=$this->form->field('username', array('label'=>'','onBlur'=>'CheckUserNameLogin(this.value);', 'onBlur'=>'SendPassword();', 'placeholder'=>'username', 'class'=>'form-control')); ?>
 				</div>
 			</div>				
 			<div class="form-group has-error">			

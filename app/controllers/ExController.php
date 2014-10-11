@@ -112,7 +112,12 @@ print_r($coin);
 			$name = $user['username']."-".$this->request->data['currency']."-".$oneCode;
 //			$AddMultiSig	= $coin->addmultisigaddress($security,$publickeys,'MSX-'.$name);			
 			$createMultiSig	= $coin->createmultisig($security,$publickeys);
-
+			$changeAddress = $this->request->data['ChangeAddress'];
+			if($changeAddress=="MultiSigX"){
+				$changeValue = $createMultiSig['address'];
+			}else{
+				$changeValue = $this->request->data['DefaultAddress'];
+			}
 			$data = array(
 
 					'addresses.0.passphrase'=>$this->request->data['passphrase'][1],
@@ -149,6 +154,8 @@ print_r($coin);
 				'DateTime' => new \MongoDate(),
 				'name'=>$name,
 				'msxRedeemScript' => $createMultiSig,
+				'Change.default' => $changeAddress,
+				'Change.value'=> $changeValue,
 			);
 			
 if($this->request->data['email'][2]	== DEFAULT_ESCROW){
@@ -177,7 +184,7 @@ if($this->request->data['email'][3]	== DEFAULT_ESCROW){
 			));
 
 // create print PDF for all 3 users
-
+	
 // Delete all old files from the system
 if ($handle = opendir(QR_OUTPUT_DIR)) {
     while (false !== ($entry = readdir($handle))) {

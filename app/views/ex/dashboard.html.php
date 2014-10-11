@@ -17,7 +17,7 @@
 							<p class="alert alert-warning"><?=$msg?></p>
 						<?php }	?>
 						<h3>You can create MultiSigX in these <?=substr($curr,1,strlen($curr))?> currencies.</h3> 
-						<h4>Your current MultiSigX. Secure your bitcoins on MultiSigX wallets.</h4>
+						<h4>Secure your coins on MultiSigX wallets.</h4>
 						<?php 
 //							foreach($currencies as $currency){
 //							if(!in_array($currency['currency']['unit'],$current)){
@@ -44,19 +44,26 @@
 								<h3><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></h3>
 								<h3><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></h3>
 								<h4>
-								<a href="#" class=" tooltip-x btn btn-success active btn-lg" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon icon-3x"></i> <br>&nbsp;Deposit&nbsp;</a>
-								&nbsp;&nbsp;
-								<a href="#" class=" tooltip-x btn btn-primary active btn-lg" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon icon-3x"></i> <br>&nbsp;&nbsp;Check&nbsp;&nbsp;</a>
-								&nbsp;&nbsp;
-								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x btn btn-danger active btn-lg" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i> <br>Withdraw</a>
-								</h4>
+
 													<?php 
 														foreach($balances as $balance){?>
 														<?php if($balance['address']==$address['msxRedeemScript']['address']){?>
 																<h4><?=$balance['balance']." ". $address['currency'];?></h4>
-														<?php }?>
-													<?php 
+														<?php 
+															if((float)$balance['balance']<=0){$disabled = ' disabled ';}else{$disabled = '';}
 														}?>
+													<?php 
+														}
+
+														?>
+														
+								<a href="#" class=" tooltip-x btn btn-success active btn-lg" rel="tooltip-x" data-placement="top" title="Deposit coins" data-toggle="modal" data-target="#DepositCoins" onClick="DepositCoins('<?=$address['currencyName']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-mail-reply icon icon-3x"></i> <br>&nbsp;Deposit&nbsp;</a>
+								&nbsp;&nbsp;
+								<a href="#" class=" tooltip-x btn btn-primary active btn-lg" rel="tooltip-x" data-placement="top" title="Check address balance" data-toggle="modal" data-target="#CheckBalance" onClick="CheckBalance('<?=$address['currencyName']?>','<?=$address['currency']?>','<?=$address['msxRedeemScript']['address']?>');"><i class="icon-tasks icon icon-3x"></i> <br>&nbsp;&nbsp;Check&nbsp;&nbsp;</a>
+								&nbsp;&nbsp;
+								
+								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x btn btn-danger active btn-lg <?=$disabled?>" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i> <br>Withdraw</a>
+								</h4>
 								<h4><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small>
 								<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
 													<a href="#" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Delete MultiSigX address" onClick="DeleteCoin('<?=$address['msxRedeemScript']['address']?>')"><i class="icon-remove icon"></i></a>
@@ -89,6 +96,17 @@
 								<h3><a href="/ex/name/<?=$address['name']?>"><?=$address['CoinName']?></a></h3>
 								<h3><small><a href="/ex/name/<?=$address['name']?>"><?=$address['name']?></a></small></h3>
 														
+													<?php 
+														foreach($balances as $balance){?>
+														<?php if($balance['address']==$address['msxRedeemScript']['address']){?>
+																<h4><?=$balance['balance']." ". $address['currency'];?></h4>
+														<?php 
+														if((float)$balance['balance']<=0){$disabled = ' disabled ';}else{$disabled = '';}
+														}?>
+													<?php 
+														}
+														
+														?>
 								<h4>
 								<?php 
 								//print_r($balance['balance']);
@@ -101,16 +119,9 @@
 								
 								&nbsp;&nbsp;
 								
-								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x btn btn-danger active btn-lg" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i> <br>Withdraw</a>
+								<a href="/ex/withdraw/<?=$address['msxRedeemScript']['address']?>"  class=" tooltip-x btn btn-danger active btn-lg <?=$disabled?>" rel="tooltip-x" data-placement="top" title="Withdraw coins, create, sign and send"><i class="icon-mail-forward icon icon-3x"></i> <br>Withdraw</a>
 								
 								</h4>
-													<?php 
-														foreach($balances as $balance){?>
-														<?php if($balance['address']==$address['msxRedeemScript']['address']){?>
-																<h4><?=$balance['balance']." ". $address['currency'];?></h4>
-														<?php }?>
-													<?php 
-														}?>
 								<h4><strong><?=$address['security']?></strong> of 3 <small><?=gmdate('Y-M-d h:i:s',$address['DateTime']->sec)?></small>
 								<strong><a href="/ex/address/<?=$address['msxRedeemScript']['address']?>"><code><?=$address['msxRedeemScript']['address']?></code></a></strong>
 													<a href="#" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Delete MultiSigX address" onClick="DeleteCoin('<?=$address['msxRedeemScript']['address']?>')"><i class="icon-remove icon"></i></a>

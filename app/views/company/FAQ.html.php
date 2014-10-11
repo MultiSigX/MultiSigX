@@ -138,7 +138,22 @@
 						</div>
 					</div>
 				<!-------------------------------------------------------------------------->					
-				</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+									How to withdraw when MultiSigX is down?
+								</a>
+							</h4>
+						</div>
+						<div id="collapseFive" class="panel-collapse collapse">
+							<div class="panel-body">
+								<p>If MultiSigX is down for any reason, please download the following page and follow the instructions.</p>
+								<p><a href="/company/withdraw" >Withdraw when MultiSigX is down</a></p>
+							</div>
+						</div>
+					</div>
+				<!-------------------------------------------------------------------------->									</div>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,9 @@
 <?php
 use lithium\storage\Session;
 use app\extensions\action\Functions;
+use app\controllers\AdminController;
+$Admin = new AdminController();
+$MeAdmin = $Admin->__init();
 ?>
 <?php $user = Session::read('member'); ?>
 <div class="navbar-wrapper">
@@ -23,6 +26,9 @@ use app\extensions\action\Functions;
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 					<?php if($user!=""){ ?>
+					<?php if($MeAdmin){?>
+					<li><a href="/Admin/index" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Admin"><i class="icon-user icon-large"></i></a></li>
+					<?php } ?>
 						<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="icon-dashboard icon-large"></i></a></li>
 						<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="icon-gears icon-large"></i></a></li>								
 						<li>

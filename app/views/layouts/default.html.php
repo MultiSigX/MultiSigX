@@ -9,6 +9,7 @@
  use lithium\storage\Session;
  use app\models\Pages;
  use app\models\Details; 
+	 use app\models\Parameters; 
  
  if(!isset($title)){
 		$page = Pages::find('first',array(
@@ -21,8 +22,8 @@
 $user = Session::read('default');
 $detail = Details::find("first",array(
 			"conditions"=>array("user_id"=>$user["_id"])
-			));
-
+));
+$parameters = Parameters::find('first');
 if(count($detail)==0){
 	$theme = "default";
 }else{
@@ -69,7 +70,12 @@ body {
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-<body>
+<body <?php if(
+				$this->_request->controller!='Company' 
+	&& $this->_request->controller!='Sessions' 
+	&& $this->_request->controller!='Admin'
+	&& $this->_request->controller!='API'
+	){?> onLoad="UpdateDetails();" <?php }?>>
     <div class="container">
 				<?php echo $this->_render('element', 'header');?>				
 				<?php if($this->_request->controller=="Pages"){?>
@@ -77,6 +83,12 @@ body {
 					<?php echo $this->_render('element', 'feature');?>						
 				<?php }?>	
 				<div class="<?=$this->_request->action?> 				<?php if($this->_request->controller!="Pages"){?> mainpage<?php }?>">
+				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
+					<?php echo $this->_render('element', 'admin');?>
+				<?php }?>
+					<?php if($parameters['server']==false){?>
+					<h1 class="alert alert-danger">Server is down for maintenance!</h1>
+					<?php }?>
 					<?php echo $this->content(); ?>
 				</div>
 				<?php echo $this->_render('element', 'footer');?>	

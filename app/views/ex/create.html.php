@@ -44,15 +44,22 @@
 				<?=$this->form->hidden('address[2]', array('value'=>'')); ?>
 				<?=$this->form->hidden('address[3]', array('value'=>'')); ?>				
 				<div class="row">
-					<div class="col-md-6">
-						<h4>Save MultiSigX for: <code>Coin name</code></h4>
+					<div class="col-md-3">
+						<h4>Create with <code>Security</code>:</h4>
+						<select name="security" class="form-control" onBlur="checkform();">
+							<option value="2">2 of 3</option>
+							<option value="3">3 of 3</option>					
+						</select>					
+					</div>
+					<div class="col-md-3">
+						<h4>Save MultiSigX : <code>Coin name</code></h4>
 						<?php 
 						$curr = array();
 						foreach($addresses as $address){
 							array_push($curr, $address['currency']);
 						}
 						?>
-						<select name="currency" class="form-control" onBlur="checkform();" id="Currency">
+						<select name="currency" class="form-control" onBlur="ChangeCurrency(this.value);" id="Currency">
 						<?php 
 						foreach($currencies as $currency){ 
 		/*					if(in_array($currency['currency']['unit'],$curr)){
@@ -67,12 +74,17 @@
 						</select>
 					</div>
 					<div class="col-md-6">
-						<h4>Create MultiSigX with <code>Security</code>:</h4>
-						<select name="security" class="form-control" onBlur="checkform();">
-							<option value="2">2 of 3</option>
-							<option value="3">3 of 3</option>					
-						</select>					
+					<h4>Change address: <code>Used for withdrawal</code></h4>
+						<select name="ChangeAddress" id="ChangeAddress" class="form-control" onChange="ChangeDefaultAddress(this.value);">
+							<option value="MultiSigX">MultiSigX</option>
+							<option value="Simple" id="Simple">Your own XGC address</option>
+						</select>
+						<?=$this->form->field('DefaultAddress', array('label'=>'','value'=>'','class'=>'form-control hidden','placeholder'=>'1AHLowz77C9aWWEYBgaMQo8kGmY7Da7nUA','style'=>'color:red;font-weight:bold')); ?>
+					
 					</div>
+					
+					
+					
 				</div>
 				<br>
 
@@ -95,7 +107,7 @@
 						
 					</tr>
 					<tr>
-						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onblur'=>'checkform()')); ?></td>
+						<td><?=$this->form->field('email[2]', array('label'=>'','value'=>'','class'=>'form-control','onblur'=>'checkform()','placeholder'=>'2ndEmail@somedomain.com')); ?></td>
 						<td>
 						<select name="relation[2]" id="Relation2" class="form-control" onChange="ChangeRelationEmail('Email2',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
@@ -105,7 +117,7 @@
 						</td>
 					</tr>					
 					<tr>
-						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>$user['email'],'class'=>'form-control','onBlur'=>'checkform()')); ?></td>
+						<td><?=$this->form->field('email[3]', array('label'=>'','value'=>'','class'=>'form-control','onBlur'=>'checkform()','placeholder'=>'3rdEmail@somedomain.com')); ?></td>
 						<td>
 						<select name="relation[3]" id="Relation3" class="form-control"  onChange="ChangeRelationEmail('Email3',this.value,'<?=DEFAULT_ESCROW?>')">
 						<?php foreach ($relations as $relation){?>
@@ -116,7 +128,8 @@
 					</tr>					
 				</table>
 
-				<input type="submit" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address >> Email all users " onClick='$("#SubmitButton").attr("disabled", "disabled");PasstoPhrase();$("#MSX").submit();' disabled="true">
+				<input type="button" id="SubmitButton" class="btn btn-primary" value="Create MultiSigX address" onClick='$("#SubmitButton").attr("disabled", "true");PasstoPhrase();' disabled="true">
+				<input type="button" id="FinalButton" class="btn btn-danger" value="Save >> Email all users" onClick='$("#FinalButton").attr("disabled", "true");$("#MSXForm").submit();' disabled="true">
 				<?=$this->form->end(); ?>
 				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. The keys are created in your browser memory, the unique password protected PDF files are send to each email address.</p>
 			</div>
