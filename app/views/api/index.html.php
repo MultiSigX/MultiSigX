@@ -258,14 +258,14 @@
  {
   "security":"2",
   "coin":"XGC",
-  "coinName":"Nilam",
+  "coinName":"SomeCoinName",
   "changeAddress":"MultiSigX",
   "changeAddressValue":"",
-  "email1":"nilamdoc@gmail.com",
+  "email1":"YourName@gmail.com",
   "relation1":"Self",
-  "email2":"nilam@ibwt.co.uk",
+  "email2":"EmailName1@gmail.com",
   "relation2":"Self",
-  "email3":"omdoctor@live.in",
+  "email3":"EmailName2@gmail.com",
   "relation3":"Self"
  }
 }</pre>		
@@ -280,7 +280,50 @@
 					<th>Description</th>
 					<th>Default</th>
 					</tr>
+					<tr>
+						<td>address</td>
+						<td>yes</td>
+						<td>Withdrawal address</td>
+						<td>None</td>
+					</tr>
+					<tr>
+						<td>amount</td>
+						<td>yes</td>
+						<td>Withdrawal amount</td>
+						<td>None</td>
+					</tr>
 				</table>
+				<?php 
+		if(strlen($details['key'])>0){?>
+		<div class="APIexample">
+			<form action="/API/CreateTransaction/<?=$key?>" method="post" target="_blank" role="form" class="form-horizontal">
+		<div class="form-group">
+    <label for="address" class="col-sm-2 control-label">Address</label>
+    <div class="col-sm-5">
+      <input type="text" name="address" id="Address" class="form-control">
+    </div>
+  </div>  				
+		<div class="form-group">
+    <label for="amount" class="col-sm-2 control-label">Amount</label>
+    <div class="col-sm-5">
+      <input type="text" name="amount" id="Amount" class="form-control">
+    </div>
+  </div>  							
+		<input type="submit" value="Create Transaction" class="btn btn-primary">
+			</form>
+		</div>
+		<?php }?>
+		<h5>Returns</h5>
+		<pre>
+{
+ "success":1,
+ "now":1413457103,
+ "result":
+ {
+  "address":"1CExstj2rh9NEcDMb7F2PQTDdDHasTBvXD",
+  "amount":"10",
+ }
+}</pre>		
 			<h4><a name="SignTransaction">SignTransaction</a></h4>
 				<p class="alert alert-danger">All parameters are to be submitted by POST only</p>
 				<p>URL: https://MultiSigX.com/API/SignTransaction/<?=$key?>/parameters.......</p>
@@ -292,8 +335,31 @@
 					<th>Description</th>
 					<th>Default</th>
 					</tr>
+					<tr>
+						<td>privatekey</td>
+						<td>yes</td>
+						<td>Your Private Key</td>
+						<td>None</td>
+					</tr>
 				</table>			
-			<h4><a name="SendTransaction">SendTransaction</a></h4>
+				<?php 
+		if(strlen($details['key'])>0){?>
+		<div class="APIexample">
+		</div>
+		<?php }?>
+		<h5>Returns</h5>
+		<pre>
+{
+ "success":1,
+ "now":1413457103,
+ "result":
+ {
+  "address":"1CExstj2rh9NEcDMb7F2PQTDdDHasTBvXD",
+  "amount":"10",
+ }
+}</pre>		
+
+				<h4><a name="SendTransaction">SendTransaction</a></h4>
 				<p class="alert alert-danger">All parameters are to be submitted by POST only</p>
 				<p>URL: https://MultiSigX.com/API/SendTransaction/<?=$key?>/parameters.......</p>
 			<h5>Parameters</h5>
@@ -304,7 +370,30 @@
 					<th>Description</th>
 					<th>Default</th>
 					</tr>
+					<tr>
+						<td>privatekey</td>
+						<td>yes</td>
+						<td>Your Private Key</td>
+						<td>None</td>
+					</tr>
 				</table>			
+				<?php 
+		if(strlen($details['key'])>0){?>
+		<div class="APIexample">
+		</div>
+		<?php }?>
+		<h5>Returns</h5>
+		<pre>
+{
+ "success":1,
+ "now":1413457103,
+ "result":
+ {
+  "address":"1CExstj2rh9NEcDMb7F2PQTDdDHasTBvXD",
+  "amount":"10",
+ }
+}</pre>		
+				
 			</div>
 		</div>
 	</div>

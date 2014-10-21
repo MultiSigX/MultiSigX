@@ -256,8 +256,7 @@
 											<i class="glyphicon glyphicon-asterisk" id="ErrorCreateMobileCode"></i>
 										</span>
 										<input class="form-control" required="required" maxlength="6" pattern="[0-9]{6}" id="CheckCreateMobileCode" placeholder="Mobile Code" type="password" onKeyup="return CreateMobileCodeCheck();">
-										</div>
-									
+									</div>
 									</td>
 								</tr>
 							</table>
