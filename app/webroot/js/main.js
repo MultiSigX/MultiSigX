@@ -159,11 +159,12 @@ function PasstoPhrase(){
 function GenerateKeys(j,value,email){
 	var	dest = "#Dest"+j;
 	bytes = strToBytes(value);
-  text = mn_encode(Crypto.util.bytesToHex(bytes));
+ text = mn_encode(Crypto.util.bytesToHex(bytes));
 	$(dest).val(text);
 	bytes = Crypto.util.hexToBytes(mn_decode(text.trim()));
   text = bytesToString(bytes);	
 	//Create Bitcoin address.
+//	alert(username);
 	var keys = btc.keys(Crypto.SHA256(email+value+secret+key+Crypto.SHA256(username+key+secret)));
 //		alert(keys);
 	return keys;

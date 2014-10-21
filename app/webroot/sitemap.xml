@@ -14,7 +14,7 @@
   <loc>https://multisigx.com/company/FAQ</loc>
 </url>
 <url>
-  <loc>https://multisigx.com/login</loc>
+  <loc>https://multisigx.com/signin</loc>
 </url>
 <url>
   <loc>https://multisigx.com/signup</loc>
@@ -41,12 +41,12 @@
   <loc>https://multisigx.com/company/legal</loc>
 </url>
 <url>
+  <loc>https://multisigx.com/company/withdraw</loc>
+</url>
+<url>
   <loc>https://multisigx.com/API</loc>
 </url>
 <url>
   <loc>https://multisigx.com/users/forgotpassword</loc>
-</url>
-<url>
-  <loc>https://multisigx.com/users/signup</loc>
 </url>
 </urlset>

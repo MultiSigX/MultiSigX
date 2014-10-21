@@ -108,7 +108,12 @@ use app\models\Countries;
 					</div>
 				</div>
 			</div>
-		
+			<div class="panel panel-danger">
+				<div class="panel-heading">Security API</div>
+				<div class="panel-body">
+				Key: <code><?=$details['key']?></code> use this key to access the API.
+				</div>
+			</div>
 		
 			<div class="panel panel-danger">
 				<div class="panel-heading">Security</div>
