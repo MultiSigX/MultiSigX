@@ -281,6 +281,12 @@
 					<th>Default</th>
 					</tr>
 					<tr>
+						<td>coinAddress</td>
+						<td>yes</td>
+						<td>MultiSigX Coin Address</td>
+						<td>None</td>
+					</tr>
+					<tr>
 						<td>address</td>
 						<td>yes</td>
 						<td>Withdrawal address</td>
@@ -336,6 +342,12 @@
 					<th>Default</th>
 					</tr>
 					<tr>
+						<td>coinAddress</td>
+						<td>yes</td>
+						<td>MultiSigX Coin Address</td>
+						<td>None</td>
+					</tr>
+					<tr>
 						<td>privatekey</td>
 						<td>yes</td>
 						<td>Your Private Key</td>
@@ -371,6 +383,12 @@
 					<th>Default</th>
 					</tr>
 					<tr>
+						<td>coinAddress</td>
+						<td>yes</td>
+						<td>MultiSigX Coin Address</td>
+						<td>None</td>
+					</tr>
+					<tr>
 						<td>privatekey</td>
 						<td>yes</td>
 						<td>Your Private Key</td>
@@ -393,7 +411,6 @@
   "amount":"10",
  }
 }</pre>		
-				
 			</div>
 		</div>
 	</div>
