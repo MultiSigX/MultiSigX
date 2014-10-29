@@ -23,7 +23,7 @@
 <p><strong>Platform</strong>: means the software, technical and organisational structure managed by MultiSigX located at the <a href="https://MultiSigX.com/">https://MultiSigX.com/</a> address.</p>
 
 <p><strong>Bitcoin(s)</strong>: means the Peer-to-Peer digital transfer value asset (as described at <a href="https://bitcoin.org/en/" target="_blank">https://bitcoin.org/en/</a>).</p>
-<p><strong>GreenCoin(s)</strong>:means the Peer-to-Peer digital transfer value asset (as described at <a href="https://greencoin.io/" target="_blank">https://greencoin.io/</a></p>
+<p><strong>GreenCoin(s)</strong>:means the Peer-to-Peer digital transfer value asset (as described at <a href="https://<?=GREENCOIN_WEB?>/" target="_blank">https://<?=$GREENCOIN_WEB?>/</a></p>
 <p><strong>Crypto-Currency(s)</strong>:means Crypto-currency and any alternative coin based upon the Bitcoin protocol.</p>
 <p><strong>Users(s)</strong>: means Customers(s) that submit an offer to secure Crypto-currency(s) on the Platform.</p>
 <p><strong>Customer(s)</strong>: Any holder of an account.</p>

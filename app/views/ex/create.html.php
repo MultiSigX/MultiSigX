@@ -133,7 +133,7 @@
 				<?=$this->form->end(); ?>
 				<p>Click the "Create MultiSigX address >> Email all users" <strong>ONCE</strong>. The keys are created in your browser memory, the unique password protected PDF files are send to each email address.</p>
 			</div>
-			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://greencoin.io" target="_blank">http://greencoin.io</a>, try MultiSigX security.  </div>
+			<div class="panel-footer">You can get 100 XGC, GreenCoins (Identified Digital Currency) from <a href="http://<?=GREENCOIN_WEB?>" target="_blank">http://<?=GREENCOIN_WEB?></a>, try MultiSigX security.  </div>
 		</div>
 	</div>
 </div>

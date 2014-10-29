@@ -146,6 +146,7 @@ class UsersController extends \lithium\action\Controller {
 
 			$email = $this->request->data['email'];
 			$name = $this->request->data['firstname'];
+			$username = (string)$Users->username;
 			
 			$view  = new View(array(
 				'loader' => 'File',
@@ -156,7 +157,7 @@ class UsersController extends \lithium\action\Controller {
 			));
 			$body = $view->render(
 				'template',
-				compact('email','verification','name'),
+				compact('email','verification','name','username'),
 				array(
 					'controller' => 'users',
 					'template'=>'confirm',
@@ -217,6 +218,7 @@ class UsersController extends \lithium\action\Controller {
 		
 		return compact('title','keywords','description','msg');	
 	}
+	public function emailConfirmed(){}
  public function confirm($email=null,$verify=null){
 		if($email == "" || $verify==""){
 			if($this->request->data){
@@ -244,7 +246,7 @@ class UsersController extends \lithium\action\Controller {
 				if(empty($details)==1){
 					return $this->redirect('Users::email');
 				}else{
-					return $this->redirect(array('controller'=>'signin'));
+					return $this->redirect('Users::emailConfirmed');
 				}
 			}else{return $this->redirect('Users::email');}
 
@@ -412,12 +414,12 @@ class UsersController extends \lithium\action\Controller {
 //	$address = '1Czx5pXiQ2Qk4hFqvXvnWgnuRUKza8pdNN';
 			switch ($name){
 				case "Bitcoin":
-				$url = "https://blockchain.info/address/".$address."?format=json";
+				$url = "https://".BITCOIN_WEB."/address/".$address."?format=json";
 				$currency = "BTC";
 				break;
 
 				case "GreenCoin":
-				$url = "http://greencoin.io/blockchain/address/".$address."/json";
+				$url = "http://".GREENCOIN_WEB."/blockchain/address/".$address."/json";
 				$currency = "GreenCoin";
 				break;
 			}

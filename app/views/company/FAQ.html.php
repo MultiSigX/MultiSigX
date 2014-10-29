@@ -125,15 +125,22 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
 									What are MultiSigX fees?
 								</a>
 							</h4>
 						</div>
-						<div id="collapseFour" class="panel-collapse collapse">
+						<div id="collapseFive" class="panel-collapse collapse">
 							<div class="panel-body">
 								<p>MultiSigX does not charge any fee for creating a secure wallet.</p>
 								<p>When you withdraw from MultiSigX you have an option to pay the miners a fee for validating your transaction. The usual fee is 0.0001 BTC/XGC</p>
+								<p>MultiSigX charges a commission
+								<ul class="">
+								<li>Individuals - NOMINAL 0.001% commission</li>
+								<li>Groups - 1% commission on withdrawal</li>
+								<li>Business -  2% commission on withdrawal</li>
+								</ul>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -141,12 +148,12 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
 									How to withdraw when MultiSigX is down?
 								</a>
 							</h4>
 						</div>
-						<div id="collapseFive" class="panel-collapse collapse">
+						<div id="collapseSix" class="panel-collapse collapse">
 							<div class="panel-body">
 								<p>If MultiSigX is down for any reason, please download the following page and follow the instructions.</p>
 								<p><a href="/company/withdraw" >Withdraw when MultiSigX is down</a></p>

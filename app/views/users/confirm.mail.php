@@ -11,6 +11,8 @@ https://<?=$_SERVER['HTTP_HOST'];?>/users/confirm/<?=$email?>/<?=$verification?>
 <p>Or use this confirmation code: <?=$verification?> for your email address: <?=$email?> on the page 
 https://<?=$_SERVER['HTTP_HOST'];?>/users/email</p>
 
+<p>Username: <strong><?=$username?></strong><br>
+Your username is Case Sensitive!
 </p>
 
 <p>Thanks,<br>
