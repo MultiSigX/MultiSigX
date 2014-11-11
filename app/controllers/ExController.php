@@ -49,11 +49,11 @@ class ExController extends \lithium\action\Controller {
 	}
 		$balances = array();
 		if(count($addresses)>0){
-		foreach($addresses as $address){
-			$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
-			array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
+			foreach($addresses as $address){
+				$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
+				array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
+			}
 		}
-
 		if(count($refered)>0){
 			foreach($refered as $address){
 				$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
