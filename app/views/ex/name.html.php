@@ -1,7 +1,9 @@
+<div class="row container-fluid">
+	<?php echo $this->_render('element', 'sidebar-menu');?>	
 <div class="white">
-	<div class="col-md-12  container-fluid" >
+	<div class="col-md-9  container-fluid" >
 		<div class="panel panel-warning">
-			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="icon-chevron-left icon-large"></i></a>&nbsp;&nbsp;
+			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="fa-chevron-left fa"></i></a>&nbsp;&nbsp;
 			Name: <?=$addresses['name']?>: <?=$addresses['CoinName']?></div>
 			<div class="panel-body">
 				<div class="row" style="margin:10px">
@@ -48,4 +50,5 @@
 			<div class="panel-footer"></div>
 		</div>
 	</div>
+</div>
 </div>

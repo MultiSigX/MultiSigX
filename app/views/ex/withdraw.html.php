@@ -1,7 +1,9 @@
-<div class="white">
-	<div class="col-md-12  container-fluid" >
+<div class="row container-fluid">
+	<?php echo $this->_render('element', 'sidebar-menu');?>	
+	<div class="white">
+	<div class="col-md-9  container-fluid" >
 		<div class="panel panel-success">
-			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="icon-chevron-left icon-large"></i></a>&nbsp;&nbsp;
+			<div class="panel-heading"><a href="/ex/dashboard">Dashboard <i class="fa-chevron-left fa"></i></a>&nbsp;&nbsp;
 			Address: <?=$addresses['msxRedeemScript']['address']?> <?=$addresses['currencyName']?> <?=$addresses['currency']?></div>
 			<div class="panel-body" style="text-align:center">
 				<div class="panel panel-primary">
@@ -356,4 +358,5 @@
     </div>
   </div>
 	<?=$this->form->end(); ?>	
+</div>
 </div>

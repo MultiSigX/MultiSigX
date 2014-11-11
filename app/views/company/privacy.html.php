@@ -39,7 +39,7 @@ We may use the email address to send User information and updates pertaining to 
 <p><strong>How we protect your information</strong>
 <blockquote>
 We adopt appropriate data collection, storage and processing practices and security measures to protect against unauthorized access, alteration, disclosure or destruction of your personal information, username, password, transaction information and data stored on our Site.<br><br>
-Sensitive and private data exchange between the Site and its Users happens over a SSL secured communication channel and is encrypted and protected with digital signatures. Our Site is also in compliance with PCI vulnerability standards and we are registered with ICO and adhere to their practices in order to create as secure of an environment as possible for Users.</blockquote></p>
+Sensitive and private data exchange between the Site and its Users happens over a SSL secured communication channel and is encrypted and protected with digital signatures. Our Site is also in compliance with PCI vulnerability standards.</blockquote></p>
 
 <p><strong>Sharing your personal information</strong>
 <blockquote>We do not sell, trade, or rent Users personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners, trusted affiliates and advertisers for the purposes outlined above.</blockquote>

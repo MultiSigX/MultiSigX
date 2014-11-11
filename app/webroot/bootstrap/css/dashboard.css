@@ -2,8 +2,7 @@
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
 body {
-  padding-bottom: 40px;
-  color: #5a5a5a;
+ background-color:#ccc
 }
 
 /* CUSTOMIZE THE NAVBAR
@@ -105,82 +104,9 @@ blockquote {
   height: auto !important;
   height: 600px;
   overflow:hidden;
-  padding:4px;
   padding-top:90px;
 }
-.dashboard{
-background-color:#C1F7C2;
-}
-.signup {
-background-color:#E3FDE4;
-}
-.add{
-background-color:#E1FCFD;
-}
-.create{
-background-color:#FEDFFF;
-}
-.white{
-background-color:#eeeeee;
-}
-.address{
-background-color:#DDFFFF;
-}
-.name{
-background-color:#E5E5E5;
-}
-.contact {
-background-color:#DFDED0
-}
-.aboutus {
-background-color:#DFDED0
-}
-.risk {
-background-color:#DFDED0
-}
-.verification {
-background-color:#DFDED0
-}
-.privacy{
-background-color:#C9F0C8
-}
-.termsofservice{
-background-color:#C9F0C8
-}
-.legal{
-background-color:#C9F0C8
-}
-.FAQ{
-background-color:#C9F0C8
-}
 .index{
-border-left:1px solid gray;
-border-right:1px solid gray;
-}
-.forgotpassword{
-background-color:#F8DADA;
-border-left:1px solid gray;
-border-right:1px solid gray;
-}
-.reviews{
-background-color:#E1FCFD;
-}
-.review{
-background-color:#E1FCFD;
-}
-.code {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-.withdraw{
-background-color:#F5DCF4;
-}
-.email{
-background-color:#F8DADA;
-border-left:1px solid gray;
-border-right:1px solid gray;
-}
-.how{
 border-left:1px solid gray;
 border-right:1px solid gray;
 }
@@ -195,43 +121,6 @@ word-break: break-all;
 white-space: normal;
 }		
 
-/* RESPONSIVE CSS
-
--------------------------------------------------- */
-
-@media (min-width: 768px) {
-  /* Navbar positioning foo */
-  .navbar-wrapper {
-    margin-top: 20px;
-  }
-  .navbar-wrapper .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  .navbar-wrapper .navbar {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  /* The navbar becomes detached from the top, so we round the corners */
-  .navbar-wrapper .navbar {
-    border-radius: 4px;
-  }
-  /* Bump up size of carousel content */
-  .carousel-caption p {
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: 1.4;
-  }
-  .featurette-heading {
-    font-size: 50px;
-  }
-}
-
-@media (min-width: 992px) {
-	.featurette-heading {
-    margin-top: 120px;
-  }
-}
 
 .APIexample{
 	position:relative;
@@ -254,3 +143,62 @@ white-space: normal;
 	letter-spacing:1px;
 	content:"try it"
 }
+
+.sidebar .sidebar-nav.navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.sidebar .sidebar-search {
+    padding: 15px;
+}
+
+.sidebar ul li {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.sidebar ul li a.active {
+    background-color: #eee;
+}
+
+.sidebar .arrow {
+    float: right;
+}
+
+.sidebar .fa.arrow:before {
+    content: "\f104";
+}
+
+.sidebar .active>a>.fa.arrow:before {
+    content: "\f107";
+}
+
+.sidebar .nav-second-level li,
+.sidebar .nav-third-level li {
+    border-bottom: 0!important;
+}
+
+.sidebar .nav-second-level li a {
+    padding-left: 37px;
+}
+
+.sidebar .nav-third-level li a {
+    padding-left: 52px;
+}
+
+@media(min-width:768px) {
+    .sidebar {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+        margin-top: 51px;
+    }
+
+    .navbar-top-links .dropdown-messages,
+    .navbar-top-links .dropdown-tasks,
+    .navbar-top-links .dropdown-alerts {
+        margin-left: auto;
+    }
+}
+
+

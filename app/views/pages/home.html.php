@@ -12,4 +12,6 @@ $addressesXGC = Addresses::find('count',array(
 	'conditions'=>array('currencyName'=>'GreenCoin')
 	));
 ?>
-Registered users <?=$users+20?> using <?=$addresses+40?> addresses in Bitcoin <?=$addressesBTC+20?>, GreenCoin <?=$addressesXGC+20?>
+<div class="container text-center ">
+Registered users <?=$users+20?> using <?=$addresses+40?> secure MultiSigX wallets: Bitcoin (<?=$addressesBTC+20?>), GreenCoin (<?=$addressesXGC+20?>)
+</div>

@@ -7,7 +7,7 @@ $MeAdmin = $Admin->__init();
 ?>
 <?php $user = Session::read('member'); ?>
 <div class="navbar-wrapper">
-	<div class="container">
+	<div class="">
 		<div class="navbar navbar-inverse navbar-static-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -29,11 +29,11 @@ $MeAdmin = $Admin->__init();
 					<?php if($MeAdmin){?>
 					<li><a href="/Admin/index" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Admin"><i class="icon-user icon-large"></i></a></li>
 					<?php } ?>
-						<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="icon-dashboard icon-large"></i></a></li>
-						<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="icon-gears icon-large"></i></a></li>								
+						<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="fa fa-tachometer fa-2x"></i></a></li>
+						<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="fa fa-gears fa-2x"></i></a></li>								
 						<li>
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="glyphicon glyphicon-user"></i> &nbsp;<?=$user['username']?>&nbsp;<i class="caret"></i></a>
+							<i class="fa fa-user fa-2x"></i> &nbsp;<?=$user['username']?>&nbsp;<i class="caret"></i></a>
 							
 							<ul class="dropdown-menu" style="width:200px">
 								<!-- User image -->

@@ -571,11 +571,13 @@ function CheckServer(){
 		});
 }
 function DeleteCoin(address){
-	$.getJSON('/Users/DeleteCoin/'+address,
-	function(ReturnValues){
-		window.location.assign (ReturnValues['uri']);
-	});	
-
+	var result = confirm("Are you sure you want to delete?");
+	if (result==true) {
+		$.getJSON('/Users/DeleteCoin/'+address,
+		function(ReturnValues){
+			window.location.assign (ReturnValues['uri']);
+		});	
+	}
 }
 function ChangeCurrency(currency){
 	$("#Simple").html('Your own '+ currency + ' address');

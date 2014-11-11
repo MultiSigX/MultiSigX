@@ -40,18 +40,19 @@ class ExController extends \lithium\action\Controller {
 		$user = Session::read('member');
 		$id = $user['_id'];
 		if($id==null){$this->redirect(array('controller'=>'Users','action'=>'signup'));}		
-		$addresses = Addresses::find('all',array(
-			'conditions'=>array('username'=>$user['username'])
+	if($what!="signed"){
+		$singleaddress = Addresses::find('first',array(
+			'conditions'=>array(
+				'name'=>$what,
+				)
 		));
+	}
 		$balances = array();
 		foreach($addresses as $address){
 			$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
 			array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
 		}
-		$refered = Addresses::find('all',array(
-			'conditions'=>array('addresses.email'=>$user['email'])
-		));
-		
+
 		foreach($refered as $address){
 			$final = $UC->CheckBalance($address['msxRedeemScript']['address'],$address['currencyName'],true);
 			array_push($balances, array('address'=>$address['msxRedeemScript']['address'],'balance'=>$final['final']));
@@ -64,6 +65,17 @@ class ExController extends \lithium\action\Controller {
 		$details = Details::find('first',array(
 			'conditions'=>array('user_id'=>$id)
 		));
+		$addresses = Addresses::find('all',array(
+			'conditions'=>array('username'=>$user['username'])
+		));
+
+		$refered = Addresses::find('all',array(
+			'conditions'=>array(
+				'addresses.email'=>$user['email'],
+				'username'=>array('$ne'=>$user['username'])
+			)
+		));
+
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
@@ -71,12 +83,13 @@ class ExController extends \lithium\action\Controller {
 			$msg = "You have already signed this withdrawal. Please wait for others to sign and send this transaction!";
 		}
 
-		return compact('user','details','addresses','refered','currencies','balances','title','keywords','description','msg');
+		return compact('user','details','addresses','refered','singleaddress','currencies','balances','title','keywords','description','msg','what');
 	}
 	
 	public function create(){
 		$user = Session::read('member');
 		$id = $user['_id'];
+		
 		$ga = new GoogleAuthenticator();
 		
 		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
@@ -639,6 +652,43 @@ if ($handle = opendir(QR_OUTPUT_DIR)) {
 		}
 
 	return compact('msg');
+	}
+	public function reference($Who=null){
+	
+		$user = Session::read('member');
+		$id = $user['_id'];
+		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+		$function = new Functions();
+		switch ($Who){
+			case "All":
+				$users = $function->getChilds($id);
+				break;
+			case "Two":
+				$users = $function->levelOneChild($id);
+				break;		
+			case "Parents":
+				$users = $function->getParents($id);
+				break;				
+		}
+		
+		return compact('users');
+	}
+	
+	public function friends(){
+	$user = Session::read('member');
+		$id = $user['_id'];
+		if($id==null){$this->redirect(array('controller'=>'Pages','action'=>'home/'));}		
+	$friends = Addresses::find('all',array(
+		'conditions'=>array('username'=>$user['username']),
+	));
+	$emails = array();
+	foreach($friends as $friend){
+		array_push($emails,$friend['addresses'][0]['email'] );
+		array_push($emails,$friend['addresses'][1]['email'] );
+		array_push($emails,$friend['addresses'][2]['email'] );		
+	}
+	$emails = array_unique($emails);
+		return compact('emails');
 	}
 }
 ?>

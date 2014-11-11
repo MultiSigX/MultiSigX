@@ -32,56 +32,58 @@ if(count($detail)==0){
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="keywords" content="<?php if(isset($keywords)){echo $keywords;} ?>">	
-		<meta name="description" content="<?php if(isset($description)){echo $description;} ?>">		
-    <meta name="author" content="">
-		<link rel="shortcut icon" href="/img/logo-MultiSigX.gif" />
-		<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/<?=$theme?>-bootstrap.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
-    <link href="/bootstrap/css/Admin.css?v=<?=rand(1,100000000)?>" rel="stylesheet">				
-    <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/dashboard.css?v=<?=rand(1,100000000)?>" rel="stylesheet"> 
-<style type="text/css">
-body {
-	font-family: 'Open Sans', sans-serif;
-}
-</style>
-
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800italic' rel='stylesheet' type='text/css'>
-	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">	 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="/bootstrap/js/bootstrap-datepicker.js"></script>	
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="<?php if(isset($keywords)){echo $keywords;} ?>">	
+	<meta name="description" content="<?php if(isset($description)){echo $description;} ?>">		
+	<meta name="author" content="">
+	<link rel="shortcut icon" href="/img/logo-MultiSigX.gif" />
+	<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
+	<!-- Bootstrap Core CSS -->
+	<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	
+	<!-- Custom CSS -->
+	<?php if($this->_request->controller=="Pages"){?>	
+	<link href="/bootstrap/css/grayscale.css" rel="stylesheet">
+	<?php }else{?>
+	<link href="/bootstrap/css/dashboard.css" rel="stylesheet">	
+	<?php }?>
+	<!-- Custom styles for this template -->
+	
+				
+	<!-- Custom Fonts -->
+	<link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap-datepicker.js"></script>	
 	<?php
 	$this->scripts('<script src="/js/main.js?v='.rand(1,100000000).'"></script>'); 	
 	?>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 </head>
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-<body <?php if(
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" <?php if(
 				$this->_request->controller!='Company' 
 	&& $this->_request->controller!='Sessions' 
 	&& $this->_request->controller!='Admin'
 	&& $this->_request->controller!='API'
 	){?> onLoad="UpdateDetails();" <?php }?>>
-    <div class="container">
-				<?php echo $this->_render('element', 'header');?>				
+
+
 				<?php if($this->_request->controller=="Pages"){?>
 					<?php echo $this->_render('element', 'carousel');?>	
 					<?php echo $this->_render('element', 'feature');?>						
-				<?php }?>	
+				<?php }else{?>	
+					<?php echo $this->_render('element', 'header');?>				
+				<?php }?>
 				<div class="<?=$this->_request->action?> 				<?php if($this->_request->controller!="Pages"){?> mainpage<?php }?>">
 				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
 					<?php echo $this->_render('element', 'admin');?>
@@ -91,15 +93,21 @@ body {
 					<?php }?>
 					<?php echo $this->content(); ?>
 				</div>
-				<?php echo $this->_render('element', 'footer');?>	
-		</div> <!-- container-fluid -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+				<?php if($this->_request->controller=="Pages"){?>
+					<?php echo $this->_render('element', 'footer');?>	
+				<?php }else{?>	
+					<?php echo $this->_render('element', 'footerall');?>	
+				<?php }?>
 		<?php echo $this->scripts(); ?>	
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/js/docs.min.js"></script>
-  </body>
+		<!-- jQuery -->
+		
+		<!-- Bootstrap Core JavaScript -->
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
+		<!-- Plugin JavaScript -->
+		<script src="js/jquery.easing.min.js"></script>
+		<!-- Custom Theme JavaScript -->
+		<script src="/js/grayscale.js"></script>
+	</body>
 </html>
 <script type="text/javascript">
 $(function() {

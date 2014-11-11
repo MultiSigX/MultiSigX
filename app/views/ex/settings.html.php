@@ -2,7 +2,11 @@
 use li3_qrcode\extensions\action\QRcode;
 use app\models\Countries;
 ?>
-<div class="col-md-12  container-fluid" >
+<div class="row container-fluid">
+	<?php echo $this->_render('element', 'sidebar-menu');?>	
+
+
+<div class="col-md-9  container-fluid" >
 	<div class="panel panel-primary">
 		<div class="panel-heading">Settings</div>
 		<div class="panel-body">
@@ -173,4 +177,5 @@ use app\models\Countries;
 		<div class="panel-footer">
 		</div>
 	</div>
+</div>
 </div>

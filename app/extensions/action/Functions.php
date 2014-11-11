@@ -393,9 +393,7 @@ function WorldSMS($mobile,$msg){
 			$single++;
 		}
 	}
-
 	return $single;
-	
 	}
 	
 	public function getParents($user_id){
