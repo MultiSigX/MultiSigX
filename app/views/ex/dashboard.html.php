@@ -106,7 +106,9 @@
 								<h3><small><a href="/ex/name/<?=$singleaddress['name']?>"><?=$singleaddress['name']?></a></small></h3>
 								<h4>
 													<?php 
-														foreach($balances as $balance){?>
+														foreach($balances as $balance){
+														print_r($balance['address']);
+														?>
 														<?php if($balance['address']==$singleaddress['msxRedeemScript']['address']){?>
 																<h4><?=$balance['balance']." ". $singleaddress['currency'];?></h4>
 														<?php 

@@ -118,7 +118,7 @@
 					<div id="User<?=$d['relation']?>" class="col-md-6 col-md-offset-3 col-xs-12 " style="text-align:center ">
 						<div class="panel panel-danger">
 								<div class="panel-heading">
-								<h2><i class=" icon icon-user"></i> 
+								<h2><i class=" fa fa-user"></i> 
 								<?php if($d['username']==""){?>
 								Not Registered!
 								<?php }else{?>

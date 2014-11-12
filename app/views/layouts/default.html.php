@@ -104,7 +104,7 @@ if(count($detail)==0){
 		<!-- Bootstrap Core JavaScript -->
 		<script src="/bootstrap/js/bootstrap.min.js"></script>
 		<!-- Plugin JavaScript -->
-		<script src="js/jquery.easing.min.js"></script>
+		<script src="/js/jquery.easing.min.js"></script>
 		<!-- Custom Theme JavaScript -->
 		<script src="/js/grayscale.js"></script>
 	</body>
