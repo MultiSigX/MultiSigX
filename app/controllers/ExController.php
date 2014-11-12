@@ -47,6 +47,16 @@ class ExController extends \lithium\action\Controller {
 				)
 		));
 	}
+		$addresses = Addresses::find('all',array(
+			'conditions'=>array('username'=>$user['username'])
+		));
+
+		$refered = Addresses::find('all',array(
+			'conditions'=>array(
+				'addresses.email'=>$user['email'],
+				'username'=>array('$ne'=>$user['username'])
+			)
+		));
 		$balances = array();
 		if(count($addresses)>0){
 			foreach($addresses as $address){
@@ -67,16 +77,6 @@ class ExController extends \lithium\action\Controller {
 		));
 		$details = Details::find('first',array(
 			'conditions'=>array('user_id'=>$id)
-		));
-		$addresses = Addresses::find('all',array(
-			'conditions'=>array('username'=>$user['username'])
-		));
-
-		$refered = Addresses::find('all',array(
-			'conditions'=>array(
-				'addresses.email'=>$user['email'],
-				'username'=>array('$ne'=>$user['username'])
-			)
 		));
 
 		$title = $page['title'];

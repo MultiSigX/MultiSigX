@@ -107,9 +107,11 @@
 								<h4>
 													<?php 
 														foreach($balances as $balance){
-														print_r($balance['address']);
+														
 														?>
-														<?php if($balance['address']==$singleaddress['msxRedeemScript']['address']){?>
+														<?php if($balance['address']==$singleaddress['msxRedeemScript']['address']){
+														print_r($singleaddress['msxRedeemScript']['address']);?>
+														
 																<h4><?=$balance['balance']." ". $singleaddress['currency'];?></h4>
 														<?php 
 															if((float)$balance['balance']<=0){$disabled = ' disabled ';}else{$disabled = '';}

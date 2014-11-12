@@ -19,8 +19,8 @@
 										}
 									}
 								}
-								$commission = max($commarray);
-								$commission = $commission * (100-$reduceComm)/100;
+								$OriginalCommission = max($commarray);
+								$commission = $OriginalCommission * (100-$reduceComm)/100;
 								?>
 					<div class="panel-body">
 						<h4>Withdraw coins from<br>
@@ -28,8 +28,43 @@
 						<?=$addresses['CoinName']?><br>
 						<?=$addresses['name']?><br>
 						<?=$addresses['currencyName']?> <?=$addresses['currency']?><br>
-						Balance: <?=$final_balance?> <?=$addresses['currency']?><br>
-						Commission: <?=$commission?>%<br>
+						<table class="table table-striped table-condensed">
+							<tr>
+								<th>Description</th>
+								<th>&nbsp;</th>
+								<th style="text-align:right"><?=$addresses['currency']?></th>
+							</tr>
+							<tr>
+								<td style="text-align:left">Deposit</td>
+								<td>&nbsp;</td>
+								<td style="text-align:right"><?=number_format($final_balance,8)?></td>
+							</tr>
+							<tr>
+								<td style="text-align:left">Tx Fees (Miners)</td>
+								<td>&nbsp;</td>
+								<td style="text-align:right"><?=number_format($currencies['txFee'],8)?></td>
+							</tr>						
+							<tr>
+								<td style="text-align:left">Commission</td>
+								<td><?=$OriginalCommission?>%</td>
+								<td style="text-align:right">&nbsp;</td>
+							</tr>													
+							<tr>
+								<td style="text-align:left">Reduced Commission (Referral)</td>
+								<td><?=$reduceComm?>%</td>
+								<td style="text-align:right">&nbsp;</td>
+							</tr>													
+							<tr>
+								<td style="text-align:left">Final Commission</td>
+								<td><?=($OriginalCommission - $OriginalCommission*$reduceComm/100)?>%</td>
+								<td style="text-align:right"><?=number_format($final_balance*($OriginalCommission - $OriginalCommission*$reduceComm/100)/100,8)?></td>
+							</tr>													
+							<tr style="border-bottom: double">
+								<td style="text-align:left;color:red"><strong>Max Withdrawal</strong></td>
+								<td>&nbsp;</td>
+								<td style="text-align:right;color:red"><strong><?=number_format($final_balance-$currencies['txFee']-($final_balance*($OriginalCommission - $OriginalCommission*$reduceComm/100)/100),8)?></strong></td>
+							</tr>																				
+							</table>
 						Security: <strong style="color:red"><?=$addresses['security']?></strong> sign required of 3 to send payments<br>
 					</h4>
 					</div>
@@ -42,7 +77,7 @@
 						<div id="SelfUser" class="col-xs-12 col-md-6 col-md-offset-3" style="text-align:center" >
 							<div class="panel panel-success">
 								<div class="panel-heading">
-								<h2><i class=" icon icon-user"></i> <?=$user['username']?></h2>
+								<h2><i class=" fa fa-user"></i> <?=$user['username']?></h2>
 								</div>
 								<div class="panel-body">
 								<?php foreach($data as $d){
@@ -133,7 +168,10 @@
 									<br>
 									<code><?=$d['address']?></code>
 
-					<?php if($transact['create']['username']==$d['username']){?>
+					<?php if($transact['create']['username']==$d['username'] && $d['username']!="" ){
+					print_r("aaa".$transact['create']['username']."aaa");
+					?>
+					
 						<h4>
 						Transaction created on:<br>
 						<span class="label label-success"><?=gmdate(DATE_RFC850,$transact['create']['DateTime']->sec)?></span><br><br>
@@ -193,7 +231,7 @@
       	<h4 class="modal-title" id="CreateModalLabel">Create Transaction <small>for signatures</small></h4>
       </div>
       <div class="modal-body" style="text-align:center ">
-							<table class="table table-stripped table-condensed">
+							<table class="table table-striped table-condensed">
 								<tr>
 									<th>#</th>
 									<th width='70%'><?=$addresses['currencyName']?> Address <?=$addresses['currency']?></th>
@@ -236,7 +274,7 @@
 									<td style="border-top:1px solid black"></td>
 									<th style="border-top:1px solid black">Commission % of <?=$addresses['currency']?></th>
 									<td style="background-color:#eee; text-align:right;border-top:1px solid black">
-										<span  style="font-size:large" id="Commission"><?=number_format($commission,1)?>%</span>
+										<span  style="font-size:large" id="Commission"><?=number_format($commission,5)?>%</span>
 									</td>
 								</tr>
 								<tr>
