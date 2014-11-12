@@ -407,11 +407,11 @@ function CheckTotal(amount,commission){
 		}
 	}
 
-	alert($("#ChangeAmountValue").val());
+//	alert($("#ChangeAmountValue").val());
 	
 	Total = parseFloat($("#SendAmount0").val()) + parseFloat($("#SendAmount1").val()) + parseFloat($("#SendAmount2").val()) + (parseFloat(amount)*parseFloat(commission)/100) + parseFloat($("#SendTrxFee").val()) + parseFloat($("#ChangeAmountValue").val());
 	
-	alert(Math.round(Total*1000000)/1000000);
+//	alert(Math.round(Total*1000000)/1000000);
 	
 	if($("#ErrorCreateMobileCode").attr("class")=="glyphicon glyphicon-remove"){
 		document.getElementById('CreateSubmit').disabled = true;

@@ -69,7 +69,7 @@
 								<div class="panel-heading">
 									<?php 
 										if(count($refered)==0){?>
-											<p class="alert alert-danger">You are not using any MultiSigX wallets.</p>
+											<p class="alert alert-danger">No friend has referred any MultiSigX wallets.</p>
 											<?php 
 										}else{?>
 											<h2>My other wallets:</h2>					
