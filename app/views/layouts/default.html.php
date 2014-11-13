@@ -108,9 +108,9 @@ if(count($detail)==0){
 	$pagetotaltime = ($pageendtime - $pagestarttime);
 ?>
 				<?php if($this->_request->controller=="Pages"){?>
-					<?php echo $this->_render('element', 'footer');?>	
+					<?php echo $this->_render('element', 'footer', compact('pagetotaltime'));?>	
 				<?php }else{?>	
-					<?php echo $this->_render('element', 'footerall');?>	
+					<?php echo $this->_render('element', 'footerall',compact('pagetotaltime'));?>	
 				<?php }?>
 		<?php echo $this->scripts(); ?>	
 		<!-- jQuery -->
