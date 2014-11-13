@@ -1,5 +1,8 @@
 <div style="font-size:12px;background-color:#333333;color:white;padding:5px;border-bottom:3px solid red " class="footer">
-	<p>MultiSigX is a registered name of <strong>MultiSigX Inc. Apia, Samoa</strong> Company No: 65518</p>
+	<p>MultiSigX is a registered name of <strong>MultiSigX Inc. Apia, Samoa</strong> Company No: 65518
+	<small><span class="pull-right"><?php 	echo round($pagetotaltime*100,2);  ?></span></small>
+	</p>
+	
 	<ul class="nav navbar-nav" style="font-size:11px">
 		<li><a href="/company/contact">Contact</a></li>		
 		<li><a href="/company/aboutus">About</a></li>	

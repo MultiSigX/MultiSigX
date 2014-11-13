@@ -29,6 +29,13 @@ if(count($detail)==0){
 }else{
 	if($detail["theme"]==""){$theme = "default";}else{$theme = $detail["theme"];}
 }
+
+	$mtime = microtime();
+	$mtime = explode(" ",$mtime);
+	$mtime = $mtime[1] + $mtime[0];
+	$pagestarttime = $mtime; 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +100,12 @@ if(count($detail)==0){
 					<?php }?>
 					<?php echo $this->content(); ?>
 				</div>
+<?php 
+	$mtime = explode(" ",$mtime);
+	$mtime = $mtime[1] + $mtime[0];
+	$pageendtime = $mtime;
+	$pagetotaltime = ($pageendtime - $pagestarttime);
+?>
 				<?php if($this->_request->controller=="Pages"){?>
 					<?php echo $this->_render('element', 'footer');?>	
 				<?php }else{?>	
