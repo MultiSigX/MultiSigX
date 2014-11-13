@@ -101,6 +101,7 @@ if(count($detail)==0){
 					<?php echo $this->content(); ?>
 				</div>
 <?php 
+	$mtime = microtime();
 	$mtime = explode(" ",$mtime);
 	$mtime = $mtime[1] + $mtime[0];
 	$pageendtime = $mtime;
