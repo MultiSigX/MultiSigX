@@ -27,7 +27,7 @@ $MeAdmin = $Admin->__init();
 					<ul class="nav navbar-nav pull-right">
 					<?php if($user!=""){ ?>
 					<?php if($MeAdmin){?>
-					<li><a href="/Admin/index" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Admin"><i class="icon-user icon-large"></i></a></li>
+					<li><a href="/Admin/index" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Admin"><i class="fa-user fa-large"></i></a></li>
 					<?php } ?>
 						<li><a href="/ex/dashboard" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Dashboard "><i class="fa fa-tachometer fa-2x"></i></a></li>
 						<li><a href="/ex/settings" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Settings "><i class="fa fa-gears fa-2x"></i></a></li>								
@@ -62,7 +62,7 @@ $MeAdmin = $Admin->__init();
 								<!-- Menu Footer-->
 								<li class="user-footer">
 												<div class="pull-left">
-																<a href="#" class="btn btn-primary btn-sm btn-flat">Friends</a>
+																<a href="/ex/friends" class="btn btn-primary btn-sm btn-flat">Friends</a>
 												</div>
 												<div class="pull-right">
 																<a href="/logout" class="btn btn-danger btn-sm btn-flat">Sign out</a>
@@ -71,8 +71,8 @@ $MeAdmin = $Admin->__init();
 							</ul>
 							
  					</li>
-						<li><a href="/logout" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Sign Out "><i class="icon-power-off icon-large"></i></a></li>
-						<li><a href="#" class='dropdown-toggle tooltip-x' data-toggle='dropdown'  rel="tooltip-x" data-placement="bottom" title="Themes "><i class="icon-th icon-large"></i></a>
+						<li><a href="/logout" class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Sign Out "><i class="fa fa-power-off fa-2x"></i></a></li>
+						<li><a href="#" class='dropdown-toggle tooltip-x' data-toggle='dropdown'  rel="tooltip-x" data-placement="bottom" title="Themes "><i class="fa fa-th fa-2x"></i></a>
 							<ul class="dropdown-menu">
 								<li><a href="#" onClick="ChangeTheme('chrome','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Chrome</a></li>			
 								<li><a href="#" onClick="ChangeTheme('flaty','<?=str_replace("/","_",$_SERVER['REQUEST_URI'])?>');"><i class="icon-heart-empty"></i> Flaty</a></li>			

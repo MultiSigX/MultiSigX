@@ -49,7 +49,7 @@ if(count($detail)==0){
 	<link rel="shortcut icon" href="/img/logo-MultiSigX.gif" />
 	<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
 	<!-- Bootstrap Core CSS -->
-	<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/bootstrap/css/<?=$theme?>-bootstrap.css" rel="stylesheet">
 	
 	
 	<!-- Custom CSS -->
